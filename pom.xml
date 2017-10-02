@@ -1,0 +1,345 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.l2x6.editorconfig-maven-plugin</groupId>
+  <artifactId>editorconfig-maven-plugin</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>EditorConfig Maven Plugin</name>
+
+  <url>https://github.com/l2x6/editorconfig-maven-plugin</url>
+
+  <properties>
+
+    <!-- Dependency versions in alphabectic order -->
+    <version.io.takari.maven.plugins>2.9.0</version.io.takari.maven.plugins>
+    <version.junit>4.12</version.junit>
+    <version.org.antlr>4.7</version.org.antlr>
+    <version.org.apache.maven>3.3.9</version.org.apache.maven>
+    <version.org.apache.maven.plugin-tools>3.5</version.org.apache.maven.plugin-tools>
+    <version.org.eclipse.ec4e>0.1.0.-SRC-revision-3e75ceaea138c6f86231658dbe3d7fced9dfce37</version.org.eclipse.ec4e>
+    <version.org.slf4j>1.7.5</version.org.slf4j>
+
+    <!-- Plugins and their dependencies -->
+    <version.maven-checkstyle-plugin>2.17</version.maven-checkstyle-plugin>
+    <version.com.puppycrawl.tools.checkstyle>6.13</version.com.puppycrawl.tools.checkstyle>
+    <version.io.takari.maven.plugins.takari-lifecycle-plugin>1.11.12</version.io.takari.maven.plugins.takari-lifecycle-plugin>
+    <version.maven-antrun-plugin>1.8</version.maven-antrun-plugin>
+
+    <!-- checkstyle.xml location in the source tree -->
+    <checkstyle.consoleOutput>true</checkstyle.consoleOutput>
+    <checkstyle.failOnError>true</checkstyle.failOnError>
+    <checkstyle.includes>
+      src/**/*.java
+    </checkstyle.includes>
+    <checkstyle.excludes>
+      target/**
+    </checkstyle.excludes>
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+    <!-- maven-compiler-plugin -->
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
+
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+
+      <dependency>
+        <groupId>io.takari.maven.plugins</groupId>
+        <artifactId>takari-plugin-testing</artifactId>
+        <version>${version.io.takari.maven.plugins}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.takari.maven.plugins</groupId>
+        <artifactId>takari-plugin-integration-testing</artifactId>
+        <version>${version.io.takari.maven.plugins}</version>
+        <type>pom</type>
+      </dependency>
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${version.junit}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.antlr</groupId>
+        <artifactId>antlr4-runtime</artifactId>
+        <version>${version.org.antlr}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-plugin-api</artifactId>
+        <version>${version.org.apache.maven}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-model</artifactId>
+        <version>${version.org.apache.maven}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.maven.plugin-tools</groupId>
+        <artifactId>maven-plugin-annotations</artifactId>
+        <version>${version.org.apache.maven.plugin-tools}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.eclipse.ec4e</groupId>
+        <artifactId>org.eclipse.ec4e.services</artifactId>
+        <version>${version.org.eclipse.ec4e}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${version.org.slf4j}</version>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>io.takari.maven.plugins</groupId>
+      <artifactId>takari-plugin-testing</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.takari.maven.plugins</groupId>
+      <artifactId>takari-plugin-integration-testing</artifactId>
+      <type>pom</type>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.antlr</groupId>
+      <artifactId>antlr4-runtime</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.ec4e</groupId>
+      <artifactId>org.eclipse.ec4e.services</artifactId>
+      <version>${version.org.eclipse.ec4e}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>io.takari.maven.plugins</groupId>
+          <artifactId>takari-lifecycle-plugin</artifactId>
+          <version>${version.io.takari.maven.plugins.takari-lifecycle-plugin}</version>
+          <configuration>
+            <!-- compile/testCompile -->
+            <source>${maven.compiler.source}</source>
+            <compilerId>jdt</compilerId>
+            <transitiveDependencyReference>error</transitiveDependencyReference>
+            <privatePackageReference>error</privatePackageReference>
+            <proc>none</proc>
+
+            <!-- jar -->
+            <archive>
+              <manifestFile>${project.build.directory}/MANIFEST.MF</manifestFile> <!-- generated by maven-antrun-plugin -->
+            </archive>
+            <sourceJar>true</sourceJar>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.antlr</groupId>
+          <artifactId>antlr4-maven-plugin</artifactId>
+          <version>${version.org.antlr}</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>antlr4</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>${version.maven-antrun-plugin}</version>
+        </plugin>
+
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+
+      <plugin>
+        <groupId>org.antlr</groupId>
+        <artifactId>antlr4-maven-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <!-- A workaround for takari-lifecycle's unability to add custion manifest entries
+                     https://github.com/takari/takari-lifecycle/issues/21 -->
+                <manifest file="${project.build.directory}/MANIFEST.MF" encoding="${project.build.sourceEncoding}">
+                  <attribute name="Built-By" value="${user.name}" />
+                  <attribute name="Implementation-Title" value="${project.name}" />
+                  <attribute name="Built-From-Git-Branch" value="${scmBranch}" />
+                  <attribute name="Implementation-Version" value="${project.version}" />
+                  <attribute name="Built-From-Git-SHA1" value="${buildNumber}" />
+                  <attribute name="Implementation-Vendor-Id" value="${project.groupId}" />
+                  <attribute name="Build-Jdk" value="${java.version}" />
+                  <attribute name="Built-On" value="${timestamp}" />
+                </manifest>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>io.takari.maven.plugins</groupId>
+        <artifactId>takari-lifecycle-plugin</artifactId>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <!-- We turn takari-lifecycle-plugin's deploy off because we use nexus-staging-maven-plugin's deploy
+                 that can auto-close and release the staging repo -->
+            <id>default-deploy</id>
+            <phase>none</phase>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${version.maven-checkstyle-plugin}</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>${version.com.puppycrawl.tools.checkstyle}</version>
+            <exclusions>
+              <exclusion>
+                <groupId>com.sun</groupId>
+                <artifactId>tools</artifactId>
+              </exclusion>
+            </exclusions>
+          </dependency>
+          <dependency>
+            <groupId>org.srcdeps.core</groupId>
+            <artifactId>srcdeps-core-buildconfig</artifactId>
+            <version>3.1.0</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <id>checkstyle</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>checkstyle</goal>
+            </goals>
+            <configuration>
+              <configLocation>srcdeps-checkstyle/checkstyle.xml</configLocation>
+              <consoleOutput>${checkstyle.consoleOutput}</consoleOutput>
+              <failsOnError>${checkstyle.failOnError}</failsOnError>
+              <excludes>${checkstyle.excludes}</excludes>
+              <includes>${checkstyle.includes}</includes>
+              <sourceDirectory>${basedir}</sourceDirectory>
+              <useFile />
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  <profiles>
+    <profile>
+      <id>run-its</id>
+      <build>
+
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-invoker-plugin</artifactId>
+            <version>1.7</version>
+            <configuration>
+              <debug>true</debug>
+              <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+              <pomIncludes>
+                <pomInclude>*/pom.xml</pomInclude>
+              </pomIncludes>
+              <postBuildHookScript>verify</postBuildHookScript>
+              <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+              <settingsFile>src/it/settings.xml</settingsFile>
+              <goals>
+                <goal>clean</goal>
+                <goal>test-compile</goal>
+              </goals>
+            </configuration>
+            <executions>
+              <execution>
+                <id>integration-test</id>
+                <goals>
+                  <goal>install</goal>
+                  <goal>integration-test</goal>
+                  <goal>verify</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+
+      </build>
+    </profile>
+  </profiles>
+</project>
