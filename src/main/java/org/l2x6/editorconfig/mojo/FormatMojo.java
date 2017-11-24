@@ -12,7 +12,7 @@ import org.l2x6.editorconfig.format.EditableDocument;
 import org.l2x6.editorconfig.format.FormattingHandler;
 
 /**
- * An XML indentation check over a set of files.
+ * Formats a set of files so that they comply with rules defined in {@code .editorconfig} files.
  *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */

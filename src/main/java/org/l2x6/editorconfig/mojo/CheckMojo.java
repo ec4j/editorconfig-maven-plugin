@@ -11,7 +11,7 @@ import org.l2x6.editorconfig.core.Resource;
 import org.l2x6.editorconfig.core.ViolationHandler;
 
 /**
- * An XML indentation check over a set of files.
+ * Checks whether files are formatted according to rules defined in {@code .editorconfig} files.
  *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
@@ -21,7 +21,7 @@ public class CheckMojo
 {
 
     /**
-     * Tells the mojo what to do in case XML formatting violations are found. if {@code true}, all violations will be
+     * Tells the mojo what to do in case formatting violations are found. if {@code true}, all violations will be
      * reported on the console as ERRORs and the build will fail. if {@code false}, all violations will be reported on
      * the console as WARNs and the build will proceed further.
      */

@@ -9,16 +9,10 @@
 #
 configModelVersion: 2.1
 repositories:
-  org.eclipse.ec4e:
+  org.eclipse.ec4j:
     selectors:
-    - org.eclipse.ec4e
+    - fr.opensagres
     urls:
-    - git:https://github.com/angelozerr/ec4e.git
+    - git:file:///home/ppalaga/orgs/tools/ec4j/.git
+    - git:https://github.com/angelozerr/ec4j.git
     verbosity: info
-    buildArguments:
-    - --projects
-    - org.eclipse.ec4e:org.eclipse.ec4e.services
-    - --also-make
-    - -Dtycho.strictVersions=false
-    - -Dtycho.defaultP2Metadata=false
-    - -Dtycho.attachP2Metadata=false

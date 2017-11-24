@@ -42,8 +42,11 @@ public class ViolationCollector
         return ReturnState.FINISHED;
     }
 
+    /**
+     *
+     */
     @Override
-    public void endFileSets()
+    public void endFiles()
     {
         log.info( "Processed " + processedFileCount + (processedFileCount == 1 ? " file" : " files"));
         if ( failOnFormatViolation && hasViolations() )
@@ -95,7 +98,7 @@ public class ViolationCollector
     }
 
     @Override
-    public void startFileSets()
+    public void startFiles()
     {
         processedFileCount = 0;
     }

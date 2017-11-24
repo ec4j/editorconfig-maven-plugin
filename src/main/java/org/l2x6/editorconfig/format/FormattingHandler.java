@@ -51,7 +51,7 @@ public class FormattingHandler
 
                 /* We want to allow only one edit per line to avoid edit conflicts
                  * We should actually check that the edits do not span over multiple lines, which we do not ATM */
-                Set<Integer> linesEdited = new HashSet<Integer>();
+                Set<Integer> linesEdited = new HashSet<>();
                 boolean recheckNeeded = false;
                 for ( Violation violation : violations )
                 {
@@ -100,7 +100,7 @@ public class FormattingHandler
     }
 
     @Override
-    public void endFileSets()
+    public void endFiles()
     {
         log.info( "Processed " + processedFileCount + (processedFileCount == 1 ? " file" : " files"));
         log.info( "Formatted " + editedFileCount + (editedFileCount == 1 ? " file" : " files") );
@@ -124,7 +124,7 @@ public class FormattingHandler
     }
 
     @Override
-    public void startFileSets()
+    public void startFiles()
     {
         processedFileCount = 0;
     }

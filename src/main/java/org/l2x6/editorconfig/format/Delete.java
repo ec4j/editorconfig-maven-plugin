@@ -1,5 +1,7 @@
 package org.l2x6.editorconfig.format;
 
+import org.ec4j.core.model.PropertyType;
+
 public class Delete
     implements Edit
 {

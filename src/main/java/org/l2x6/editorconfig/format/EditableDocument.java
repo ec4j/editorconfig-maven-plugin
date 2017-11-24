@@ -1,14 +1,13 @@
 package org.l2x6.editorconfig.format;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.l2x6.editorconfig.core.FormatException;
 import org.l2x6.editorconfig.core.LineReader;
@@ -16,18 +15,20 @@ import org.l2x6.editorconfig.core.Resource;
 
 public class EditableDocument extends Resource implements CharSequence {
 
+    private static final Pattern EOL_MATCHER = Pattern.compile("$", Pattern.MULTILINE);
+
     private int hashCodeLoaded;
 
-    private StringBuilder text;
+    StringBuilder text;
 
     /**
-     * For testing only.
+     * Primarily testing only.
      *
      * @param file
      * @param encoding
      * @param text
      */
-    EditableDocument(Path file, Charset encoding, String text) {
+    public EditableDocument(Path file, Charset encoding, String text) {
         super(file, encoding);
         this.text = new StringBuilder(text);
         this.hashCodeLoaded = text.hashCode();
@@ -101,17 +102,33 @@ public class EditableDocument extends Resource implements CharSequence {
         if (lineNumber == 1) {
             return 0;
         } else {
-            int currentLine = 1;
-            int lastNewlineOffset = 0;
-            while (currentLine < lineNumber) {
-                lastNewlineOffset = text.indexOf("\n", lastNewlineOffset) + 1;
-                if (lastNewlineOffset >= 0) {
-                    currentLine++;
-                } else {
+            int currentLine = 2;
+            Matcher m = EOL_MATCHER.matcher(text);
+            while (m.find()) {
+                if (currentLine == lineNumber) {
+                    int end = m.end();
+                    final int len = text.length();
+                    if (end < len) {
+                        switch (text.charAt(end)) {
+                            case '\n':
+                                return end + 1;
+                            case '\r':
+                                end++;
+                                if (end < len && text.charAt(end) == '\n') {
+                                    return end + 1;
+                                } else {
+                                    return end;
+                                }
+                        }
+                    }
+                    return end;
+                }
+                if (currentLine > lineNumber) {
                     throw new IndexOutOfBoundsException("No such line " + lineNumber);
                 }
+                currentLine++;
             }
-            return lastNewlineOffset;
+            throw new IndexOutOfBoundsException("No such line " + lineNumber);
         }
     }
 

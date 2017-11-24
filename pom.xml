@@ -19,7 +19,7 @@
     <version.org.antlr>4.7</version.org.antlr>
     <version.org.apache.maven>3.3.9</version.org.apache.maven>
     <version.org.apache.maven.plugin-tools>3.5</version.org.apache.maven.plugin-tools>
-    <version.org.eclipse.ec4e>0.1.0.-SRC-revision-3e75ceaea138c6f86231658dbe3d7fced9dfce37</version.org.eclipse.ec4e>
+    <version.org.ec4j.core>0.1.0-SNAPSHOT</version.org.ec4j.core>
     <version.org.slf4j>1.7.5</version.org.slf4j>
 
     <!-- Plugins and their dependencies -->
@@ -95,9 +95,9 @@
       </dependency>
 
       <dependency>
-        <groupId>org.eclipse.ec4e</groupId>
-        <artifactId>org.eclipse.ec4e.services</artifactId>
-        <version>${version.org.eclipse.ec4e}</version>
+        <groupId>org.ec4j.core</groupId>
+        <artifactId>ec4j-core</artifactId>
+        <version>${version.org.ec4j.core}</version>
       </dependency>
 
       <dependency>
@@ -142,9 +142,8 @@
     </dependency>
 
     <dependency>
-      <groupId>org.eclipse.ec4e</groupId>
-      <artifactId>org.eclipse.ec4e.services</artifactId>
-      <version>${version.org.eclipse.ec4e}</version>
+      <groupId>org.ec4j.core</groupId>
+      <artifactId>ec4j-core</artifactId>
     </dependency>
 
     <dependency>
@@ -259,7 +258,7 @@
         </executions>
       </plugin>
 
-      <plugin>
+<!--       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>${version.maven-checkstyle-plugin}</version>
@@ -300,7 +299,7 @@
           </execution>
         </executions>
       </plugin>
-    </plugins>
+ -->    </plugins>
   </build>
   <profiles>
     <profile>
