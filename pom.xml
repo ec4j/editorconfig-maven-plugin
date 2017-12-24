@@ -2,14 +2,14 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.l2x6.editorconfig-maven-plugin</groupId>
+  <groupId>org.ec4j.maven</groupId>
   <artifactId>editorconfig-maven-plugin</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>EditorConfig Maven Plugin</name>
 
-  <url>https://github.com/l2x6/editorconfig-maven-plugin</url>
+  <url>https://github.com/ec4j/editorconfig-maven-plugin</url>
 
   <properties>
 
