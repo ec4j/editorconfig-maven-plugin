@@ -26,10 +26,9 @@
 #
 configModelVersion: 2.1
 repositories:
-  org.eclipse.ec4j:
+  org.ec4j.core:
     selectors:
-    - fr.opensagres
+    - org.ec4j.core
     urls:
-    - git:file:///home/ppalaga/orgs/tools/ec4j/.git
-    - git:https://github.com/angelozerr/ec4j.git
+    - git:https://github.com/ec4j/ec4j.git
     verbosity: info

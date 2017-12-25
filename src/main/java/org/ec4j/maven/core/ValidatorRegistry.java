@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 
-import org.ec4j.maven.ValidatorConfig;
-
 public class ValidatorRegistry {
 
     public static class Builder {
@@ -44,24 +42,24 @@ public class ValidatorRegistry {
             return new ValidatorRegistry(Collections.unmodifiableMap(useEntries));
         }
 
-        public Builder entry(final String validatorClass, final ClassLoader classLoader,
-                ValidatorConfig validatorConfig) {
-            ValidatorEntry.Builder en = entries.get(validatorClass);
+        public Builder entry(String id, String validatorClass, final ClassLoader classLoader,
+                String[] includes, String[] excludes, boolean useDefaultIncludesAndExcludes) {
+            ValidatorEntry.Builder en = entries.get(id);
             if (en == null) {
                 try {
                     @SuppressWarnings("unchecked")
                     Class<Validator> cl = (Class<Validator>) classLoader.loadClass(validatorClass);
                     Validator validator = cl.newInstance();
                     en = new ValidatorEntry.Builder(validator);
-                    entries.put(validatorClass, en);
+                    entries.put(id, en);
                 } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
                     throw new RuntimeException("Could not load class " + validatorClass, e);
                 }
             }
-            en.useDefaultIncludesAndExcludes = validatorConfig.isUseDefaultIncludesAndExcludes();
+            en.useDefaultIncludesAndExcludes = useDefaultIncludesAndExcludes;
             final PathSet.Builder pathSetBuilder = en.pathSetBuilder;
-            pathSetBuilder.includes(validatorConfig.getIncludes());
-            pathSetBuilder.excludes(validatorConfig.getExcludes());
+            pathSetBuilder.includes(includes);
+            pathSetBuilder.excludes(excludes);
             return this;
         }
 
@@ -73,6 +71,11 @@ public class ValidatorRegistry {
                 entries.put(validatorClass, en);
             }
 
+            return this;
+        }
+
+        public Builder removeEntry(String id) {
+            entries.remove(id);
             return this;
         }
 

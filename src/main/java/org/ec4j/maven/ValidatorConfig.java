@@ -16,12 +16,63 @@
  */
 package org.ec4j.maven;
 
-public interface ValidatorConfig {
-    String getClassName();
+import org.ec4j.maven.validator.TextValidator;
 
-    String[] getExcludes();
+public class ValidatorConfig {
 
-    String[] getIncludes();
+    private String className;
+    private boolean enabled = true;
+    private String[] excludes;
+    private String id;
+    private String[] includes;
+    private boolean useDefaultIncludesAndExcludes = true;
 
-    boolean isUseDefaultIncludesAndExcludes();
+    public String getClassName() {
+        return className.indexOf('.') < 0 ? TextValidator.class.getPackage().getName() + "." + className + "Validator"
+                : className;
+    }
+
+    public String[] getExcludes() {
+        return excludes;
+    }
+
+    public String getId() {
+        return id == null ? getClassName() : id;
+    }
+
+    public String[] getIncludes() {
+        return includes;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public boolean isUseDefaultIncludesAndExcludes() {
+        return useDefaultIncludesAndExcludes;
+    }
+
+    public void setClassName(String class_) {
+        this.className = class_;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public void setExcludes(String[] excludes) {
+        this.excludes = excludes;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setIncludes(String[] includes) {
+        this.includes = includes;
+    }
+
+    public void setUseDefaultIncludesAndExcludes(boolean useDefaultIncludesAndExcludes) {
+        this.useDefaultIncludesAndExcludes = useDefaultIncludesAndExcludes;
+    }
 }

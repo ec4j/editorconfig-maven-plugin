@@ -107,7 +107,13 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
 
         if (validators != null && !validators.isEmpty()) {
             for (ValidatorConfig validator : validators) {
-                validatorRegistryBuilder.entry(validator.getClassName(), this.getClass().getClassLoader(), validator);
+                if (validator.isEnabled()) {
+                    validatorRegistryBuilder.entry(validator.getId(), validator.getClassName(),
+                            this.getClass().getClassLoader(), validator.getIncludes(), validator.getExcludes(),
+                            validator.isUseDefaultIncludesAndExcludes());
+                } else {
+                    validatorRegistryBuilder.removeEntry(validator.getId());
+                }
             }
         }
 
