@@ -1,3 +1,21 @@
+<!--
+
+    Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+    project contributors as indicated by the @author tags.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -5,7 +23,7 @@
   <groupId>org.ec4j.maven</groupId>
   <artifactId>editorconfig-maven-plugin</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <packaging>takari-maven-plugin</packaging>
 
   <name>EditorConfig Maven Plugin</name>
 
@@ -19,10 +37,12 @@
     <version.org.antlr>4.7</version.org.antlr>
     <version.org.apache.maven>3.3.9</version.org.apache.maven>
     <version.org.apache.maven.plugin-tools>3.5</version.org.apache.maven.plugin-tools>
+    <version.org.codehaus.plexus.plexus-utils>3.0.17</version.org.codehaus.plexus.plexus-utils>
     <version.org.ec4j.core>0.1.0-SNAPSHOT</version.org.ec4j.core>
     <version.org.slf4j>1.7.5</version.org.slf4j>
 
     <!-- Plugins and their dependencies -->
+    <version.com.mycila.license-maven-plugin>3.0</version.com.mycila.license-maven-plugin>
     <version.maven-checkstyle-plugin>2.17</version.maven-checkstyle-plugin>
     <version.com.puppycrawl.tools.checkstyle>6.13</version.com.puppycrawl.tools.checkstyle>
     <version.io.takari.maven.plugins.takari-lifecycle-plugin>1.11.12</version.io.takari.maven.plugins.takari-lifecycle-plugin>
@@ -45,6 +65,25 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
     <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
+
+    <!-- license-maven-plugin -->
+    <license.failIfMissing>true</license.failIfMissing>
+    <license.failIfUnknown>true</license.failIfUnknown>
+
+    <!-- -Xdoclint:none disables javadoc validation -->
+    <javadoc.doclint>-Xdoclint:none</javadoc.doclint>
+
+    <!-- nexus-staging-maven-plugin -->
+    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+
+    <!-- Repository Deployment URLs -->
+    <oss.nexus.base.url>https://oss.sonatype.org</oss.nexus.base.url>
+    <releases.repo.url>${oss.nexus.base.url}/service/local/staging/deploy/maven2/</releases.repo.url>
+    <snapshots.repo.url>${oss.nexus.base.url}/content/repositories/snapshots/</snapshots.repo.url>
+
+    <!-- maven-surefire-plugin -->
+    <surefire.useFile>false</surefire.useFile>
+    <trimStackTrace>false</trimStackTrace>
 
   </properties>
 
@@ -92,6 +131,12 @@
         <groupId>org.apache.maven.plugin-tools</groupId>
         <artifactId>maven-plugin-annotations</artifactId>
         <version>${version.org.apache.maven.plugin-tools}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-utils</artifactId>
+        <version>${version.org.codehaus.plexus.plexus-utils}</version>
       </dependency>
 
       <dependency>
@@ -163,6 +208,14 @@
   <build>
     <pluginManagement>
       <plugins>
+        <!-- Ordering: alphabetical by groupId and artifactId -->
+
+        <plugin>
+          <groupId>com.mycila</groupId>
+          <artifactId>license-maven-plugin</artifactId>
+          <version>${version.com.mycila.license-maven-plugin}</version>
+        </plugin>
+
         <plugin>
           <groupId>io.takari.maven.plugins</groupId>
           <artifactId>takari-lifecycle-plugin</artifactId>
@@ -171,8 +224,9 @@
             <!-- compile/testCompile -->
             <source>${maven.compiler.source}</source>
             <compilerId>jdt</compilerId>
+<!--             <accessRulesViolation>ignore</accessRulesViolation>
             <transitiveDependencyReference>error</transitiveDependencyReference>
-            <privatePackageReference>error</privatePackageReference>
+            <privatePackageReference>error</privatePackageReference> -->
             <proc>none</proc>
 
             <!-- jar -->
@@ -202,10 +256,75 @@
           <version>${version.maven-antrun-plugin}</version>
         </plugin>
 
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>${version.maven-checkstyle-plugin}</version>
+        </plugin>
+
       </plugins>
     </pluginManagement>
 
     <plugins>
+
+      <plugin>
+        <groupId>com.mycila</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <configuration>
+          <inlineHeader>Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+project contributors as indicated by the @author tags.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</inlineHeader>
+          <excludes>
+            <exclude>**/*.adoc</exclude>
+            <exclude>**/README.*</exclude>
+            <exclude>**/.gitkeep</exclude>
+            <exclude>.mvn/wrapper/</exclude>
+            <exclude>LICENSE</exclude>
+            <exclude>mvnw</exclude>
+            <exclude>mvnw.cmd</exclude>
+            <exclude>src/main/antlr4/org/ec4j/maven/validator/xml/XmlLexer.g4</exclude><!-- BSD License -->
+            <exclude>src/main/antlr4/org/ec4j/maven/validator/xml/XmlParser.g4</exclude><!-- BSD License -->
+            <exclude>src/test/resources/**/*.txt</exclude>
+            <exclude>src/test/resources/**/*.good</exclude>
+            <exclude>src/test/resources/**/*.bad</exclude>
+          </excludes>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>io.takari.maven.plugins</groupId>
+        <artifactId>takari-lifecycle-plugin</artifactId>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <!-- We turn takari-lifecycle-plugin's deploy off because we use nexus-staging-maven-plugin's deploy
+                 that can auto-close and release the staging repo -->
+            <id>default-deploy</id>
+            <phase>none</phase>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
 
       <plugin>
         <groupId>org.antlr</groupId>
@@ -242,26 +361,8 @@
       </plugin>
 
       <plugin>
-        <groupId>io.takari.maven.plugins</groupId>
-        <artifactId>takari-lifecycle-plugin</artifactId>
-        <extensions>true</extensions>
-        <executions>
-          <execution>
-            <!-- We turn takari-lifecycle-plugin's deploy off because we use nexus-staging-maven-plugin's deploy
-                 that can auto-close and release the staging repo -->
-            <id>default-deploy</id>
-            <phase>none</phase>
-            <goals>
-              <goal>deploy</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-<!--       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>${version.maven-checkstyle-plugin}</version>
         <dependencies>
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
@@ -274,11 +375,6 @@
               </exclusion>
             </exclusions>
           </dependency>
-          <dependency>
-            <groupId>org.srcdeps.core</groupId>
-            <artifactId>srcdeps-core-buildconfig</artifactId>
-            <version>3.1.0</version>
-          </dependency>
         </dependencies>
         <executions>
           <execution>
@@ -288,7 +384,7 @@
               <goal>checkstyle</goal>
             </goals>
             <configuration>
-              <configLocation>srcdeps-checkstyle/checkstyle.xml</configLocation>
+              <configLocation>src/build/xml/checkstyle.xml</configLocation>
               <consoleOutput>${checkstyle.consoleOutput}</consoleOutput>
               <failsOnError>${checkstyle.failOnError}</failsOnError>
               <excludes>${checkstyle.excludes}</excludes>
@@ -299,7 +395,8 @@
           </execution>
         </executions>
       </plugin>
- -->    </plugins>
+
+    </plugins>
   </build>
   <profiles>
     <profile>

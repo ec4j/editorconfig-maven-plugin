@@ -1,3 +1,19 @@
+/**
+ * Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+ * project contributors as indicated by the @author tags.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.ec4j.maven.core;
 
 import java.io.IOException;
@@ -5,7 +21,6 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ec4j.maven.core.LineReader;
 import org.ec4j.maven.core.LineReader.DelegatingLineReader;
 import org.ec4j.maven.core.LineReader.StringBuilderReader;
 import org.junit.Assert;
@@ -16,10 +31,6 @@ import org.junit.runners.Parameterized.Parameters;
 
 @RunWith(Parameterized.class)
 public class LineReaderTest {
-
-    interface LineReaderFactory {
-        LineReader create(String text);
-    }
 
     private enum Doc {
         cr(new String[] { //
@@ -34,33 +45,31 @@ public class LineReaderTest {
                 "line 1\r", //
                 "\r" //
         }), //
-        lf(new String[] { //
-                "line 1\n", //
-                "line 2\n" //
+        crlf(new String[] { //
+                "line 1\r\n", //
+                "line 2\r\n" //
         }), //
-        lf_(new String[] { //
-                "line 1\n", //
+        crlf_(new String[] { //
+                "line 1\r\n", //
                 "line 2" //
-        }), //
-        lflf(new String[] { //
-                "line 1\n", //
-                "\n" //
         }), //
         crlfcrlf(new String[] { //
                 "line 1\r\n", //
                 "\r\n" //
-        }),
-        crlf_(new String[] { //
-                "line 1\r\n", //
+        }), //
+        lf(new String[] { //
+                "line 1\n", //
+                "line 2\n" //
+        }), lf_(new String[] { //
+                "line 1\n", //
                 "line 2" //
-        }),
-        crlf(new String[] { //
-                "line 1\r\n", //
-                "line 2\r\n" //
+        }), lflf(new String[] { //
+                "line 1\n", //
+                "\n" //
         });
         private final String[] lines;
 
-        private Doc(String[] lines) {
+        Doc(String[] lines) {
             this.lines = lines;
         }
 
@@ -76,6 +85,10 @@ public class LineReaderTest {
             return sb.toString();
         }
 
+    }
+
+    interface LineReaderFactory {
+        LineReader create(String text);
     }
 
     @Parameters(name = "{index}: {0},{1}")
@@ -114,8 +127,8 @@ public class LineReaderTest {
         return result;
     }
 
-    private final LineReaderFactory factory;
     private final Doc doc;
+    private final LineReaderFactory factory;
 
     public LineReaderTest(Doc doc, LineReaderFactory factory) {
         super();

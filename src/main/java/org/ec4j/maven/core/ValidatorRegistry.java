@@ -1,3 +1,19 @@
+/**
+ * Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+ * project contributors as indicated by the @author tags.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.ec4j.maven.core;
 
 import java.nio.file.Path;
@@ -28,7 +44,8 @@ public class ValidatorRegistry {
             return new ValidatorRegistry(Collections.unmodifiableMap(useEntries));
         }
 
-        public Builder entry(final String validatorClass, final ClassLoader classLoader, ValidatorConfig validatorConfig) {
+        public Builder entry(final String validatorClass, final ClassLoader classLoader,
+                ValidatorConfig validatorConfig) {
             ValidatorEntry.Builder en = entries.get(validatorClass);
             if (en == null) {
                 try {
@@ -73,12 +90,12 @@ public class ValidatorRegistry {
 
     public static class ValidatorEntry {
 
-        static class Builder {
+        public static class Builder {
             private final PathSet.Builder pathSetBuilder = new PathSet.Builder();
-            private final Validator validator;
             private boolean useDefaultIncludesAndExcludes = true;
+            private final Validator validator;
 
-            public Builder(Validator validator) {
+            Builder(Validator validator) {
                 super();
                 this.validator = validator;
             }
@@ -110,11 +127,12 @@ public class ValidatorRegistry {
         }
 
     }
-    private final Map<String, ValidatorEntry> entries;
 
     public static Builder builder() {
         return new Builder();
     }
+
+    private final Map<String, ValidatorEntry> entries;
 
     ValidatorRegistry(Map<String, ValidatorEntry> entries) {
         super();

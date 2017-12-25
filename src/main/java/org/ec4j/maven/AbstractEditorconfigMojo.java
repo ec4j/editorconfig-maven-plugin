@@ -1,3 +1,19 @@
+/**
+ * Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+ * project contributors as indicated by the @author tags.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.ec4j.maven;
 
 import java.io.File;
@@ -6,20 +22,18 @@ import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import org.apache.maven.model.FileSet;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.ec4j.core.Cache.Caches;
+import org.ec4j.core.Resource.Resources;
 import org.ec4j.core.ResourcePath.ResourcePaths;
 import org.ec4j.core.ResourceProperties;
 import org.ec4j.core.ResourcePropertiesService;
-import org.ec4j.core.Resource.Resources;
 import org.ec4j.core.model.PropertyType;
 import org.ec4j.maven.core.Resource;
 import org.ec4j.maven.core.Validator;
@@ -29,77 +43,89 @@ import org.ec4j.maven.core.ViolationHandler;
 public abstract class AbstractEditorconfigMojo extends AbstractMojo {
 
     /**
-     * Set the includes and excludes for the individual {@link Validator}s
-     */
-    @Parameter
-    protected List<ValidatorConfig> validators = new ArrayList<>();
-
-    /**
      * If set to {@code true}, the class path will be scanned for implementations of {@link Validator} and all
      * {@link Validator}s found will be added to {@link #validators} with their default includes and excludes.
      */
     @Parameter(property = "editorconfig.addValidatorsFromClassPath", defaultValue = "true")
     protected boolean addValidatorsFromClassPath;
 
-    /** File patterns to include into the set of files to process. The patterns are relative to the current project's {@code baseDir}. */
-    @Parameter(property = "editorconfig.includes", defaultValue = "*,src/**/*")
-    protected String[] includes;
-
-    /** File patterns to exclude from the set of files to process. The patterns are relative to the current project's {@code baseDir}. */
-    @Parameter(property = "editorconfig.excludes")
-    protected String[] excludes;
-
-    /**
-     * The default encoding of files selected by {@link #includes} and {@link #excludes}. This value can be overriden by a {@code charset}
-     * property of an {@code .editorconfig} file.
-     */
-    @Parameter(property = "editorconfig.encoding", defaultValue = "${project.build.sourceEncoding}")
-    protected String encoding;
-
-    /** The result of {@code Charset.forName(encoding)} */
-    protected Charset charset;
-
-    /** The result of {@code basedir.toPath()} */
-    private Path basedirPath;
-
     /**
      * The base directory of the current Maven project.
      */
     @Parameter(defaultValue = "${project.basedir}", required = true, readonly = true)
     private File basedir;
+
+    /** The result of {@code basedir.toPath()} */
+    private Path basedirPath;
+
+    /** The result of {@code Charset.forName(encoding)} */
+    protected Charset charset;
+
+    /**
+     * The default encoding of files selected by {@link #includes} and {@link #excludes}. This value can be overriden by
+     * a {@code charset} property of an {@code .editorconfig} file.
+     */
+    @Parameter(property = "editorconfig.encoding", defaultValue = "${project.build.sourceEncoding}")
+    protected String encoding;
+
+    /**
+     * File patterns to exclude from the set of files to process. The patterns are relative to the current project's
+     * {@code baseDir}.
+     */
+    @Parameter(property = "editorconfig.excludes")
+    protected String[] excludes;
+
+    /**
+     * File patterns to include into the set of files to process. The patterns are relative to the current project's
+     * {@code baseDir}.
+     */
+    @Parameter(property = "editorconfig.includes", defaultValue = "*,src/**/*")
+    protected String[] includes;
+
     /**
      * If {@code true} the execution of the Mojo will be skipped; otherwise the Mojo will be executed.
      */
     @Parameter(property = "editorconfig.skip", defaultValue = "false")
     private boolean skip;
-
-    public static FileSet getDefaultFileSet(File baseDir) {
-
-        FileSet result = new FileSet();
-        result.setDirectory(baseDir.getAbsolutePath());
-
-        List<String> includes = new ArrayList<String>(2);
-        includes.add("*");
-        includes.add("src/**/*");
-        result.setIncludes(includes);
-        result.setExcludes(Collections.<String>emptyList());
-
-        return result;
-    }
+    /**
+     * Set the includes and excludes for the individual {@link Validator}s
+     */
+    @Parameter
+    protected List<ValidatorConfig> validators = new ArrayList<>();
 
     public AbstractEditorconfigMojo() {
         super();
     }
 
-    protected abstract Resource createResource(Path file, Charset encoding);
+    protected ValidatorRegistry buildValidatorRegistry() {
+
+        final ValidatorRegistry.Builder validatorRegistryBuilder = ValidatorRegistry.builder();
+
+        if (addValidatorsFromClassPath) {
+            validatorRegistryBuilder.scan(getClass().getClassLoader());
+        }
+
+        if (validators != null && !validators.isEmpty()) {
+            for (ValidatorConfig validator : validators) {
+                validatorRegistryBuilder.entry(validator.getClassName(), this.getClass().getClassLoader(), validator);
+            }
+        }
+
+        return validatorRegistryBuilder.build();
+
+    }
 
     protected abstract ViolationHandler createHandler();
+
+    protected abstract Resource createResource(Path file, Charset encoding);
 
     /**
      * Called by Maven for executing the Mojo.
      *
-     * @throws MojoExecutionException Running the Mojo failed.
-     * @throws MojoFailureException   A configuration error was detected.
+     * @throws MojoExecutionException
+     *             Running the Mojo failed.
+     * @throws MojoFailureException
+     *             A configuration error was detected.
      */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -107,7 +133,6 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
             getLog().debug("Skipping execution, as demanded by user.");
             return;
         }
-
 
         this.charset = Charset.forName(this.encoding);
         this.basedirPath = basedir.toPath();
@@ -164,25 +189,6 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
         }
         scanner.scan();
         return scanner.getIncludedFiles();
-    }
-
-    protected ValidatorRegistry buildValidatorRegistry() {
-
-        final ValidatorRegistry.Builder validatorRegistryBuilder = ValidatorRegistry.builder();
-
-
-        if (addValidatorsFromClassPath) {
-            validatorRegistryBuilder.scan(getClass().getClassLoader());
-        }
-
-        if (validators != null && !validators.isEmpty()) {
-            for (ValidatorConfig validator : validators) {
-                validatorRegistryBuilder.entry(validator.getClassName(), this.getClass().getClassLoader(), validator);
-            }
-        }
-
-        return validatorRegistryBuilder.build();
-
     }
 
 }
