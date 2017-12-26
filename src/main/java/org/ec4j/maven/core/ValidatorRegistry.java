@@ -1,5 +1,5 @@
 /**
- * Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+ * Copyright (c) 2017 EditorConfig Maven Plugin
  * project contributors as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,6 +24,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
+
+import org.ec4j.maven.validator.TextValidator;
+import org.ec4j.maven.validator.XmlValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ValidatorRegistry {
 
@@ -68,6 +73,7 @@ public class ValidatorRegistry {
             ValidatorEntry.Builder en = entries.get(validatorClass);
             if (en == null) {
                 en = new ValidatorEntry.Builder(validator);
+
                 entries.put(validatorClass, en);
             }
 
@@ -80,6 +86,8 @@ public class ValidatorRegistry {
         }
 
         public Builder scan(ClassLoader classLoader) {
+            entry(new TextValidator());
+            entry(new XmlValidator());
             final ServiceLoader<Validator> loader = java.util.ServiceLoader.load(Validator.class, classLoader);
             final Iterator<Validator> it = loader.iterator();
             while (it.hasNext()) {
@@ -131,6 +139,8 @@ public class ValidatorRegistry {
 
     }
 
+    private static final Logger log = LoggerFactory.getLogger(ValidatorRegistry.class);
+
     public static Builder builder() {
         return new Builder();
     }
@@ -143,10 +153,15 @@ public class ValidatorRegistry {
     }
 
     public List<Validator> filter(Path file) {
+        log.trace("Filtering validators for file '{}'", file);
         final List<Validator> result = new ArrayList<>(entries.size());
         for (ValidatorEntry validatorEntry : entries.values()) {
             if (validatorEntry.getPathSet().contains(file)) {
-                result.add(validatorEntry.getValidator());
+                final Validator validator = validatorEntry.getValidator();
+                if (log.isTraceEnabled()) {
+                    log.trace("Adding validator {}", validator.getClass().getName());
+                }
+                result.add(validator);
             }
         }
         return Collections.unmodifiableList(result);

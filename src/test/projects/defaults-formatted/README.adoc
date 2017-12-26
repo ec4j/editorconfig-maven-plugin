@@ -1,0 +1,3 @@
+= Defaults integration test
+
+The previous line contains trailing spaces

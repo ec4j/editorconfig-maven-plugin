@@ -1,5 +1,5 @@
 /**
- * Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+ * Copyright (c) 2017 EditorConfig Maven Plugin
  * project contributors as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +30,13 @@ import java.nio.file.Path;
 public class Resource {
     protected final Charset encoding;
 
-    protected final Path file;
+    protected final Path absPath;
+    protected final Path relPath;
 
-    public Resource(Path file, Charset encoding) {
+    public Resource(Path absPath, Path relPath, Charset encoding) {
         super();
-        this.file = file;
+        this.absPath = absPath;
+        this.relPath = relPath;
         this.encoding = encoding;
     }
 
@@ -52,16 +54,16 @@ public class Resource {
                 return false;
         } else if (!encoding.equals(other.encoding))
             return false;
-        if (file == null) {
-            if (other.file != null)
+        if (absPath == null) {
+            if (other.absPath != null)
                 return false;
-        } else if (!file.equals(other.file))
+        } else if (!absPath.equals(other.absPath))
             return false;
         return true;
     }
 
-    public Path getFile() {
-        return file;
+    public Path getPath() {
+        return absPath;
     }
 
     @Override
@@ -69,17 +71,17 @@ public class Resource {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((encoding == null) ? 0 : encoding.hashCode());
-        result = prime * result + ((file == null) ? 0 : file.hashCode());
+        result = prime * result + ((absPath == null) ? 0 : absPath.hashCode());
         return result;
     }
 
     public Reader openReader() throws IOException {
-        return Files.newBufferedReader(file, encoding);
+        return Files.newBufferedReader(absPath, encoding);
     }
 
     @Override
     public String toString() {
-        return file.toString();
+        return relPath.toString();
     }
 
 }

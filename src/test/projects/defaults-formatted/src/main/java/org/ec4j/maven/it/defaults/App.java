@@ -1,5 +1,5 @@
 /**
- * Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+ * Copyright (c) 2017 EditorConfig Maven Plugin
  * project contributors as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-File touchFile = new File( basedir, "target/touch.txt" );
+package org.ec4j.maven.it.defaults;
 
-assert touchFile.isFile()
+/**
+ * Hello world!
+ *
+ */
+public class App {
+    public static void main(String[] args) {
+        System.out.println("Hello World!");
+    }
+}

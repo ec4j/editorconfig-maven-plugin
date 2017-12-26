@@ -1,5 +1,5 @@
 #
-# Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+# Copyright (c) 2017 EditorConfig Maven Plugin
 # project contributors as indicated by the @author tags.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,3 +32,10 @@ repositories:
     urls:
     - git:https://github.com/ec4j/ec4j.git
     verbosity: info
+  io.takari.maven.plugins.takari-plugin-testing:
+    selectors:
+    - io.takari.maven.plugins:takari-plugin-testing*
+    - io.takari.maven.plugins:takari-plugin-integration-testing
+    urls:
+    - git:file:///home/ppalaga/orgs/takari/takari-plugin-testing-project/.git
+    - git:https://github.com/takari/takari-plugin-testing-project.git

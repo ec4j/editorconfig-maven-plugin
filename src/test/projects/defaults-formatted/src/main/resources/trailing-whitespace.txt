@@ -1,0 +1,2 @@
+line 1
+the previous line ends with whitespace

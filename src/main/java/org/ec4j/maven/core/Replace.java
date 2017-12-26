@@ -1,5 +1,5 @@
 /**
- * Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+ * Copyright (c) 2017 EditorConfig Maven Plugin
  * project contributors as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,10 +21,10 @@ import org.ec4j.core.model.PropertyType;
 public class Replace implements Edit {
     public static Replace endOfLine(PropertyType.EndOfLineValue replaced, PropertyType.EndOfLineValue replacement) {
         return new Replace(replaced.getEndOfLineString().length(), replacement.getEndOfLineString(),
-                "Replace '" + replaced.name() + "' with '" + replacement.name() + "'.");
+                "Replace '" + replaced.name() + "' with '" + replacement.name() + "'");
     }
     public static Replace ofReplaced(String replaced, String replacement) {
-        return new Replace(replaced.length(), replacement, "Replace '" + replaced + "' with '" + replacement + "'.");
+        return new Replace(replaced.length(), replacement, "Replace '" + replaced + "' with '" + replacement + "'");
     }
     private final String message;
 

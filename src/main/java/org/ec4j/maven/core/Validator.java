@@ -1,5 +1,5 @@
 /**
- * Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+ * Copyright (c) 2017 EditorConfig Maven Plugin
  * project contributors as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,13 +28,13 @@ public interface Validator {
     List<String> getDefaultIncludes();
 
     /**
-     * Checks the formatting of the given {@code file}. The file is read using the given {@code encoding} and the
-     * violations are reported to the given {@code violationHandler}.
+     * Checks the formatting (as defined by {@code properties}) of the given {@code resource} and reports the violations
+     * to the given {@code violationHandler}.
      *
-     * @param resource
-     * @param properties
-     * @param violationHandler
-     * @throws IOException
+     * @param resource the {@link Resource} to process
+     * @param properties a set of {@code .editorconfig} properties
+     * @param violationHandler the {@link ViolationHandler} to report to
+     * @throws IOException on I/O problems
      */
     void process(Resource resource, ResourceProperties properties, ViolationHandler violationHandler)
             throws IOException;

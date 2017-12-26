@@ -1,6 +1,6 @@
 <!--
 
-    Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+    Copyright (c) 2017 EditorConfig Maven Plugin
     project contributors as indicated by the @author tags.
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,8 +26,17 @@
   <packaging>takari-maven-plugin</packaging>
 
   <name>EditorConfig Maven Plugin</name>
-
+  <description>A Maven plugin to (1) check whether project files comply with format rules defined in .editorconfog
+      files and (2) fix the violations</description>
   <url>https://github.com/ec4j/editorconfig-maven-plugin</url>
+  <inceptionYear>2017</inceptionYear>
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <properties>
 
@@ -38,14 +47,14 @@
     <version.org.apache.maven>3.3.9</version.org.apache.maven>
     <version.org.apache.maven.plugin-tools>3.5</version.org.apache.maven.plugin-tools>
     <version.org.codehaus.plexus.plexus-utils>3.0.17</version.org.codehaus.plexus.plexus-utils>
-    <version.org.ec4j.core>0.1.0-SNAPSHOT</version.org.ec4j.core>
+    <version.org.ec4j.core>0.0.1</version.org.ec4j.core>
     <version.org.slf4j>1.7.5</version.org.slf4j>
 
     <!-- Plugins and their dependencies -->
     <version.com.mycila.license-maven-plugin>3.0</version.com.mycila.license-maven-plugin>
     <version.maven-checkstyle-plugin>2.17</version.maven-checkstyle-plugin>
     <version.com.puppycrawl.tools.checkstyle>6.13</version.com.puppycrawl.tools.checkstyle>
-    <version.io.takari.maven.plugins.takari-lifecycle-plugin>1.11.12</version.io.takari.maven.plugins.takari-lifecycle-plugin>
+    <version.io.takari.maven.plugins.takari-lifecycle-plugin>1.13.0</version.io.takari.maven.plugins.takari-lifecycle-plugin>
     <version.maven-antrun-plugin>1.8</version.maven-antrun-plugin>
 
     <!-- checkstyle.xml location in the source tree -->
@@ -298,6 +307,7 @@ limitations under the License.</inlineHeader>
             <exclude>src/test/resources/**/*.txt</exclude>
             <exclude>src/test/resources/**/*.good</exclude>
             <exclude>src/test/resources/**/*.bad</exclude>
+            <exclude>src/test/projects/defaults*/**/*.txt</exclude>
           </excludes>
         </configuration>
         <executions>
@@ -396,46 +406,19 @@ limitations under the License.</inlineHeader>
         </executions>
       </plugin>
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <systemPropertyVariables>
+            <basedir>${project.build.directory}</basedir>
+            <project.version>${project.version}</project.version>
+            <project.build.sourceEncoding>${project.build.sourceEncoding}</project.build.sourceEncoding>
+            <org.slf4j.simpleLogger.showDateTime>true</org.slf4j.simpleLogger.showDateTime>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
-  <profiles>
-    <profile>
-      <id>run-its</id>
-      <build>
-
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-invoker-plugin</artifactId>
-            <version>1.7</version>
-            <configuration>
-              <debug>true</debug>
-              <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
-              <pomIncludes>
-                <pomInclude>*/pom.xml</pomInclude>
-              </pomIncludes>
-              <postBuildHookScript>verify</postBuildHookScript>
-              <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
-              <settingsFile>src/it/settings.xml</settingsFile>
-              <goals>
-                <goal>clean</goal>
-                <goal>test-compile</goal>
-              </goals>
-            </configuration>
-            <executions>
-              <execution>
-                <id>integration-test</id>
-                <goals>
-                  <goal>install</goal>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-
-      </build>
-    </profile>
-  </profiles>
 </project>

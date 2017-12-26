@@ -1,5 +1,5 @@
 /**
- * Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+ * Copyright (c) 2017 EditorConfig Maven Plugin
  * project contributors as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,12 +35,17 @@ import org.ec4j.core.ResourcePath.ResourcePaths;
 import org.ec4j.core.ResourceProperties;
 import org.ec4j.core.ResourcePropertiesService;
 import org.ec4j.core.model.PropertyType;
+import org.ec4j.maven.core.FormatException;
 import org.ec4j.maven.core.Resource;
 import org.ec4j.maven.core.Validator;
 import org.ec4j.maven.core.ValidatorRegistry;
 import org.ec4j.maven.core.ViolationHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractEditorconfigMojo extends AbstractMojo {
+
+    private static final Logger log = LoggerFactory.getLogger(AbstractEditorconfigMojo.class);
 
     /**
      * If set to {@code true}, the class path will be scanned for implementations of {@link Validator} and all
@@ -56,7 +61,7 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
     private File basedir;
 
     /** The result of {@code basedir.toPath()} */
-    private Path basedirPath;
+    protected Path basedirPath;
 
     /** The result of {@code Charset.forName(encoding)} */
     protected Charset charset;
@@ -74,6 +79,14 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
      */
     @Parameter(property = "editorconfig.excludes")
     protected String[] excludes;
+
+    /**
+     * If {@code true} the plugin execution will fail with an error in case no single {@code .editorconfig} property
+     * matches any file of the current Maven project - this usually means that there is no {@code .editorconfig} file in
+     * the whole source tree. If {@code false}, only a warning is produced in such a situation.
+     */
+    @Parameter(property = "editorconfig.failOnNoMatchingProperties", defaultValue = "true")
+    protected boolean failOnNoMatchingProperties;
 
     /**
      * File patterns to include into the set of files to process. The patterns are relative to the current project's
@@ -123,7 +136,15 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
 
     protected abstract ViolationHandler createHandler();
 
-    protected abstract Resource createResource(Path file, Charset encoding);
+    /**
+     * @param absFile
+     *            the {@link Path} to create a {@link Resource} for. Must be absolute.
+     * @param relFile
+     *            the {@link Path} to create a {@link Resource} for. Must be relative to {@link #basedirPath}.
+     * @param encoding
+     * @return
+     */
+    protected abstract Resource createResource(Path absFile, Path relFile, Charset encoding);
 
     /**
      * Called by Maven for executing the Mojo.
@@ -136,7 +157,7 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (skip) {
-            getLog().debug("Skipping execution, as demanded by user.");
+            log.debug("Skipping execution, as demanded by user.");
             return;
         }
 
@@ -155,28 +176,45 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
                     .rootDirectory(ResourcePaths.ofPath(sourceTreeRoot, charset)) //
                     .build();
             handler.startFiles();
+            boolean propertyMatched = false;
             for (String includedPath : includedFiles) {
                 final Path file = Paths.get(includedPath); // relative to basedir
                 final Path absFile = basedirPath.resolve(file);
-                getLog().debug("Processing file " + file);
-                ResourceProperties editorConfigProperties = resourcePropertiesService
+                log.debug("Processing file '{}'", file);
+                final ResourceProperties editorConfigProperties = resourcePropertiesService
                         .queryProperties(Resources.ofPath(absFile, charset));
-                Charset useEncoding = Charset
-                        .forName(editorConfigProperties.getValue(PropertyType.charset, encoding, true));
-                final Resource resource = createResource(absFile, useEncoding);
-                List<Validator> filteredValidators = validatorRegistry.filter(file);
-                for (Validator validator : filteredValidators) {
+                if (!editorConfigProperties.getProperties().isEmpty()) {
+                    propertyMatched = true;
+                    final Charset useEncoding = Charset
+                            .forName(editorConfigProperties.getValue(PropertyType.charset, encoding, true));
+                    final Resource resource = createResource(absFile, file, useEncoding);
+                    final List<Validator> filteredValidators = validatorRegistry.filter(file);
                     ViolationHandler.ReturnState state = ViolationHandler.ReturnState.RECHECK;
                     while (state != ViolationHandler.ReturnState.FINISHED) {
-                        handler.startFile(resource);
-                        validator.process(resource, editorConfigProperties, handler);
+                        for (Validator validator : filteredValidators) {
+                            if (log.isTraceEnabled()) {
+                                log.trace("Processing file '{}' using validator {}", file,
+                                        validator.getClass().getName());
+                            }
+                            handler.startFile(resource);
+                            validator.process(resource, editorConfigProperties, handler);
+                        }
                         state = handler.endFile();
                     }
                 }
             }
+            if (!propertyMatched) {
+                if (failOnNoMatchingProperties) {
+                    log.error("No .editorconfig properties applicable for files under '{}'", basedirPath);
+                } else {
+                    log.warn("No .editorconfig properties applicable for files under '{}'", basedirPath);
+                }
+            }
             handler.endFiles();
         } catch (IOException e) {
-            throw new MojoFailureException(e.getMessage(), e);
+            throw new MojoExecutionException(e.getMessage(), e);
+        } catch (FormatException e) {
+            throw new MojoFailureException("\n\n" + e.getMessage() + "\n\n", e);
         }
 
     }

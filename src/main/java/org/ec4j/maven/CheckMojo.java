@@ -1,5 +1,5 @@
 /**
- * Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+ * Copyright (c) 2017 EditorConfig Maven Plugin
  * project contributors as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +31,7 @@ import org.ec4j.maven.core.ViolationHandler;
  *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
-@Mojo(defaultPhase = LifecyclePhase.PROCESS_SOURCES, name = "check")
+@Mojo(defaultPhase = LifecyclePhase.VERIFY, name = "check")
 public class CheckMojo extends AbstractEditorconfigMojo {
 
     /**
@@ -48,8 +48,8 @@ public class CheckMojo extends AbstractEditorconfigMojo {
     }
 
     @Override
-    protected Resource createResource(Path file, Charset encoding) {
-        return new Resource(file, encoding);
+    protected Resource createResource(Path absFile, Path relFile, Charset encoding) {
+        return new Resource(absFile, relFile, encoding);
     }
 
 }

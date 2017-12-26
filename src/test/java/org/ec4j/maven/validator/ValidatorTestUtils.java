@@ -1,5 +1,5 @@
 /**
- * Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+ * Copyright (c) 2017 EditorConfig Maven Plugin
  * project contributors as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ec4j.maven.core;
+package org.ec4j.maven.validator;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +26,12 @@ import java.util.Map;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.ec4j.core.ResourceProperties;
-import org.ec4j.maven.validator.XmlValidatorTest;
+import org.ec4j.maven.core.EditableResource;
+import org.ec4j.maven.core.FormattingHandler;
+import org.ec4j.maven.core.Resource;
+import org.ec4j.maven.core.Validator;
+import org.ec4j.maven.core.Violation;
+import org.ec4j.maven.core.ViolationCollector;
 import org.junit.Assert;
 
 public class ValidatorTestUtils {
@@ -64,7 +69,7 @@ public class ValidatorTestUtils {
 
     public static EditableResource createDocument(String text, String fileExtension) throws IOException {
         Path file = File.createTempFile(XmlValidatorTest.class.getSimpleName(), fileExtension).toPath();
-        EditableResource doc = new EditableResource(file, StandardCharsets.UTF_8, text);
+        EditableResource doc = new EditableResource(file, file, StandardCharsets.UTF_8, text);
         return doc;
     }
 

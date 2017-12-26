@@ -1,5 +1,5 @@
 /**
- * Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+ * Copyright (c) 2017 EditorConfig Maven Plugin
  * project contributors as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ec4j.maven.core;
+package org.ec4j.maven.validator;
 
 import java.io.IOException;
 
@@ -22,7 +22,14 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.ec4j.core.ResourceProperties;
 import org.ec4j.core.model.Property;
 import org.ec4j.core.model.PropertyType;
-import org.ec4j.maven.validator.TextValidator;
+import org.ec4j.core.model.PropertyType.EndOfLineValue;
+import org.ec4j.maven.core.Delete;
+import org.ec4j.maven.core.EditableResource;
+import org.ec4j.maven.core.Insert;
+import org.ec4j.maven.core.Location;
+import org.ec4j.maven.core.Replace;
+import org.ec4j.maven.core.Validator;
+import org.ec4j.maven.core.Violation;
 import org.junit.Test;
 
 public class TextValidatorTest {
@@ -50,8 +57,10 @@ public class TextValidatorTest {
 
         ValidatorTestUtils.assertParse(validator, doc, expectedText, props, //
                 new Violation(doc, new Location(1, 7),
-                        Replace.endOfLine(PropertyType.EndOfLineValue.lf, PropertyType.EndOfLineValue.cr)), //
-                new Violation(doc, new Location(4, 8), new Delete(1)) //
+                        Replace.endOfLine(PropertyType.EndOfLineValue.lf, PropertyType.EndOfLineValue.cr), validator,
+                        PropertyType.end_of_line.getName(), "cr"), //
+                new Violation(doc, new Location(4, 8), new Delete(1), validator, PropertyType.end_of_line.getName(),
+                        "cr") //
         );
     }
 
@@ -75,8 +84,10 @@ public class TextValidatorTest {
         EditableResource doc = ValidatorTestUtils.createDocument(text, ".txt");
 
         ValidatorTestUtils.assertParse(validator, doc, expectedText, props, //
-                new Violation(doc, new Location(1, 7), Insert.endOfLine(PropertyType.EndOfLineValue.cr)), //
-                new Violation(doc, new Location(5, 8), Insert.endOfLine(PropertyType.EndOfLineValue.lf)) //
+                new Violation(doc, new Location(1, 7), Insert.endOfLine(PropertyType.EndOfLineValue.cr), validator,
+                        PropertyType.end_of_line.getName(), "crlf"), //
+                new Violation(doc, new Location(5, 8), Insert.endOfLine(PropertyType.EndOfLineValue.lf), validator,
+                        PropertyType.end_of_line.getName(), "crlf") //
         );
     }
 
@@ -100,9 +111,45 @@ public class TextValidatorTest {
         EditableResource doc = ValidatorTestUtils.createDocument(text, ".txt");
 
         ValidatorTestUtils.assertParse(validator, doc, expectedText, props, //
-                new Violation(doc, new Location(4, 7), new Delete(1)), //
+                new Violation(doc, new Location(4, 7), new Delete(1), validator, PropertyType.end_of_line.getName(),
+                        "lf"), //
                 new Violation(doc, new Location(5, 7),
-                        Replace.endOfLine(PropertyType.EndOfLineValue.cr, PropertyType.EndOfLineValue.lf)));
+                        Replace.endOfLine(PropertyType.EndOfLineValue.cr, PropertyType.EndOfLineValue.lf), validator,
+                        PropertyType.end_of_line.getName(), "lf"));
+    }
+
+    @Test
+    public void insert_final_newline() throws IOException, MojoExecutionException {
+        final ResourceProperties props = ResourceProperties.builder() //
+                .property(new Property.Builder(null).type(PropertyType.insert_final_newline).value("true").build()) //
+                .property(new Property.Builder(null).type(PropertyType.end_of_line).value("lf").build()) //
+                .build();
+        String text = "line 1\n" + //
+                "line 2"//
+        ;
+        String expectedText = "line 1\n" + //
+                "line 2\n" //
+        ;
+        EditableResource doc = ValidatorTestUtils.createDocument(text, ".txt");
+
+        ValidatorTestUtils.assertParse(validator, doc, expectedText, props, //
+                new Violation(doc, new Location(2, 7), Insert.endOfLine(EndOfLineValue.lf), validator,
+                        PropertyType.insert_final_newline.getName(), "true"));
+    }
+
+    @Test
+    public void insert_final_newline_empty() throws IOException, MojoExecutionException {
+        final ResourceProperties props = ResourceProperties.builder() //
+                .property(new Property.Builder(null).type(PropertyType.insert_final_newline).value("true").build()) //
+                .property(new Property.Builder(null).type(PropertyType.end_of_line).value("lf").build()) //
+                .build();
+        String text = "";
+        String expectedText = "\n";
+        EditableResource doc = ValidatorTestUtils.createDocument(text, ".txt");
+
+        ValidatorTestUtils.assertParse(validator, doc, expectedText, props, //
+                new Violation(doc, new Location(1, 1), Insert.endOfLine(EndOfLineValue.lf), validator,
+                        PropertyType.insert_final_newline.getName(), "true"));
     }
 
     @Test
@@ -125,9 +172,13 @@ public class TextValidatorTest {
         EditableResource doc = ValidatorTestUtils.createDocument(text, ".txt");
 
         ValidatorTestUtils.assertParse(validator, doc, expectedText, props, //
-                new Violation(doc, new Location(2, 7), new Delete(1)), //
-                new Violation(doc, new Location(3, 7), new Delete(1)), //
-                new Violation(doc, new Location(6, 7), new Delete(1)));
+                new Violation(doc, new Location(2, 7), new Delete(1), validator,
+                        PropertyType.trim_trailing_whitespace.getName(), "true"), //
+                new Violation(doc, new Location(3, 7), new Delete(1), validator,
+                        PropertyType.trim_trailing_whitespace.getName(), "true"), //
+                new Violation(doc, new Location(6, 7), new Delete(1), validator,
+                        PropertyType.trim_trailing_whitespace.getName(), "true"));
 
     }
+
 }

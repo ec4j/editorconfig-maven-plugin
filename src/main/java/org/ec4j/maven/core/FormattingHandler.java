@@ -1,5 +1,5 @@
 /**
- * Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+ * Copyright (c) 2017 EditorConfig Maven Plugin
  * project contributors as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,7 +48,7 @@ public class FormattingHandler implements ViolationHandler {
     private void backupAndStoreIfNeeded() throws IOException {
         if (currentFile.changed()) {
             if (backup) {
-                final Path originalFile = currentFile.getFile();
+                final Path originalFile = currentFile.getPath();
                 final Path backupFile = Paths.get(originalFile.toString() + backupSuffix);
                 Files.move(originalFile, backupFile);
             }
@@ -60,12 +60,14 @@ public class FormattingHandler implements ViolationHandler {
     public ReturnState endFile() {
         try {
             if (violations.isEmpty()) {
-                log.debug("No formatting violations found in file " + currentFile);
+                log.debug("No formatting violations found in file '{}' ", currentFile);
                 backupAndStoreIfNeeded();
                 return ReturnState.FINISHED;
             } else {
-                log.debug("Fixing " + violations.size() + " formatting "
-                        + (violations.size() == 1 ? "violation" : "violations") + " in file " + currentFile);
+                if (log.isDebugEnabled()) {
+                    log.debug("Fixing {} formatting {}  in file '{}'", violations.size(),
+                            (violations.size() == 1 ? "violation" : "violations"), currentFile);
+                }
                 editedFileCount++;
 
                 /*
@@ -81,9 +83,8 @@ public class FormattingHandler implements ViolationHandler {
                         int lineStartOffset = currentFile.findLineStart(loc.getLine());
                         int editOffset = lineStartOffset + loc.getColumn() - 1;
                         final Edit fix = violation.getFix();
-                        log.debug("About to perform '" + fix.getMessage() + "' at line " + loc.getLine() + ", column "
-                                + loc.getColumn() + ", lineStartOffset " + lineStartOffset + ", editOffset "
-                                + editOffset);
+                        log.debug("About to perform '{}' at {}, lineStartOffset {}, editOffset {}", fix.getMessage(),
+                                loc, lineStartOffset, editOffset);
                         fix.fix(currentFile, editOffset);
                         linesEdited.add(line);
                     } else {
@@ -108,12 +109,13 @@ public class FormattingHandler implements ViolationHandler {
 
     @Override
     public void endFiles() {
-        log.info("Processed " + processedFileCount + (processedFileCount == 1 ? " file" : " files"));
-        log.info("Formatted " + editedFileCount + (editedFileCount == 1 ? " file" : " files"));
+        log.info("Formatted {} out of {} {}", editedFileCount, processedFileCount,
+                (editedFileCount == 1 ? "file" : "files"));
     }
 
     @Override
     public void handle(Violation violation) {
+        log.info(violation.toString());
         violations.add(violation);
     }
 

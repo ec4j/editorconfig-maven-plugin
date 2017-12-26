@@ -1,5 +1,5 @@
 /**
- * Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+ * Copyright (c) 2017 EditorConfig Maven Plugin
  * project contributors as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -61,8 +61,14 @@ import org.ec4j.maven.validator.xml.XmlParser.StartEndNameContext;
 import org.ec4j.maven.validator.xml.XmlParser.StartNameContext;
 import org.ec4j.maven.validator.xml.XmlParser.TextContext;
 import org.ec4j.maven.validator.xml.XmlParserListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.helpers.DefaultHandler;
 
+/**
+ * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
+ * @since 0.0.1
+ */
 public class XmlValidator implements Validator {
     /**
      * A {@link DefaultHandler} implementation that detects formatting violations and reports them to the supplied
@@ -158,22 +164,28 @@ public class XmlValidator implements Validator {
         private final Resource file;
 
         private final char indentChar;
-
         private final int indentSize;
+
+        private final IndentStyleValue indentStyle;
 
         private FormatParserListener.Indent lastIndent = Indent.START;
 
         /** The element stack */
         private Deque<FormatParserListener.ElementEntry> stack = new java.util.ArrayDeque<FormatParserListener.ElementEntry>();
 
+        private final Validator validator;
+
         /** The {@link ViolationHandler} for reporting found violations */
         private final ViolationHandler violationHandler;
 
-        FormatParserListener(Resource file, ResourceProperties options, ViolationHandler violationHandler) {
+        FormatParserListener(Validator validator, Resource file, IndentStyleValue indentStyle, int indetSize,
+                ViolationHandler violationHandler) {
             super();
+            this.validator = validator;
             this.file = file;
-            this.indentChar = options.getValue(PropertyType.indent_style, IndentStyleValue.space, true).getIndentChar();
-            this.indentSize = options.getValue(PropertyType.indent_size, Integer.valueOf(2), true).intValue();
+            this.indentStyle = indentStyle;
+            this.indentChar = indentStyle.getIndentChar();
+            this.indentSize = indetSize;
             this.violationHandler = violationHandler;
         }
 
@@ -239,7 +251,8 @@ public class XmlValidator implements Validator {
                 }
                 final Location loc = new Location(start.getLine(), col);
 
-                Violation violation = new Violation(file, loc, fix);
+                Violation violation = new Violation(file, loc, fix, validator, PropertyType.indent_style.getName(),
+                        indentStyle.name(), PropertyType.indent_size.getName(), String.valueOf(indentSize));
                 violationHandler.handle(violation);
             }
         }
@@ -310,7 +323,9 @@ public class XmlValidator implements Validator {
                     }
                     final Location loc = new Location(start.getLine(), col);
 
-                    Violation violation = new Violation(file, loc, fix);
+                    final Violation violation = new Violation(file, loc, fix, validator,
+                            PropertyType.indent_style.getName(), indentStyle.name(), PropertyType.indent_size.getName(),
+                            String.valueOf(indentSize));
                     violationHandler.handle(violation);
 
                     /* reset the expected indent in the entry we'll push */
@@ -436,6 +451,8 @@ public class XmlValidator implements Validator {
 
     }
 
+    private static final Logger log = LoggerFactory.getLogger(XmlValidator.class);
+
     private static final List<String> DEFAULT_EXCLUDES = Collections.emptyList();
     private static final List<String> DEFAULT_INCLUDES = Collections
             .unmodifiableList(Arrays.asList("**/*.xml", "**/*.xsl"));
@@ -453,13 +470,29 @@ public class XmlValidator implements Validator {
     @Override
     public void process(Resource resource, ResourceProperties properties, ViolationHandler violationHandler)
             throws IOException {
-        try (Reader in = resource.openReader()) {
-            XmlParser parser = new XmlParser(
-                    new CommonTokenStream(new XmlLexer(CharStreams.fromReader(in, resource.toString()))));
 
-            ParseTree rootContext = parser.document();
-            ParseTreeWalker walker = new ParseTreeWalker();
-            walker.walk(new FormatParserListener(resource, properties, violationHandler), rootContext);
+        IndentStyleValue indentStyle = properties.getValue(PropertyType.indent_style, null, false);
+        Integer indentSize = properties.getValue(PropertyType.indent_size, null, false);
+        if (log.isTraceEnabled()) {
+            log.trace("Checking indent_style value '{}' in {}", indentStyle, resource);
+            log.trace("Checking indent_size value '{}' in {}", indentSize, resource);
+        }
+        if (indentStyle == null && indentSize == null) {
+            /* nothing to do */
+        } else if (indentStyle != null && indentSize != null) {
+            try (Reader in = resource.openReader()) {
+                XmlParser parser = new XmlParser(
+                        new CommonTokenStream(new XmlLexer(CharStreams.fromReader(in, resource.toString()))));
+
+                ParseTree rootContext = parser.document();
+                ParseTreeWalker walker = new ParseTreeWalker();
+                walker.walk(
+                        new FormatParserListener(this, resource, indentStyle, indentSize.intValue(), violationHandler),
+                        rootContext);
+            }
+        } else {
+            log.warn(this.getClass().getName() + " expects both indent_style and indent_size to be set for file '{}'",
+                    resource);
         }
     }
 

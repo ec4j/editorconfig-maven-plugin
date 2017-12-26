@@ -1,5 +1,5 @@
 /**
- * Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+ * Copyright (c) 2017 EditorConfig Maven Plugin
  * project contributors as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,7 +46,7 @@ public class Delete implements Edit {
 
     @Override
     public String getMessage() {
-        return "Delete " + length + " " + (length == 1 ? "character." : "characters.");
+        return "Delete " + length + " " + (length == 1 ? "character" : "characters");
     }
 
     @Override

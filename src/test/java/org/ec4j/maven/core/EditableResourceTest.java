@@ -1,5 +1,5 @@
 /**
- * Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+ * Copyright (c) 2017 EditorConfig Maven Plugin
  * project contributors as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -159,7 +159,7 @@ public class EditableResourceTest {
     }
 
     private EditableResource load() {
-        return new EditableResource(DOCUMENT_PATH, StandardCharsets.UTF_8);
+        return new EditableResource(DOCUMENT_PATH, DOCUMENT_PATH, StandardCharsets.UTF_8);
     }
 
     @Test

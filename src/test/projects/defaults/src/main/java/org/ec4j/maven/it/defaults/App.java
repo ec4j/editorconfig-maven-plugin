@@ -14,18 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ec4j.maven.core;
+package org.ec4j.maven.it.defaults;
 
-public class FormatException extends RuntimeException {
-
-    private static final long serialVersionUID = 6658236116388833334L;
-
-    public FormatException(String message) {
-        super(message);
+/**
+ * Hello world!
+ *
+ */
+public class App {
+    public static void main(String[] args) {
+        System.out.println("Hello World!");
     }
-
-    public FormatException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
 }

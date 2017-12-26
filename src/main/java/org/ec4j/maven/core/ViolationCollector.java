@@ -1,5 +1,5 @@
 /**
- * Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+ * Copyright (c) 2017 EditorConfig Maven Plugin
  * project contributors as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,7 +41,7 @@ public class ViolationCollector implements ViolationHandler {
     @Override
     public ReturnState endFile() {
         if (log.isDebugEnabled() && !hasViolations(currentFile)) {
-            log.debug("No formatting violations found in file " + currentFile);
+            log.debug("No formatting violations found in file '{}'", currentFile);
         }
         this.currentFile = null;
         processedFileCount++;
@@ -53,10 +53,10 @@ public class ViolationCollector implements ViolationHandler {
      */
     @Override
     public void endFiles() {
-        log.info("Processed " + processedFileCount + (processedFileCount == 1 ? " file" : " files"));
+        log.info("Checked {} {}", processedFileCount, (processedFileCount == 1 ? "file" : "files"));
         if (failOnFormatViolation && hasViolations()) {
             throw new FormatException(
-                    "There are XML formatting violations. Check the above log for details. You may want to run mvn xml:format");
+                    "There are .editorconfig violations. You may want to run mvn editorconfig:format to fix them automagically.");
         }
     }
 
@@ -66,10 +66,10 @@ public class ViolationCollector implements ViolationHandler {
 
     @Override
     public void handle(Violation violation) {
-        List<Violation> list = violations.get(violation.getFile());
+        List<Violation> list = violations.get(violation.getResource());
         if (list == null) {
             list = new ArrayList<Violation>();
-            violations.put(violation.getFile(), list);
+            violations.put(violation.getResource(), list);
         }
         list.add(violation);
         if (failOnFormatViolation) {

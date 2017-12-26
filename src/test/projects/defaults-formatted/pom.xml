@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+    Copyright (c) 2017 EditorConfig Maven Plugin
     project contributors as indicated by the @author tags.
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,11 +20,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.editorconfig.maven.it</groupId>
-  <artifactId>simple-it</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <groupId>org.ec4j.maven.it.defaults</groupId>
+  <artifactId>defaults</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
 
-  <description>A simple IT verifying the basic use case.</description>
+  <name>defaults</name>
+  <url>http://maven.apache.org</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -34,18 +35,23 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>@project.groupId@</groupId>
-        <artifactId>@project.artifactId@</artifactId>
-        <version>@project.version@</version>
+        <groupId>org.ec4j.maven</groupId>
+        <artifactId>editorconfig-maven-plugin</artifactId>
+        <version>${it-project.version}</version>
         <executions>
           <execution>
-            <id>touch</id>
-            <phase>validate</phase>
+            <id>check</id>
+            <phase>verify</phase>
             <goals>
-              <goal>touch</goal>
+              <goal>check</goal>
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <excludes>
+            <exclude>log.txt</exclude>
+          </excludes>
+        </configuration>
       </plugin>
     </plugins>
   </build>

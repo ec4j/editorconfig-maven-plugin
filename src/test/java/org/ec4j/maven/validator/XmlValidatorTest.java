@@ -1,5 +1,5 @@
 /**
- * Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+ * Copyright (c) 2017 EditorConfig Maven Plugin
  * project contributors as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,11 +22,11 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.ec4j.core.ResourceProperties;
 import org.ec4j.core.model.Property;
 import org.ec4j.core.model.PropertyType;
+import org.ec4j.core.model.PropertyType.IndentStyleValue;
 import org.ec4j.maven.core.Delete;
 import org.ec4j.maven.core.EditableResource;
 import org.ec4j.maven.core.Location;
 import org.ec4j.maven.core.Validator;
-import org.ec4j.maven.core.ValidatorTestUtils;
 import org.ec4j.maven.core.Violation;
 import org.junit.Test;
 
@@ -58,8 +58,8 @@ public class XmlValidatorTest {
                 .build();
 
         ValidatorTestUtils.assertParse(validator, doc, expectedText, props, //
-                new Violation(doc, new Location(5, 5), new Delete(1)), //
-                new Violation(doc, new Location(6, 3), new Delete(2)));
+                new Violation(doc, new Location(5, 5), new Delete(1), validator, PropertyType.indent_style.getName(), IndentStyleValue.space.name(), PropertyType.indent_size.getName(), "2"), //
+                new Violation(doc, new Location(6, 3), new Delete(2), validator, PropertyType.indent_style.getName(), IndentStyleValue.space.name(), PropertyType.indent_size.getName(), "2"));
     }
 
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+ * Copyright (c) 2017 EditorConfig Maven Plugin
  * project contributors as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,19 +33,19 @@ public class EditableResource extends Resource implements CharSequence {
 
     StringBuilder text;
 
-    public EditableResource(Path file, Charset encoding) {
-        super(file, encoding);
+    public EditableResource(Path absPath, Path relPath, Charset encoding) {
+        super(absPath, relPath, encoding);
     }
 
     /**
      * Primarily testing only.
      *
-     * @param file
+     * @param absPath
      * @param encoding
      * @param text
      */
-    public EditableResource(Path file, Charset encoding, String text) {
-        super(file, encoding);
+    public EditableResource(Path absPath, Path relPath, Charset encoding, String text) {
+        super(absPath, relPath, encoding);
         this.text = new StringBuilder(text);
         this.hashCodeLoaded = text.hashCode();
     }
@@ -105,7 +105,7 @@ public class EditableResource extends Resource implements CharSequence {
         try {
             ensureRead();
         } catch (IOException e) {
-            throw new FormatException("Could not read " + file, e);
+            throw new FormatException("Could not read " + absPath, e);
         }
     }
 
@@ -169,7 +169,7 @@ public class EditableResource extends Resource implements CharSequence {
     public void store() throws IOException {
         Writer w = null;
         try {
-            w = Files.newBufferedWriter(file, encoding);
+            w = Files.newBufferedWriter(absPath, encoding);
             char[] cbuf = new char[1024];
             int len = text.length();
             int i = 0;

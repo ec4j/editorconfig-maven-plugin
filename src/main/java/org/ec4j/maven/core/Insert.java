@@ -1,5 +1,5 @@
 /**
- * Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+ * Copyright (c) 2017 EditorConfig Maven Plugin
  * project contributors as indicated by the @author tags.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,7 @@ import org.ec4j.core.model.PropertyType;
 
 public class Insert implements Edit {
     public static Insert endOfLine(PropertyType.EndOfLineValue eol) {
-        return new Insert(eol.getEndOfLineString(), "Insert " + eol.name() + ".");
+        return new Insert(eol.getEndOfLineString(), "Insert " + eol.name());
     }
 
     public static Insert repeat(char ch, int count) {
@@ -40,7 +40,7 @@ public class Insert implements Edit {
             ofWhat = count == 1 ? ("'" + ch + "' character") : ("'" + ch + "' characters");
             break;
         }
-        return new Insert(new String(insertion), "Insert " + count + " " + ofWhat + ".");
+        return new Insert(new String(insertion), "Insert " + count + " " + ofWhat);
     }
 
     private final CharSequence insertion;
