@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ec4j.maven.format;
+package org.ec4j.maven.core;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,12 +28,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class EditableDocumentTest {
+public class EditableResourceTest {
 
-    private EditableDocument doc;
+    private EditableResource doc;
 
     private final Path DOCUMENT_PATH = Paths.get("target/test-classes/"
-            + EditableDocumentTest.class.getPackage().getName().replace('.', File.separatorChar) + "/document.txt");
+            + EditableResourceTest.class.getPackage().getName().replace('.', File.separatorChar) + "/document.txt");
 
     private final String FIXED_TEXT = "Lorem ipsum dolor sit amet,\n" + //
             "consectetur adipiscing elit.\n" + //
@@ -158,8 +158,8 @@ public class EditableDocumentTest {
 
     }
 
-    private EditableDocument load() {
-        return new EditableDocument(DOCUMENT_PATH, StandardCharsets.UTF_8);
+    private EditableResource load() {
+        return new EditableResource(DOCUMENT_PATH, StandardCharsets.UTF_8);
     }
 
     @Test
@@ -195,7 +195,7 @@ public class EditableDocumentTest {
 
         doc.store();
 
-        EditableDocument reloadedDoc = load();
+        EditableResource reloadedDoc = load();
         Assert.assertEquals(TEXT_AFTER_DELETION, reloadedDoc.asString());
         Assert.assertFalse(reloadedDoc.changed());
 

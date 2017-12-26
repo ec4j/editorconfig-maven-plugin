@@ -16,8 +16,6 @@
  */
 package org.ec4j.maven.core;
 
-import org.ec4j.maven.format.Edit;
-
 /**
  * A violation of a prescribed XML formatting.
  *

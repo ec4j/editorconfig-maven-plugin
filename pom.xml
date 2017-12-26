@@ -32,7 +32,7 @@
   <properties>
 
     <!-- Dependency versions in alphabectic order -->
-    <version.io.takari.maven.plugins>2.9.0</version.io.takari.maven.plugins>
+    <version.io.takari.maven.plugins>2.9.2</version.io.takari.maven.plugins>
     <version.junit>4.12</version.junit>
     <version.org.antlr>4.7</version.org.antlr>
     <version.org.apache.maven>3.3.9</version.org.apache.maven>

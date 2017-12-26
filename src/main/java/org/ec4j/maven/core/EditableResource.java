@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ec4j.maven.format;
+package org.ec4j.maven.core;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -25,11 +25,7 @@ import java.nio.file.Path;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.ec4j.maven.core.FormatException;
-import org.ec4j.maven.core.LineReader;
-import org.ec4j.maven.core.Resource;
-
-public class EditableDocument extends Resource implements CharSequence {
+public class EditableResource extends Resource implements CharSequence {
 
     private static final Pattern EOL_MATCHER = Pattern.compile("$", Pattern.MULTILINE);
 
@@ -37,7 +33,7 @@ public class EditableDocument extends Resource implements CharSequence {
 
     StringBuilder text;
 
-    public EditableDocument(Path file, Charset encoding) {
+    public EditableResource(Path file, Charset encoding) {
         super(file, encoding);
     }
 
@@ -48,7 +44,7 @@ public class EditableDocument extends Resource implements CharSequence {
      * @param encoding
      * @param text
      */
-    public EditableDocument(Path file, Charset encoding, String text) {
+    public EditableResource(Path file, Charset encoding, String text) {
         super(file, encoding);
         this.text = new StringBuilder(text);
         this.hashCodeLoaded = text.hashCode();

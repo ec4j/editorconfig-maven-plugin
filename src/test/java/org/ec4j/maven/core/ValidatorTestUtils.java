@@ -26,15 +26,12 @@ import java.util.Map;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.ec4j.core.ResourceProperties;
-import org.ec4j.maven.check.ViolationCollector;
-import org.ec4j.maven.format.EditableDocument;
-import org.ec4j.maven.format.FormattingHandler;
 import org.ec4j.maven.validator.XmlValidatorTest;
 import org.junit.Assert;
 
 public class ValidatorTestUtils {
 
-    public static void assertParse(Validator validator, EditableDocument doc, String expectedText,
+    public static void assertParse(Validator validator, EditableResource doc, String expectedText,
             ResourceProperties props, Violation... expected) throws IOException, MojoExecutionException {
 
         ViolationCollector collector = new ViolationCollector(false);
@@ -65,9 +62,9 @@ public class ValidatorTestUtils {
 
     }
 
-    public static EditableDocument createDocument(String text, String fileExtension) throws IOException {
+    public static EditableResource createDocument(String text, String fileExtension) throws IOException {
         Path file = File.createTempFile(XmlValidatorTest.class.getSimpleName(), fileExtension).toPath();
-        EditableDocument doc = new EditableDocument(file, StandardCharsets.UTF_8, text);
+        EditableResource doc = new EditableResource(file, StandardCharsets.UTF_8, text);
         return doc;
     }
 

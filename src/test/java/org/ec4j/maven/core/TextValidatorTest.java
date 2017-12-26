@@ -22,10 +22,6 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.ec4j.core.ResourceProperties;
 import org.ec4j.core.model.Property;
 import org.ec4j.core.model.PropertyType;
-import org.ec4j.maven.format.Delete;
-import org.ec4j.maven.format.EditableDocument;
-import org.ec4j.maven.format.Insert;
-import org.ec4j.maven.format.Replace;
 import org.ec4j.maven.validator.TextValidator;
 import org.junit.Test;
 
@@ -50,7 +46,7 @@ public class TextValidatorTest {
                 "line 4\r" + //
                 "line 5\r" + //
                 "line 6 ";
-        EditableDocument doc = ValidatorTestUtils.createDocument(text, ".txt");
+        EditableResource doc = ValidatorTestUtils.createDocument(text, ".txt");
 
         ValidatorTestUtils.assertParse(validator, doc, expectedText, props, //
                 new Violation(doc, new Location(1, 7),
@@ -76,7 +72,7 @@ public class TextValidatorTest {
                 "line 4\r\n" + //
                 "line 5\r\n" + //
                 "line 6 ";
-        EditableDocument doc = ValidatorTestUtils.createDocument(text, ".txt");
+        EditableResource doc = ValidatorTestUtils.createDocument(text, ".txt");
 
         ValidatorTestUtils.assertParse(validator, doc, expectedText, props, //
                 new Violation(doc, new Location(1, 7), Insert.endOfLine(PropertyType.EndOfLineValue.cr)), //
@@ -101,7 +97,7 @@ public class TextValidatorTest {
                 "line 4\n" + //
                 "line 5\n" + //
                 "line 6 ";
-        EditableDocument doc = ValidatorTestUtils.createDocument(text, ".txt");
+        EditableResource doc = ValidatorTestUtils.createDocument(text, ".txt");
 
         ValidatorTestUtils.assertParse(validator, doc, expectedText, props, //
                 new Violation(doc, new Location(4, 7), new Delete(1)), //
@@ -126,7 +122,7 @@ public class TextValidatorTest {
                 "line 4\r\n" + //
                 "line 5\r" + //
                 "line 6";
-        EditableDocument doc = ValidatorTestUtils.createDocument(text, ".txt");
+        EditableResource doc = ValidatorTestUtils.createDocument(text, ".txt");
 
         ValidatorTestUtils.assertParse(validator, doc, expectedText, props, //
                 new Violation(doc, new Location(2, 7), new Delete(1)), //

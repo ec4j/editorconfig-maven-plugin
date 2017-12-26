@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ec4j.maven.format;
+package org.ec4j.maven.core;
 
 import org.ec4j.core.model.PropertyType;
 
@@ -56,7 +56,7 @@ public class Replace implements Edit {
     }
 
     @Override
-    public void fix(EditableDocument document, int offset) {
+    public void fix(EditableResource document, int offset) {
         document.replace(offset, offset + replacedLength, replacement);
     }
 

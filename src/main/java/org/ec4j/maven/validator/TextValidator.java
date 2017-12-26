@@ -25,16 +25,16 @@ import java.util.regex.Pattern;
 
 import org.ec4j.core.ResourceProperties;
 import org.ec4j.core.model.PropertyType;
+import org.ec4j.maven.core.Delete;
+import org.ec4j.maven.core.Edit;
+import org.ec4j.maven.core.Insert;
 import org.ec4j.maven.core.LineReader;
 import org.ec4j.maven.core.Location;
+import org.ec4j.maven.core.Replace;
 import org.ec4j.maven.core.Resource;
 import org.ec4j.maven.core.Validator;
 import org.ec4j.maven.core.Violation;
 import org.ec4j.maven.core.ViolationHandler;
-import org.ec4j.maven.format.Delete;
-import org.ec4j.maven.format.Edit;
-import org.ec4j.maven.format.Insert;
-import org.ec4j.maven.format.Replace;
 
 public class TextValidator implements Validator {
 

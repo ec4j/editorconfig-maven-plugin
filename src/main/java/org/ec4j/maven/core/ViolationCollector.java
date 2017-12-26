@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ec4j.maven.check;
+package org.ec4j.maven.core;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,10 +22,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.ec4j.maven.core.FormatException;
-import org.ec4j.maven.core.Resource;
-import org.ec4j.maven.core.Violation;
-import org.ec4j.maven.core.ViolationHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

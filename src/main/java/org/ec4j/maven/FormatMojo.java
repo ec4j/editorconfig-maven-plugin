@@ -22,10 +22,10 @@ import java.nio.file.Path;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.ec4j.maven.core.EditableResource;
+import org.ec4j.maven.core.FormattingHandler;
 import org.ec4j.maven.core.Resource;
 import org.ec4j.maven.core.ViolationHandler;
-import org.ec4j.maven.format.EditableDocument;
-import org.ec4j.maven.format.FormattingHandler;
 
 /**
  * Formats a set of files so that they comply with rules defined in {@code .editorconfig} files.
@@ -55,7 +55,7 @@ public class FormatMojo extends AbstractEditorconfigMojo {
 
     @Override
     protected Resource createResource(Path file, Charset encoding) {
-        return new EditableDocument(file, encoding);
+        return new EditableResource(file, encoding);
     }
 
 }

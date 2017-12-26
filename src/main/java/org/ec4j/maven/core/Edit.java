@@ -14,10 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ec4j.maven.format;
+package org.ec4j.maven.core;
 
 public interface Edit {
-    void fix(EditableDocument document, int offset);
+    void fix(EditableResource document, int offset);
 
     String getMessage();
 }

@@ -22,12 +22,12 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.ec4j.core.ResourceProperties;
 import org.ec4j.core.model.Property;
 import org.ec4j.core.model.PropertyType;
+import org.ec4j.maven.core.Delete;
+import org.ec4j.maven.core.EditableResource;
 import org.ec4j.maven.core.Location;
 import org.ec4j.maven.core.Validator;
 import org.ec4j.maven.core.ValidatorTestUtils;
 import org.ec4j.maven.core.Violation;
-import org.ec4j.maven.format.Delete;
-import org.ec4j.maven.format.EditableDocument;
 import org.junit.Test;
 
 public class XmlValidatorTest {
@@ -49,7 +49,7 @@ public class XmlValidatorTest {
                 "    <text-1>text in text-1</text-1>\n" + //
                 "  </parent-1>\n" + //
                 "</root>"; //
-        EditableDocument doc = ValidatorTestUtils.createDocument(text, ".xml");
+        EditableResource doc = ValidatorTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("2").build()) //

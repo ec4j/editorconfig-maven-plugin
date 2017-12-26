@@ -22,8 +22,8 @@ import java.nio.file.Path;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.ec4j.maven.check.ViolationCollector;
 import org.ec4j.maven.core.Resource;
+import org.ec4j.maven.core.ViolationCollector;
 import org.ec4j.maven.core.ViolationHandler;
 
 /**

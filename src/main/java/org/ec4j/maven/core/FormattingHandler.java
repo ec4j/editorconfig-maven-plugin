@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ec4j.maven.format;
+package org.ec4j.maven.core;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,11 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.ec4j.maven.core.FormatException;
-import org.ec4j.maven.core.Location;
-import org.ec4j.maven.core.Resource;
-import org.ec4j.maven.core.Violation;
-import org.ec4j.maven.core.ViolationHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +34,7 @@ public class FormattingHandler implements ViolationHandler {
     private final boolean backup;
 
     private final boolean backupSuffix;
-    private EditableDocument currentFile;
+    private EditableResource currentFile;
     private int editedFileCount = 0;
     private int processedFileCount = 0;
     private List<Violation> violations = new ArrayList<Violation>();
@@ -128,7 +123,7 @@ public class FormattingHandler implements ViolationHandler {
 
     @Override
     public void startFile(Resource file) {
-        this.currentFile = (EditableDocument) file;
+        this.currentFile = (EditableResource) file;
     }
 
     @Override

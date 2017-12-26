@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ec4j.maven.format;
+package org.ec4j.maven.core;
 
 public class Delete implements Edit {
 
@@ -40,7 +40,7 @@ public class Delete implements Edit {
     }
 
     @Override
-    public void fix(EditableDocument document, int offset) {
+    public void fix(EditableResource document, int offset) {
         document.delete(offset, offset + length);
     }
 
