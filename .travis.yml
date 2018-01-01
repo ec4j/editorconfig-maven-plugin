@@ -1,0 +1,17 @@
+language: java
+# Enable container-based infrastructure
+# see https://docs.travis-ci.com/user/reference/overview/
+sudo: false
+
+jdk:
+  - oraclejdk8
+  - openjdk7
+
+notifications:
+  email: false
+
+# Skip the Travis CI's default install command
+install: true
+
+script:
+- ./mvnw clean verify
