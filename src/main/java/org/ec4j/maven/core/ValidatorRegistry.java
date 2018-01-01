@@ -30,8 +30,16 @@ import org.ec4j.maven.validator.XmlValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * A registry for {@link Validator}s.
+ *
+ * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
+ */
 public class ValidatorRegistry {
 
+    /**
+     * A {@link ValidatorRegistry} builder.
+     */
     public static class Builder {
         private final Map<String, ValidatorEntry.Builder> entries = new LinkedHashMap<>();
 
@@ -39,6 +47,9 @@ public class ValidatorRegistry {
             super();
         }
 
+        /**
+         * @return a new {@link ValidatorRegistry}
+         */
         public ValidatorRegistry build() {
             Map<String, ValidatorEntry> useEntries = new LinkedHashMap<>(entries.size());
             for (Map.Entry<String, ValidatorEntry.Builder> en : entries.entrySet()) {
@@ -47,8 +58,17 @@ public class ValidatorRegistry {
             return new ValidatorRegistry(Collections.unmodifiableMap(useEntries));
         }
 
-        public Builder entry(String id, String validatorClass, final ClassLoader classLoader,
-                String[] includes, String[] excludes, boolean useDefaultIncludesAndExcludes) {
+        /**
+         * @param id
+         * @param validatorClass
+         * @param classLoader
+         * @param includes
+         * @param excludes
+         * @param useDefaultIncludesAndExcludes
+         * @return
+         */
+        public Builder entry(String id, String validatorClass, final ClassLoader classLoader, String[] includes,
+                String[] excludes, boolean useDefaultIncludesAndExcludes) {
             ValidatorEntry.Builder en = entries.get(id);
             if (en == null) {
                 try {
@@ -99,8 +119,14 @@ public class ValidatorRegistry {
 
     }
 
-    public static class ValidatorEntry {
+    /**
+     * A pair consisting of a {@link PathSet} and a {@link Validator}.
+     */
+    static class ValidatorEntry {
 
+        /**
+         * A {@link ValidatorEntry} builder.
+         */
         public static class Builder {
             private final PathSet.Builder pathSetBuilder = new PathSet.Builder();
             private boolean useDefaultIncludesAndExcludes = true;
@@ -111,6 +137,9 @@ public class ValidatorRegistry {
                 this.validator = validator;
             }
 
+            /**
+             * @return a new {@link ValidatorEntry}
+             */
             public ValidatorEntry build() {
                 if (this.useDefaultIncludesAndExcludes) {
                     pathSetBuilder.includes(validator.getDefaultIncludes());
@@ -129,10 +158,18 @@ public class ValidatorRegistry {
             this.pathSet = pathSet;
         }
 
+        /**
+         * @return a {@link PathSet} whose {@link Path}s should be handled by the {@link Validator} returned by
+         *         {@link #getValidator()}
+         */
         public PathSet getPathSet() {
             return pathSet;
         }
 
+        /**
+         * @return the Validator responsible for handling {@link Path}s contained in the {@link PathSet} returned by
+         *         {@link #getPathSet()}
+         */
         public Validator getValidator() {
             return validator;
         }
@@ -152,11 +189,18 @@ public class ValidatorRegistry {
         this.entries = entries;
     }
 
-    public List<Validator> filter(Path file) {
-        log.trace("Filtering validators for file '{}'", file);
+    /**
+     * Iterates through registered entries and filters those ones whose {@link PathSet} contains the given {@link Path}.
+     *
+     * @param path
+     *            the {@link Path} to find {@link Validator}s for
+     * @return an unmodifiable list of {@link Validator}s
+     */
+    public List<Validator> filter(Path path) {
+        log.trace("Filtering validators for file '{}'", path);
         final List<Validator> result = new ArrayList<>(entries.size());
         for (ValidatorEntry validatorEntry : entries.values()) {
-            if (validatorEntry.getPathSet().contains(file)) {
+            if (validatorEntry.getPathSet().contains(path)) {
                 final Validator validator = validatorEntry.getValidator();
                 if (log.isTraceEnabled()) {
                     log.trace("Adding validator {}", validator.getClass().getName());

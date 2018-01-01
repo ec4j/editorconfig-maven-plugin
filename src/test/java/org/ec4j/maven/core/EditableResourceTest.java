@@ -124,9 +124,9 @@ public class EditableResourceTest {
         Assert.assertEquals(INITIAL_TEXT, doc.asString());
         Assert.assertFalse(doc.changed());
 
-        new Insert("Lorem ", "").fix(doc, 0);
+        new Insert("Lorem ", "").perform(doc, 0);
         int offset = doc.findLineStart(2);
-        new Delete(2).fix(doc, offset);
+        new Delete(2).perform(doc, offset);
 
         Assert.assertEquals(FIXED_TEXT, doc.asString());
         Assert.assertTrue(doc.changed());

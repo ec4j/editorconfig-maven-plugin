@@ -25,12 +25,22 @@ import java.nio.file.Path;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * A document on which {@link Edit} operations can be performed.
+ *
+ * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
+ */
 public class EditableResource extends Resource implements CharSequence {
 
     private static final Pattern EOL_MATCHER = Pattern.compile("$", Pattern.MULTILINE);
 
+    /**
+     * The hash code at load time. Can be used to decide if this {@link EditableResource} was changed since it was
+     * loaded.
+     */
     private int hashCodeLoaded;
 
+    /** The content of this {@link EditableResource} */
     StringBuilder text;
 
     public EditableResource(Path absPath, Path relPath, Charset encoding) {
@@ -38,9 +48,10 @@ public class EditableResource extends Resource implements CharSequence {
     }
 
     /**
-     * Primarily testing only.
+     * Primarily for testing.
      *
      * @param absPath
+     * @param relPath
      * @param encoding
      * @param text
      */
@@ -50,11 +61,20 @@ public class EditableResource extends Resource implements CharSequence {
         this.hashCodeLoaded = text.hashCode();
     }
 
+    /**
+     * Ensures that the content was read into {@link #text} and return {@code text.toString()}
+     *
+     * @return {@link #text}
+     */
     public String asString() {
         ensureReadSilent();
         return text.toString();
     }
 
+    /**
+     * @return {@code true} if the {@link #text} was changed since it was loaded from the underlying file; {@code false}
+     *         otherwise
+     */
     public boolean changed() {
         final int len = text.length();
         int hash = 0;
@@ -65,17 +85,31 @@ public class EditableResource extends Resource implements CharSequence {
         return hash != this.hashCodeLoaded;
     }
 
+    /** {@inheritDoc} */
     @Override
     public char charAt(int index) {
         ensureReadSilent();
         return text.charAt(index);
     }
 
+    /**
+     * Deletes the given subsequence from {@link #text}
+     *
+     * @param start
+     *            the start of the deletion (a zero based index, included)
+     * @param end
+     *            the end of the deletion (a zero based index, excluded)
+     */
     public void delete(int start, int end) {
         ensureReadSilent();
         text.delete(start, end);
     }
 
+    /**
+     * Read the content of the underlying file to {@link #text} if {@link #text} is still {@code null}.
+     *
+     * @throws IOException
+     */
     private void ensureRead() throws IOException {
         if (text == null) {
             Reader r = null;
@@ -109,6 +143,11 @@ public class EditableResource extends Resource implements CharSequence {
         }
     }
 
+    /**
+     * @param lineNumber
+     *            the 1 based line number to find the offset for
+     * @return the zero based character offset of the first character of the given line
+     */
     public int findLineStart(int lineNumber) {
         ensureReadSilent();
         if (lineNumber == 1) {
@@ -144,28 +183,53 @@ public class EditableResource extends Resource implements CharSequence {
         }
     }
 
-    public void insert(int offset, CharSequence s) {
+    /**
+     * Insert the given {@code string} at the given {@code offset}.
+     *
+     * @param offset
+     *            a zero based character offset where to insert the {@code string}
+     * @param string
+     *            the string to insert
+     */
+    public void insert(int offset, CharSequence string) {
         ensureReadSilent();
-        text.insert(offset, s);
+        text.insert(offset, string);
     }
 
+    /** {@inheritDoc} */
     @Override
     public int length() {
         ensureReadSilent();
         return text.length();
     }
 
+    /** {@inheritDoc} */
     @Override
     public Reader openReader() throws IOException {
         ensureRead();
         return LineReader.of(text);
     }
 
-    public void replace(int start, int end, String str) {
+    /**
+     * Replace the subsequence given by {@code start} and {@code end} by the given {@code replacement}.
+     *
+     * @param start
+     *            the start of the subsequence to replace (a zero based index, included)
+     * @param end
+     *            the end of the subsequence to replace (a zero based index, excluded)
+     * @param replacement
+     *            the replacement
+     */
+    public void replace(int start, int end, String replacement) {
         ensureReadSilent();
-        text.replace(start, end, str);
+        text.replace(start, end, replacement);
     }
 
+    /**
+     * Write {@link #text} back to the underlying file.
+     *
+     * @throws IOException
+     */
     public void store() throws IOException {
         Writer w = null;
         try {
@@ -187,6 +251,7 @@ public class EditableResource extends Resource implements CharSequence {
 
     }
 
+    /** {@inheritDoc} */
     @Override
     public CharSequence subSequence(int start, int end) {
         ensureReadSilent();

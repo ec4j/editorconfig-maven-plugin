@@ -16,6 +16,11 @@
  */
 package org.ec4j.maven.core;
 
+/**
+ * A deletion inside a file.
+ *
+ * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
+ */
 public class Delete implements Edit {
 
     private final int length;
@@ -25,6 +30,7 @@ public class Delete implements Edit {
         this.length = length;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -39,16 +45,19 @@ public class Delete implements Edit {
         return true;
     }
 
+    /** {@inheritDoc} */
     @Override
-    public void fix(EditableResource document, int offset) {
+    public void perform(EditableResource document, int offset) {
         document.delete(offset, offset + length);
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getMessage() {
         return "Delete " + length + " " + (length == 1 ? "character" : "characters");
     }
 
+    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         final int prime = 31;

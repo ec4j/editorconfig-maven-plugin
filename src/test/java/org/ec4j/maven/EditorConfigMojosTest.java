@@ -50,6 +50,60 @@ public class EditorConfigMojosTest {
                 .build();
     }
 
+    private void assertFilesEqual(Path actualBaseDir, Path expectedBaseDir, String relPath) throws IOException {
+        final String contentActual = new String(Files.readAllBytes(actualBaseDir.resolve(relPath)),
+                StandardCharsets.UTF_8);
+        final String contentExpected = new String(Files.readAllBytes(expectedBaseDir.resolve(relPath)),
+                StandardCharsets.UTF_8);
+        Assert.assertEquals(relPath, contentExpected, contentActual);
+    }
+
+    @Test
+    public void check() throws Exception {
+
+        File projDir = resources.getBasedir("defaults");
+
+        MavenExecution mavenExec = verifier.forProject(projDir) //
+                .withCliOption("-B") // batch
+        ;
+
+        mavenExec //
+                .execute("clean", "verify") //
+                .assertLogText(
+                        "[TRACE] Processing file '.editorconfig' using validator org.ec4j.maven.validator.TextValidator") //
+                .assertLogText("[DEBUG] No formatting violations found in file '.editorconfig'") //
+                .assertLogText(
+                        "[TRACE] Processing file 'pom.xml' using validator org.ec4j.maven.validator.TextValidator") //
+                .assertLogText(
+                        "[TRACE] Processing file 'pom.xml' using validator org.ec4j.maven.validator.XmlValidator") //
+                .assertLogText("[DEBUG] No formatting violations found in file 'pom.xml'") //
+                .assertLogText(
+                        "[TRACE] Processing file 'src/main/java/org/ec4j/maven/it/defaults/App.java' using validator org.ec4j.maven.validator.TextValidator") //
+                .assertLogText(
+                        "[DEBUG] No formatting violations found in file 'src/main/java/org/ec4j/maven/it/defaults/App.java'") //
+                .assertLogText(
+                        "[TRACE] Processing file 'src/main/resources/trailing-whitespace.txt' using validator org.ec4j.maven.validator.TextValidator") //
+                .assertLogText(
+                        "[ERROR] src/main/resources/trailing-whitespace.txt@1,7: Delete 2 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.maven.validator.TextValidator") //
+                .assertLogText(
+                        "[TRACE] Processing file 'src/main/resources/indent.xml' using validator org.ec4j.maven.validator.TextValidator") //
+                .assertLogText(
+                        "[TRACE] Processing file 'src/main/resources/indent.xml' using validator org.ec4j.maven.validator.XmlValidator") //
+                .assertLogText(
+                        "[ERROR] src/main/resources/indent.xml@23,5: Delete 1 character - violates indent_style = space, indent_size = 2, reported by org.ec4j.maven.validator.XmlValidator") //
+                .assertLogText(
+                        "[ERROR] src/main/resources/indent.xml@24,3: Delete 2 characters - violates indent_style = space, indent_size = 2, reported by org.ec4j.maven.validator.XmlValidator") //
+                .assertLogText(
+                        "[TRACE] Processing file 'README.adoc' using validator org.ec4j.maven.validator.TextValidator") //
+                .assertLogText(
+                        "[ERROR] README.adoc@2,1: Delete 2 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.maven.validator.TextValidator") //
+                .assertLogText("[INFO] Checked 6 files") //
+                .assertLogText("[INFO] BUILD FAILURE") //
+                .assertLogText(
+                        "There are .editorconfig violations. You may want to run mvn editorconfig:format to fix them automagically.") //
+        ;
+    }
+
     @Test
     public void format() throws Exception {
 
@@ -102,58 +156,6 @@ public class EditorConfigMojosTest {
         assertFilesEqual(actualBaseDir, expectedBaseDir, "src/main/resources/indent.xml");
         assertFilesEqual(actualBaseDir, expectedBaseDir, "src/main/resources/trailing-whitespace.txt");
 
-    }
-
-    private void assertFilesEqual(Path actualBaseDir, Path expectedBaseDir, String relPath) throws IOException {
-        final String contentActual = new String(Files.readAllBytes(actualBaseDir.resolve(relPath)), StandardCharsets.UTF_8);
-        final String contentExpected = new String(Files.readAllBytes(expectedBaseDir.resolve(relPath)), StandardCharsets.UTF_8);
-        Assert.assertEquals(relPath, contentExpected, contentActual);
-    }
-
-    @Test
-    public void check() throws Exception {
-
-        File projDir = resources.getBasedir("defaults");
-
-        MavenExecution mavenExec = verifier.forProject(projDir) //
-                .withCliOption("-B") // batch
-        ;
-
-        mavenExec //
-                .execute("clean", "verify") //
-                .assertLogText(
-                        "[TRACE] Processing file '.editorconfig' using validator org.ec4j.maven.validator.TextValidator") //
-                .assertLogText("[DEBUG] No formatting violations found in file '.editorconfig'") //
-                .assertLogText(
-                        "[TRACE] Processing file 'pom.xml' using validator org.ec4j.maven.validator.TextValidator") //
-                .assertLogText(
-                        "[TRACE] Processing file 'pom.xml' using validator org.ec4j.maven.validator.XmlValidator") //
-                .assertLogText("[DEBUG] No formatting violations found in file 'pom.xml'") //
-                .assertLogText(
-                        "[TRACE] Processing file 'src/main/java/org/ec4j/maven/it/defaults/App.java' using validator org.ec4j.maven.validator.TextValidator") //
-                .assertLogText(
-                        "[DEBUG] No formatting violations found in file 'src/main/java/org/ec4j/maven/it/defaults/App.java'") //
-                .assertLogText(
-                        "[TRACE] Processing file 'src/main/resources/trailing-whitespace.txt' using validator org.ec4j.maven.validator.TextValidator") //
-                .assertLogText(
-                        "[ERROR] src/main/resources/trailing-whitespace.txt@1,7: Delete 2 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.maven.validator.TextValidator") //
-                .assertLogText(
-                        "[TRACE] Processing file 'src/main/resources/indent.xml' using validator org.ec4j.maven.validator.TextValidator") //
-                .assertLogText(
-                        "[TRACE] Processing file 'src/main/resources/indent.xml' using validator org.ec4j.maven.validator.XmlValidator") //
-                .assertLogText(
-                        "[ERROR] src/main/resources/indent.xml@23,5: Delete 1 character - violates indent_style = space, indent_size = 2, reported by org.ec4j.maven.validator.XmlValidator") //
-                .assertLogText(
-                        "[ERROR] src/main/resources/indent.xml@24,3: Delete 2 characters - violates indent_style = space, indent_size = 2, reported by org.ec4j.maven.validator.XmlValidator") //
-                .assertLogText(
-                        "[TRACE] Processing file 'README.adoc' using validator org.ec4j.maven.validator.TextValidator") //
-                .assertLogText(
-                        "[ERROR] README.adoc@2,1: Delete 2 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.maven.validator.TextValidator") //
-                .assertLogText("[INFO] Checked 6 files") //
-                .assertLogText("[INFO] BUILD FAILURE") //
-                .assertLogText(
-                        "There are .editorconfig violations. You may want to run mvn editorconfig:format to fix them automagically.") //
-        ;
     }
 
 }

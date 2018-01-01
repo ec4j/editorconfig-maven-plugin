@@ -36,7 +36,7 @@ import org.ec4j.maven.core.ViolationHandler;
 public class FormatMojo extends AbstractEditorconfigMojo {
 
     /**
-     * If {@code true}, a backup absFile will be created for every absFile that needs to be formatted just before the
+     * If {@code true}, a backup file will be created for every file that needs to be formatted just before the
      * formatted version is stored. If {@code false}, no backup is done and the files are formatted in place. See also
      * {@link #backupSuffix}.
      */
@@ -44,19 +44,21 @@ public class FormatMojo extends AbstractEditorconfigMojo {
     private boolean backup;
 
     /**
-     * A suffix to append to a absFile name to create its backup. See also {@link #backup}.
+     * A suffix to append to a file name to create its backup. See also {@link #backup}.
      */
     @Parameter(property = "editorconfig.backupSuffix", defaultValue = ".bak")
     private boolean backupSuffix;
 
+    /** {@inheritDoc} */
     @Override
     protected ViolationHandler createHandler() {
         return new FormattingHandler(backup, backupSuffix);
     }
 
+    /** {@inheritDoc} */
     @Override
-    protected Resource createResource(Path absFilem, Path relFile, Charset encoding) {
-        return new EditableResource(absFilem, relFile, encoding);
+    protected Resource createResource(Path absFile, Path relFile, Charset encoding) {
+        return new EditableResource(absFile, relFile, encoding);
     }
 
 }

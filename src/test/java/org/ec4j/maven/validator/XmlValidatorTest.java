@@ -58,8 +58,10 @@ public class XmlValidatorTest {
                 .build();
 
         ValidatorTestUtils.assertParse(validator, doc, expectedText, props, //
-                new Violation(doc, new Location(5, 5), new Delete(1), validator, PropertyType.indent_style.getName(), IndentStyleValue.space.name(), PropertyType.indent_size.getName(), "2"), //
-                new Violation(doc, new Location(6, 3), new Delete(2), validator, PropertyType.indent_style.getName(), IndentStyleValue.space.name(), PropertyType.indent_size.getName(), "2"));
+                new Violation(doc, new Location(5, 5), new Delete(1), validator, PropertyType.indent_style.getName(),
+                        IndentStyleValue.space.name(), PropertyType.indent_size.getName(), "2"), //
+                new Violation(doc, new Location(6, 3), new Delete(2), validator, PropertyType.indent_style.getName(),
+                        IndentStyleValue.space.name(), PropertyType.indent_size.getName(), "2"));
     }
 
 }

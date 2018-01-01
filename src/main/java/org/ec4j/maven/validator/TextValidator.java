@@ -40,37 +40,36 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * A simple line-by-line {@link Validator}.
+ * <p>
+ * Supports the following {@code .editorconfig} properties:
+ * <ul>
+ * <li>{@code end_of_line}</li>
+ * <li>{@code trim_trailing_whitespace}</li>
+ * <li>{@code insert_final_newline}</li>
+ * </ul>
+ *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  * @since 0.0.1
  */
 public class TextValidator implements Validator {
-    private static final Logger log = LoggerFactory.getLogger(TextValidator.class);
-
     private static final List<String> DEFAULT_EXCLUDES = Collections.emptyList();
 
     private static final List<String> DEFAULT_INCLUDES = Collections.unmodifiableList(Arrays.asList("**/*"));
+
+    private static final Logger log = LoggerFactory.getLogger(TextValidator.class);
     private static final Pattern TRAILING_WHITESPACE_PATTERN = Pattern.compile("[ \t]+$", Pattern.MULTILINE);
 
-    static String findEolString(String line) {
-        if (line.isEmpty()) {
-            return "";
-        } else {
-            int start = line.length();
-            while (start > 0) {
-                char ch = line.charAt(start - 1);
-                switch (ch) {
-                case '\n':
-                case '\r':
-                    start--;
-                    break;
-                default:
-                    return line.substring(start);
-                }
-            }
-            return line.substring(start);
-        }
-    }
-
+    /**
+     * Replace the EOL string at the end of the given {@code line} with its respective escape sequence ({@code "\n"},
+     * {@code "\r"} or {@code "\r\n"})
+     *
+     * @param line
+     *            the line to escape
+     * @param eol
+     *            the {@link EndOfLineValue} detected at the end of {@code line}
+     * @return the escaped {@code line}
+     */
     static String escape(String line, EndOfLineValue eol) {
         if (eol == null) {
             return line;
@@ -92,16 +91,47 @@ public class TextValidator implements Validator {
         return line.substring(0, line.length() - eol.getEndOfLineString().length()) + escapedEol;
     }
 
+    /**
+     * Find the EOL string at the end of the given {@code line}.
+     *
+     * @param line
+     *            the line to detect the EOL string in
+     * @return any of the common EOL strings ({@code "\n"}, {@code "\r"} or {@code "\r\n"}) found at the and of the
+     *         given {@code line} or {@code ""} in case there is no EOL string there
+     */
+    static String findEolString(String line) {
+        if (line.isEmpty()) {
+            return "";
+        } else {
+            int start = line.length();
+            while (start > 0) {
+                char ch = line.charAt(start - 1);
+                switch (ch) {
+                case '\n':
+                case '\r':
+                    start--;
+                    break;
+                default:
+                    return line.substring(start);
+                }
+            }
+            return line.substring(start);
+        }
+    }
+
+    /** {@inheritDoc} */
     @Override
     public List<String> getDefaultExcludes() {
         return DEFAULT_EXCLUDES;
     }
 
+    /** {@inheritDoc} */
     @Override
     public List<String> getDefaultIncludes() {
         return DEFAULT_INCLUDES;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void process(Resource resource, ResourceProperties properties, ViolationHandler violationHandler)
             throws IOException {

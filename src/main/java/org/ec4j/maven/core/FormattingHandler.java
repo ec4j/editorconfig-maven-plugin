@@ -28,6 +28,11 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * A {@link ViolationHandler} that performs the {@link Edit} operations on the files for which they were reported.
+ *
+ * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
+ */
 public class FormattingHandler implements ViolationHandler {
 
     private static final Logger log = LoggerFactory.getLogger(FormattingHandler.class);
@@ -45,6 +50,9 @@ public class FormattingHandler implements ViolationHandler {
         this.backupSuffix = backupSuffix;
     }
 
+    /**
+     * @throws IOException
+     */
     private void backupAndStoreIfNeeded() throws IOException {
         if (currentFile.changed()) {
             if (backup) {
@@ -56,6 +64,7 @@ public class FormattingHandler implements ViolationHandler {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public ReturnState endFile() {
         try {
@@ -85,7 +94,7 @@ public class FormattingHandler implements ViolationHandler {
                         final Edit fix = violation.getFix();
                         log.debug("About to perform '{}' at {}, lineStartOffset {}, editOffset {}", fix.getMessage(),
                                 loc, lineStartOffset, editOffset);
-                        fix.fix(currentFile, editOffset);
+                        fix.perform(currentFile, editOffset);
                         linesEdited.add(line);
                     } else {
                         recheckNeeded = true;
@@ -107,27 +116,34 @@ public class FormattingHandler implements ViolationHandler {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public void endFiles() {
         log.info("Formatted {} out of {} {}", editedFileCount, processedFileCount,
                 (editedFileCount == 1 ? "file" : "files"));
     }
 
+    /** {@inheritDoc} */
     @Override
     public void handle(Violation violation) {
         log.info(violation.toString());
         violations.add(violation);
     }
 
+    /**
+     * @return
+     */
     public boolean hasViolations() {
         return !violations.isEmpty();
     }
 
+    /** {@inheritDoc} */
     @Override
     public void startFile(Resource file) {
         this.currentFile = (EditableResource) file;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void startFiles() {
         processedFileCount = 0;

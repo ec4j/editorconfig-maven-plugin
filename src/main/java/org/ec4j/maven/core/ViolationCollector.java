@@ -16,6 +16,7 @@
  */
 package org.ec4j.maven.core;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -25,6 +26,11 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * A {@link ViolationHandler} that just collects the {@link Violation}s reported to it.
+ *
+ * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
+ */
 public class ViolationCollector implements ViolationHandler {
     private static final Logger log = LoggerFactory.getLogger(ViolationCollector.class);
 
@@ -38,6 +44,7 @@ public class ViolationCollector implements ViolationHandler {
         this.failOnFormatViolation = failOnFormatViolation;
     }
 
+    /** {@inheritDoc} */
     @Override
     public ReturnState endFile() {
         if (log.isDebugEnabled() && !hasViolations(currentFile)) {
@@ -51,6 +58,7 @@ public class ViolationCollector implements ViolationHandler {
     /**
      *
      */
+    /** {@inheritDoc} */
     @Override
     public void endFiles() {
         log.info("Checked {} {}", processedFileCount, (processedFileCount == 1 ? "file" : "files"));
@@ -60,10 +68,15 @@ public class ViolationCollector implements ViolationHandler {
         }
     }
 
+    /**
+     * @return an unmodifiable {@link Map} from {@link Resource}s to {@link Violation}s reported to this
+     *         {@link ViolationCollector} via {@link #handle(Violation)}
+     */
     public Map<Resource, List<Violation>> getViolations() {
         return Collections.unmodifiableMap(violations);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void handle(Violation violation) {
         List<Violation> list = violations.get(violation.getResource());
@@ -79,23 +92,33 @@ public class ViolationCollector implements ViolationHandler {
         }
     }
 
+    /**
+     * @return true if some violations were reported to this {@link ViolationCollector} via {@link #handle(Violation)}
+     */
     public boolean hasViolations() {
         return !violations.isEmpty();
     }
 
-    public boolean hasViolations(Resource file) {
-        List<Violation> list = violations.get(file);
+    /**
+     * @param resource
+     *            the resource for which to check whether any violations were reported for it
+     * @return {@code true} if violations were reported for the given {@link Path} via {@link #handle(Violation)}
+     */
+    public boolean hasViolations(Resource resource) {
+        List<Violation> list = violations.get(resource);
         return list != null && !list.isEmpty();
     }
 
+    /** {@inheritDoc} */
     @Override
     public void startFile(Resource file) {
         this.currentFile = file;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void startFiles() {
-        processedFileCount = 0;
+        this.processedFileCount = 0;
     }
 
 }

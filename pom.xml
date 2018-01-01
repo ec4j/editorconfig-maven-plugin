@@ -56,6 +56,7 @@
     <version.com.puppycrawl.tools.checkstyle>6.13</version.com.puppycrawl.tools.checkstyle>
     <version.io.takari.maven.plugins.takari-lifecycle-plugin>1.13.0</version.io.takari.maven.plugins.takari-lifecycle-plugin>
     <version.maven-antrun-plugin>1.8</version.maven-antrun-plugin>
+    <version.maven-surefire-plugin>2.20.1</version.maven-surefire-plugin>
 
     <!-- checkstyle.xml location in the source tree -->
     <checkstyle.consoleOutput>true</checkstyle.consoleOutput>
@@ -269,6 +270,12 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
           <version>${version.maven-checkstyle-plugin}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${version.maven-surefire-plugin}</version>
         </plugin>
 
       </plugins>

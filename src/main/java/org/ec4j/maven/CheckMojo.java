@@ -27,7 +27,9 @@ import org.ec4j.maven.core.ViolationCollector;
 import org.ec4j.maven.core.ViolationHandler;
 
 /**
- * Checks whether files are formatted according to rules defined in {@code .editorconfig} files.
+ * Checks whether files are formatted according to rules defined in {@code .editorconfig} files. If fomat violations are
+ * detected, either causes the build to fail (if {@link #failOnFormatViolation} is {@code true}) or just produces a
+ * warning.
  *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
@@ -42,11 +44,13 @@ public class CheckMojo extends AbstractEditorconfigMojo {
     @Parameter(property = "editorconfig.failOnFormatViolation", defaultValue = "true")
     private boolean failOnFormatViolation;
 
+    /** {@inheritDoc} */
     @Override
     protected ViolationHandler createHandler() {
         return new ViolationCollector(failOnFormatViolation);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected Resource createResource(Path absFile, Path relFile, Charset encoding) {
         return new Resource(absFile, relFile, encoding);

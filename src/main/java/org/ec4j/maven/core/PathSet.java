@@ -25,8 +25,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * A set of {@link Path}s defined by include and exclude globs.
+ *
+ * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
+ */
 public class PathSet {
 
+    /**
+     * A {@link PathSet} builder.
+     */
     public static class Builder {
 
         private static final FileSystem fileSystem = FileSystems.getDefault();
@@ -37,6 +45,9 @@ public class PathSet {
             super();
         }
 
+        /**
+         * @return a new {@link PathSet}
+         */
         public PathSet build() {
             List<PathMatcher> useExcludes = this.excludes;
             this.excludes = null;
@@ -45,11 +56,25 @@ public class PathSet {
             return new PathSet(Collections.unmodifiableList(useIncludes), Collections.unmodifiableList(useExcludes));
         }
 
+        /**
+         * Adds an exclude glob
+         *
+         * @param glob
+         *            the glob to add
+         * @return this {@link Builder}
+         */
         public Builder exclude(String glob) {
             excludes.add(fileSystem.getPathMatcher("glob:" + glob));
             return this;
         }
 
+        /**
+         * Adds multiple exclude globs
+         *
+         * @param globs
+         *            the globs to add
+         * @return this {@link Builder}
+         */
         public Builder excludes(List<String> globs) {
             if (globs != null) {
                 for (String glob : globs) {
@@ -59,6 +84,13 @@ public class PathSet {
             return this;
         }
 
+        /**
+         * Adds multiple exclude globs
+         *
+         * @param globs
+         *            the globs to add
+         * @return this {@link Builder}
+         */
         public Builder excludes(String... globs) {
             if (globs != null) {
                 for (String glob : globs) {
@@ -68,11 +100,25 @@ public class PathSet {
             return this;
         }
 
+        /**
+         * Adds an include glob
+         *
+         * @param glob
+         *            the glob to add
+         * @return this {@link Builder}
+         */
         public Builder include(String glob) {
             includes.add(fileSystem.getPathMatcher("glob:" + glob));
             return this;
         }
 
+        /**
+         * Adds multiple include globs
+         *
+         * @param globs
+         *            the globs to add
+         * @return this {@link Builder}
+         */
         public Builder includes(List<String> globs) {
             for (String glob : globs) {
                 includes.add(fileSystem.getPathMatcher("glob:" + glob));
@@ -80,6 +126,13 @@ public class PathSet {
             return this;
         }
 
+        /**
+         * Adds multiple include globs
+         *
+         * @param globs
+         *            the globs to add
+         * @return this {@link Builder}
+         */
         public Builder includes(String... globs) {
             if (globs != null) {
                 for (String glob : globs) {
@@ -93,9 +146,18 @@ public class PathSet {
 
     private static final Path CURRENT_DIR = Paths.get(".");
 
+    /**
+     * @return new {@link Builder}
+     */
     public static Builder builder() {
         return new Builder();
     }
+
+    /**
+     * @param includes
+     *            the globs to define a new {@link PathSet}
+     * @return a {@link PathSet} defined by the given {@code includes}
+     */
     public static PathSet ofIncludes(String... includes) {
         return builder().includes(includes).build();
     }
@@ -109,6 +171,11 @@ public class PathSet {
         this.excludes = excludes;
     }
 
+    /**
+     * @param path
+     *            the {@link Path} to check
+     * @return {@code true} if this {@link PathSet} contains the given {@link Path} or {@code false} otherwise
+     */
     public boolean contains(Path path) {
         path = CURRENT_DIR.resolve(path);
         for (PathMatcher exclude : excludes) {

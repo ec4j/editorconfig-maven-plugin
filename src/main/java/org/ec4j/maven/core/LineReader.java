@@ -16,11 +16,22 @@
  */
 package org.ec4j.maven.core;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.CharBuffer;
 
+/**
+ * A {@link Reader} able to read line by line. The substantial difference against {@link BufferedReader} is that
+ * {@link LineReader}'s lines do end with the actual the end of line characters.
+ *
+ * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
+ */
 public abstract class LineReader extends Reader {
+
+    /**
+     * A {@link LineReader} that reads from a {@link Reader} delegate.
+     */
     static class DelegatingLineReader extends LineReader {
         private final Reader delegate;
         private int readAhead = -1;
@@ -161,6 +172,9 @@ public abstract class LineReader extends Reader {
         }
     }
 
+    /**
+     * A {@link LineReader} optimized for reading from a {@link StringBuilder}.
+     */
     static class StringBuilderReader extends LineReader {
 
         private int mark = 0;
@@ -274,13 +288,29 @@ public abstract class LineReader extends Reader {
         }
     }
 
+    /**
+     * @param delegate
+     *            the {@link Reader} to read from
+     * @return a new {@link LineReader} that reads from the given {@link Reader}
+     */
     public static LineReader of(Reader delegate) {
         return new DelegatingLineReader(delegate);
     }
 
+    /**
+     * @param text
+     *            the {@link StringBuilder} to read from
+     * @return a new {@link LineReader} optimized for reading from a {@link StringBuilder}.
+     */
     public static LineReader of(StringBuilder text) {
         return new StringBuilderReader(text);
     }
 
+    /**
+     * @return a {@link String} containing the line incl. the end of line characters or {@code null} in case there are
+     *         no more lines to read
+     * @throws IOException
+     *             on I/O problems
+     */
     public abstract String readLine() throws IOException;
 }

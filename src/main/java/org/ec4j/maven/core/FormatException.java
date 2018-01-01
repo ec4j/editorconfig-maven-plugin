@@ -16,6 +16,11 @@
  */
 package org.ec4j.maven.core;
 
+/**
+ * Signals that there are .editorconfig violations.
+ *
+ * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
+ */
 public class FormatException extends RuntimeException {
 
     private static final long serialVersionUID = 6658236116388833334L;

@@ -16,8 +16,25 @@
  */
 package org.ec4j.maven.core;
 
+/**
+ * An edit operation on a file.
+ *
+ * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
+ */
 public interface Edit {
-    void fix(EditableResource document, int offset);
 
+    /**
+     * Perform this {@link Edit} operation on the given {@link EditableResource} starting at the given {@code offset}.
+     *
+     * @param resource
+     *            the {@link EditableResource} to edit
+     * @param offset
+     *            a zero based character index in the given {@code resource} where the edit operation should start
+     */
+    void perform(EditableResource resource, int offset);
+
+    /**
+     * @return a human readable message that describes this {@link Edit} operation
+     */
     String getMessage();
 }

@@ -43,6 +43,11 @@ import org.ec4j.maven.core.ViolationHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * A base for {@link CheckMojo} and {@link FormatMojo}.
+ *
+ * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
+ */
 public abstract class AbstractEditorconfigMojo extends AbstractMojo {
 
     private static final Logger log = LoggerFactory.getLogger(AbstractEditorconfigMojo.class);

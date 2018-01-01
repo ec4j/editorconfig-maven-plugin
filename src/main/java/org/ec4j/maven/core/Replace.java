@@ -18,20 +18,37 @@ package org.ec4j.maven.core;
 
 import org.ec4j.core.model.PropertyType;
 
+/**
+ * A replacement operation.
+ *
+ * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
+ */
 public class Replace implements Edit {
     public static Replace endOfLine(PropertyType.EndOfLineValue replaced, PropertyType.EndOfLineValue replacement) {
         return new Replace(replaced.getEndOfLineString().length(), replacement.getEndOfLineString(),
                 "Replace '" + replaced.name() + "' with '" + replacement.name() + "'");
     }
+
+    /**
+     * @param replaced the string to replace
+     * @param replacement the replacement
+     * @return a new {@link Replace} operation
+     */
     public static Replace ofReplaced(String replaced, String replacement) {
         return new Replace(replaced.length(), replacement, "Replace '" + replaced + "' with '" + replacement + "'");
     }
+
     private final String message;
 
     private final int replacedLength;
 
     private final String replacement;
 
+    /**
+     * @param replacedLength the length of the span to replace
+     * @param replacement the replacement
+     * @param message a human readable description of this {@link Replace} operation
+     */
     public Replace(int replacedLength, String replacement, String message) {
         super();
         this.replacement = replacement;
@@ -39,6 +56,7 @@ public class Replace implements Edit {
         this.replacedLength = replacedLength;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -55,16 +73,19 @@ public class Replace implements Edit {
         return message != null ? message.equals(replace.message) : replace.message == null;
     }
 
+    /** {@inheritDoc} */
     @Override
-    public void fix(EditableResource document, int offset) {
+    public void perform(EditableResource document, int offset) {
         document.replace(offset, offset + replacedLength, replacement);
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getMessage() {
         return message;
     }
 
+    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         int result = replacement != null ? replacement.hashCode() : 0;

@@ -23,16 +23,25 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
- * A {@link Reader} source.
+ * A readable resource. Consists of a file {@link Path} and a {@link Charset}.
  *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
 public class Resource {
-    protected final Charset encoding;
-
     protected final Path absPath;
+
+    protected final Charset encoding;
     protected final Path relPath;
 
+    /**
+     * @param absPath
+     *            the absolute path to the underlying file
+     * @param relPath
+     *            the path to the underlying file relative to the current projects root directory (used for reporting
+     *            only)
+     * @param encoding
+     *            the {@link Charset} to use when reading from the underlying file
+     */
     public Resource(Path absPath, Path relPath, Charset encoding) {
         super();
         this.absPath = absPath;
@@ -40,6 +49,7 @@ public class Resource {
         this.encoding = encoding;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -62,10 +72,14 @@ public class Resource {
         return true;
     }
 
+    /**
+     * @return the absolute {@link Path} to the underlying file
+     */
     public Path getPath() {
         return absPath;
     }
 
+    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -75,10 +89,16 @@ public class Resource {
         return result;
     }
 
+    /**
+     * @return a new Reader from the underlying file
+     * @throws IOException
+     *             on I/O problems
+     */
     public Reader openReader() throws IOException {
         return Files.newBufferedReader(absPath, encoding);
     }
 
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return relPath.toString();

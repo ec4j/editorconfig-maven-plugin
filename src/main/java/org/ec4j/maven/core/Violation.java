@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * A violation of a prescribed XML formatting.
+ * A violation of some {@code .editorconfig} properties found at {@link #location} in a {@link #resource}.
  *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
@@ -91,6 +91,9 @@ public class Violation {
         return true;
     }
 
+    /**
+     * @return an {@link Edit} operation able to fix this {@link Violation}
+     */
     public Edit getFix() {
         return fix;
     }
@@ -109,6 +112,7 @@ public class Violation {
         return resource;
     }
 
+    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -121,6 +125,7 @@ public class Violation {
         return result;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         if (toString == null) {

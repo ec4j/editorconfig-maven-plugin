@@ -22,12 +22,26 @@ package org.ec4j.maven.core;
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
 public interface ViolationHandler {
+    /**
+     * A return value of {@link ViolationHandler#endFile()}
+     */
     enum ReturnState {
-        FINISHED, RECHECK;
+        /** There is nothing more to do for the given {@link Resource} */
+        FINISHED,
+        /** The given {@link Resource} needs to be re-checked */
+        RECHECK;
     }
 
+    /**
+     * Called after all {@link Violation}s of a given {@link Resource} were submitted to {@link #handle(Violation)}
+     *
+     * @return whether the {@link Resource} started recently needs to be re-checked
+     */
     ReturnState endFile();
 
+    /**
+     * Called when all files in the current project were processed.
+     */
     void endFiles();
 
     /**
@@ -38,7 +52,13 @@ public interface ViolationHandler {
      */
     void handle(Violation violation);
 
+    /**
+     * @param resource
+     */
     void startFile(Resource resource);
 
+    /**
+     * Called before the files in the current project are going to get processed.
+     */
     void startFiles();
 }

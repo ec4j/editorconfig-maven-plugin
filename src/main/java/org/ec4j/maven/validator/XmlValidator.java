@@ -63,18 +63,25 @@ import org.ec4j.maven.validator.xml.XmlParser.TextContext;
 import org.ec4j.maven.validator.xml.XmlParserListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xml.sax.helpers.DefaultHandler;
 
 /**
+ * A {@link Validator} specialized for XML files.
+ * <p>
+ * Supports the following {@code .editorconfig} properties:
+ * <ul>
+ * <li>{@code indent_style}</li>
+ * <li>{@code indent_size}</li>
+ * </ul>
+ *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  * @since 0.0.1
  */
 public class XmlValidator implements Validator {
+
     /**
-     * A {@link DefaultHandler} implementation that detects formatting violations and reports them to the supplied
+     * An {@link XmlParserListener} implementation that detects formatting violations and reports them to the supplied
      * {@link #violationHandler}.
      *
-     * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
      */
     static class FormatParserListener implements XmlParserListener {
 
@@ -451,11 +458,11 @@ public class XmlValidator implements Validator {
 
     }
 
-    private static final Logger log = LoggerFactory.getLogger(XmlValidator.class);
-
     private static final List<String> DEFAULT_EXCLUDES = Collections.emptyList();
+
     private static final List<String> DEFAULT_INCLUDES = Collections
             .unmodifiableList(Arrays.asList("**/*.xml", "**/*.xsl"));
+    private static final Logger log = LoggerFactory.getLogger(XmlValidator.class);
 
     @Override
     public List<String> getDefaultExcludes() {

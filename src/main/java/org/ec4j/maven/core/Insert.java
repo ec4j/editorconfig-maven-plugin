@@ -19,12 +19,35 @@ package org.ec4j.maven.core;
 import java.util.Arrays;
 
 import org.ec4j.core.model.PropertyType;
+import org.ec4j.core.model.PropertyType.EndOfLineValue;
 
+/**
+ * An insertion of a string at some offset in a file.
+ *
+ * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
+ */
 public class Insert implements Edit {
+
+    /**
+     * An insertion of an end of line
+     *
+     * @param eol
+     *            the {@link EndOfLineValue} to insert
+     * @return a new {@link Insert} operation
+     */
     public static Insert endOfLine(PropertyType.EndOfLineValue eol) {
         return new Insert(eol.getEndOfLineString(), "Insert " + eol.name());
     }
 
+    /**
+     * An insertion of a character {@code ch} {@code count} times.
+     *
+     * @param ch
+     *            the character to insert
+     * @param count
+     *            the number of times to insert {@code ch}
+     * @return a new {@link Insert} operation
+     */
     public static Insert repeat(char ch, int count) {
         char[] insertion = new char[count];
         Arrays.fill(insertion, ch);
@@ -46,12 +69,19 @@ public class Insert implements Edit {
     private final CharSequence insertion;
     private final String message;
 
+    /**
+     * @param insertion
+     *            the string to insert
+     * @param message
+     *            a human readable message that describes this {@link Insert} operation
+     */
     public Insert(CharSequence insertion, String message) {
         super();
         this.insertion = insertion;
         this.message = message;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -74,16 +104,19 @@ public class Insert implements Edit {
         return true;
     }
 
+    /** {@inheritDoc} */
     @Override
-    public void fix(EditableResource document, int offset) {
+    public void perform(EditableResource document, int offset) {
         document.insert(offset, insertion);
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getMessage() {
         return message;
     }
 
+    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         final int prime = 31;

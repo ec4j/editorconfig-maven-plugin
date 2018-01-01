@@ -17,13 +17,17 @@
 package org.ec4j.maven.core;
 
 /**
- * A location in a document.
+ * A location in a text file.
  *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
 public class Location {
+    /** The first location in a file */
     private static final Location INITIAL = new Location(1, 1);
 
+    /**
+     * @return the first location in a file
+     */
     public static Location initial() {
         return INITIAL;
     }
@@ -68,6 +72,7 @@ public class Location {
         return line;
     }
 
+    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -93,6 +98,7 @@ public class Location {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return "" + line + "," + column;

@@ -16,8 +16,14 @@
  */
 package org.ec4j.maven;
 
+import org.ec4j.maven.core.Validator;
 import org.ec4j.maven.validator.TextValidator;
 
+/**
+ * A configuration of a {@link Validator}.
+ *
+ * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
+ */
 public class ValidatorConfig {
 
     private String className;
