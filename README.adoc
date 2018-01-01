@@ -1,0 +1,73 @@
+= `editorconfig-maven-plugin`
+
+https://github.com/ec4j/editorconfig-maven-plugin/blob/master/LICENSE[image:https://img.shields.io/github/license/ec4j/editorconfig-maven-plugin.svg[License]]
+http://search.maven.org/#search%7Cga%7C1%7Corg.ec4j.maven[image:https://img.shields.io/maven-central/v/org.ec4j.maven/editorconfig-maven-plugin.svg[Maven
+Central]]
+http://travis-ci.org/ec4j/editorconfig-maven-plugin[image:https://secure.travis-ci.org/ec4j/editorconfig-maven-plugin.png[Build Status]]
+
+`editorconfig-maven-plugin` is a Maven plugin for checking whether project files comply with format rules defined in .editorconfig files and eventually also for fixing the violations.
+
+== Basic usage
+
+To make the build fail if any of your source files does not comply with `.editorconfig` rules, add the following to your project:
+
+[source,xml]
+----
+<plugins>
+  <plugin>
+    <groupId>org.ec4j.maven</groupId>
+    <artifactId>editorconfig-maven-plugin</artifactId>
+    <version><!-- check the latest on http://central.maven.org/maven2/org/ec4j/maven/editorconfig-maven-plugin/ --></version>
+    <executions>
+      <execution>
+        <id>check</id>
+        <phase>verify</phase>
+        <goals>
+          <goal>check</goal>
+        </goals>
+      </execution>
+    </executions>
+    <configuration>
+      <excludes>
+        <exclude>log.txt</exclude>
+      </excludes>
+    </configuration>
+  </plugin>
+</plugins>
+----
+
+In case any violations are detected, you may want to fix them automagically by running
+
+[source,xml]
+----
+mvn editorconfig:format
+----
+
+
+
+== How to build
+
+Prerequisites:
+
+* Java 7+
+* Optionally Maven 3.5.0+, unless you want to use `./mvnw` or `mvnw.bat` delivered by the project
+
+The most common build with unit tests:
+
+[source,shell]
+----
+./mvnw clean install
+----
+
+On Windows:
+
+[source,shell]
+----
+mvnw.bat clean install
+----
+
+
+== Misc.
+
+* All code and contributions are under link:/LICENSE[Apache License]
+* Issues and Discussions: https://github.com/ec4j/editorconfig-maven-plugin/issues
