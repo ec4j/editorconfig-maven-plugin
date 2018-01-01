@@ -16,6 +16,7 @@
  */
 package org.ec4j.maven.core;
 
+import java.io.File;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -54,9 +55,9 @@ public class PathSetTest {
         Set<String> includedFiles = new HashSet<>(Arrays.asList(scanner.getIncludedFiles()));
 
         Assert.assertTrue(includedFiles.contains("file.good"));
-        Assert.assertTrue(includedFiles.contains("dir1/file.good"));
+        Assert.assertTrue(includedFiles.contains("dir1/file.good".replace('/', File.separatorChar)));
         Assert.assertFalse(includedFiles.contains("file.bad"));
-        Assert.assertFalse(includedFiles.contains("dir1/file.bad"));
+        Assert.assertFalse(includedFiles.contains("dir1/file.bad".replace('/', File.separatorChar)));
     }
 
 }
