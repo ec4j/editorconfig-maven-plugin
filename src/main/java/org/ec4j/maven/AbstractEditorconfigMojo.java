@@ -55,12 +55,16 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
     /**
      * If set to {@code true}, the class path will be scanned for implementations of {@link Validator} and all
      * {@link Validator}s found will be added to {@link #validators} with their default includes and excludes.
+     *
+     * @since 0.0.1
      */
     @Parameter(property = "editorconfig.addValidatorsFromClassPath", defaultValue = "true")
     protected boolean addValidatorsFromClassPath;
 
     /**
      * The base directory of the current Maven project.
+     *
+     * @since 0.0.1
      */
     @Parameter(defaultValue = "${project.basedir}", required = true, readonly = true)
     private File basedir;
@@ -74,6 +78,8 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
     /**
      * The default encoding of files selected by {@link #includes} and {@link #excludes}. This value can be overriden by
      * a {@code charset} property of an {@code .editorconfig} file.
+     *
+     * @since 0.0.1
      */
     @Parameter(property = "editorconfig.encoding", defaultValue = "${project.build.sourceEncoding}")
     protected String encoding;
@@ -81,6 +87,8 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
     /**
      * File patterns to exclude from the set of files to process. The patterns are relative to the current project's
      * {@code baseDir}.
+     *
+     * @since 0.0.1
      */
     @Parameter(property = "editorconfig.excludes")
     protected String[] excludes;
@@ -89,6 +97,8 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
      * If {@code true} the plugin execution will fail with an error in case no single {@code .editorconfig} property
      * matches any file of the current Maven project - this usually means that there is no {@code .editorconfig} file in
      * the whole source tree. If {@code false}, only a warning is produced in such a situation.
+     *
+     * @since 0.0.1
      */
     @Parameter(property = "editorconfig.failOnNoMatchingProperties", defaultValue = "true")
     protected boolean failOnNoMatchingProperties;
@@ -96,17 +106,24 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
     /**
      * File patterns to include into the set of files to process. The patterns are relative to the current project's
      * {@code baseDir}.
+     *
+     * @since 0.0.1
      */
     @Parameter(property = "editorconfig.includes", defaultValue = "*,src/**/*")
     protected String[] includes;
 
     /**
      * If {@code true} the execution of the Mojo will be skipped; otherwise the Mojo will be executed.
+     *
+     * @since 0.0.1
      */
     @Parameter(property = "editorconfig.skip", defaultValue = "false")
     private boolean skip;
+
     /**
      * Set the includes and excludes for the individual {@link Validator}s
+     *
+     * @since 0.0.1
      */
     @Parameter
     protected List<ValidatorConfig> validators = new ArrayList<>();

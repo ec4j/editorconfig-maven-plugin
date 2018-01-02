@@ -31,6 +31,7 @@ import org.ec4j.maven.core.ViolationHandler;
  * detected, either causes the build to fail (if {@link #failOnFormatViolation} is {@code true}) or just produces a
  * warning.
  *
+ * @since 0.0.1
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
 @Mojo(defaultPhase = LifecyclePhase.VERIFY, name = "check")
@@ -40,6 +41,8 @@ public class CheckMojo extends AbstractEditorconfigMojo {
      * Tells the mojo what to do in case formatting violations are found. if {@code true}, all violations will be
      * reported on the console as ERRORs and the build will fail. if {@code false}, all violations will be reported on
      * the console as WARNs and the build will proceed further.
+     *
+     * @since 0.0.1
      */
     @Parameter(property = "editorconfig.failOnFormatViolation", defaultValue = "true")
     private boolean failOnFormatViolation;

@@ -30,6 +30,7 @@ import org.ec4j.maven.core.ViolationHandler;
 /**
  * Formats a set of files so that they comply with rules defined in {@code .editorconfig} files.
  *
+ * @since 0.0.1
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
 @Mojo(defaultPhase = LifecyclePhase.NONE, name = "format", threadSafe = false)
@@ -39,12 +40,16 @@ public class FormatMojo extends AbstractEditorconfigMojo {
      * If {@code true}, a backup file will be created for every file that needs to be formatted just before the
      * formatted version is stored. If {@code false}, no backup is done and the files are formatted in place. See also
      * {@link #backupSuffix}.
+     *
+     * @since 0.0.1
      */
     @Parameter(property = "editorconfig.backup", defaultValue = "false")
     private boolean backup;
 
     /**
      * A suffix to append to a file name to create its backup. See also {@link #backup}.
+     *
+     * @since 0.0.1
      */
     @Parameter(property = "editorconfig.backupSuffix", defaultValue = ".bak")
     private boolean backupSuffix;
