@@ -1,19 +1,30 @@
+ifdef::env-github[]
+:warning-caption: :warning:
+endif::[]
+
 = `editorconfig-maven-plugin`
 
 https://github.com/ec4j/editorconfig-maven-plugin/blob/master/LICENSE[image:https://img.shields.io/github/license/ec4j/editorconfig-maven-plugin.svg[License]]
 http://search.maven.org/#search%7Cga%7C1%7Corg.ec4j.maven[image:https://img.shields.io/maven-central/v/org.ec4j.maven/editorconfig-maven-plugin.svg[Maven
 Central]]
-http://travis-ci.org/ec4j/editorconfig-maven-plugin[image:https://secure.travis-ci.org/ec4j/editorconfig-maven-plugin.png[Build Status]]
+http://travis-ci.org/ec4j/editorconfig-maven-plugin[image:https://img.shields.io/travis/ec4j/editorconfig-maven-plugin/master.svg?logo=travis&color=white&label=Travis+CI[Travis CI build status]]
+https://ci.appveyor.com/project/ppalaga/editorconfig-maven-plugin[image:https://img.shields.io/appveyor/ci/ppalaga/editorconfig-maven-plugin/master.svg?logo=appveyor&color=white&label=AppVeyor+Windows+CI[AppVeyor Windows CI build status]]
 
-`editorconfig-maven-plugin` is a Maven plugin for checking whether project files comply with format rules defined in .editorconfig files and eventually also for fixing the violations.
+`editorconfig-maven-plugin` is a Maven plugin for checking whether project files comply with format rules
+defined in `http://editorconfig.org/[.editorconfig]` files and eventually also for fixing the violations.
+
+WARNING: `editorconfig-maven-plugin` is new. Expect issues of all kinds which is not to say that you should not
+https://github.com/ec4j/editorconfig-maven-plugin/issues[report] them :)
+
 
 == Basic usage
+
+`editorconfig-maven-plugin` requires Java 7+ and Maven 3.3.1+.
 
 To make the build fail if any of your source files does not comply with `.editorconfig` rules, add the following to your project:
 
 [source,xml]
 ----
-<plugins>
   <plugin>
     <groupId>org.ec4j.maven</groupId>
     <artifactId>editorconfig-maven-plugin</artifactId>
@@ -29,11 +40,18 @@ To make the build fail if any of your source files does not comply with `.editor
     </executions>
     <configuration>
       <excludes>
-        <exclude>log.txt</exclude>
+        <!-- You can exclude some files from processing -->
+        <exclude>src/main/**/*.whatever</exclude>
       </excludes>
+      <!-- These are the default includes:
+      <includes>
+        <include>*</include>
+        <include>src/**/*</include>
+      </includes>
+      If you need to include something else, you need to configure the plugin accordingly
+      -->
     </configuration>
   </plugin>
-</plugins>
 ----
 
 In case any violations are detected, you may want to fix them automagically by running
@@ -44,6 +62,36 @@ mvn editorconfig:format
 ----
 
 
+== How it works
+
+`editorconfig-maven-plugin` is designed around the concept of a Validator.
+https://github.com/ec4j/editorconfig-maven-plugin/blob/master/src/main/java/org/ec4j/maven/core/Validator.java[Validator]
+is a processor specialized for some particular file format (such as YAML or XML) for which it can detect whether some
+particular `.editorconfig` properties are satisfied and eventually propose a
+https://github.com/ec4j/editorconfig-maven-plugin/blob/master/src/main/java/org/ec4j/maven/core/Edit.java[fix] that can
+be applied automatically.
+
+.Validators available in `editorconfig-maven-plugin`
+|===
+|Class name |Default includes|Default excludes |Supported `.editorconfig` properties
+
+|https://github.com/ec4j/editorconfig-maven-plugin/blob/master/src/main/java/org/ec4j/maven/validator/TextValidator.java[TextValidator]
+|`pass:[**/*]`
+|
+|`https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#end_of_line[end_of_line]`,
+`https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#trim_trailing_whitespace[trim_trailing_whitespace]`,
+`https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#insert_final_newline[insert_final_newline]`
+
+|https://github.com/ec4j/editorconfig-maven-plugin/blob/master/src/main/java/org/ec4j/maven/validator/XmlValidator.java[XmlValidator]
+|`pass:[**/*.xml]`, `pass:[**/*.xsl]`
+|
+|`https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#indent_style[indent_style]`,
+`https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#indent_size[indent_size]`
+|===
+
+Contributions of further Validators are highly welcome! Please
+https://github.com/ec4j/editorconfig-maven-plugin/issues[open an issue] when you start working on something to avoid
+duplicate work.
 
 == How to build
 
@@ -63,7 +111,7 @@ On Windows:
 
 [source,shell]
 ----
-mvnw.bat clean install
+.\mvnw.cmd clean install
 ----
 
 
