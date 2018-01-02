@@ -26,8 +26,8 @@
   <packaging>takari-maven-plugin</packaging>
 
   <name>EditorConfig Maven Plugin</name>
-  <description>A Maven plugin to (1) check whether project files comply with format rules defined in .editorconfog
-      files and (2) fix the violations</description>
+  <description>A Maven plugin for checking whether project files comply with format rules defined in .editorconfig
+      files and eventually also for fixing the violations</description>
   <url>https://github.com/ec4j/editorconfig-maven-plugin</url>
   <inceptionYear>2017</inceptionYear>
   <licenses>
@@ -37,6 +37,35 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+
+  <developers>
+    <developer>
+      <id>ppalaga</id>
+      <name>Peter Palaga</name>
+      <timezone>Europe/Prague</timezone>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git@github.com:ec4j/editorconfig-maven-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:ec4j/editorconfig-maven-plugin.git</developerConnection>
+    <url>https://github.com/ec4j/editorconfig-maven-plugin</url>
+    <tag>head</tag>
+  </scm>
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/ec4j/editorconfig-maven-plugin/issues</url>
+  </issueManagement>
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>${snapshots.repo.url}</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>${releases.repo.url}</url>
+    </repository>
+  </distributionManagement>
 
   <properties>
 
@@ -52,22 +81,26 @@
 
     <!-- Plugins and their dependencies -->
     <version.com.mycila.license-maven-plugin>3.0</version.com.mycila.license-maven-plugin>
-    <version.maven-checkstyle-plugin>2.17</version.maven-checkstyle-plugin>
-    <version.com.puppycrawl.tools.checkstyle>6.13</version.com.puppycrawl.tools.checkstyle>
     <!-- 1.11.12 is the last takari lifecycle version supporting Java 7 -->
     <version.io.takari.maven.plugins.takari-lifecycle-plugin>1.11.12</version.io.takari.maven.plugins.takari-lifecycle-plugin>
     <version.maven-antrun-plugin>1.8</version.maven-antrun-plugin>
+    <version.maven-checkstyle-plugin>2.17</version.maven-checkstyle-plugin>
+    <version.maven-clean-plugin>2.6.1</version.maven-clean-plugin>
+    <version.maven-compiler-plugin>3.3</version.maven-compiler-plugin>
+    <version.maven-deploy-plugin>2.8.2</version.maven-deploy-plugin>
+    <version.maven-enforcer-plugin>1.4.1</version.maven-enforcer-plugin>
+    <version.maven-gpg-plugin>1.6</version.maven-gpg-plugin>
+    <version.maven-install-plugin>2.5.2</version.maven-install-plugin>
+    <version.maven-jar-plugin>2.6</version.maven-jar-plugin>
+    <version.maven-javadoc-plugin>2.10.3</version.maven-javadoc-plugin>
+    <version.maven-release-plugin>2.5.3</version.maven-release-plugin>
+    <version.maven-resources-plugin>2.7</version.maven-resources-plugin>
+    <version.maven-scm-plugin>1.9.4</version.maven-scm-plugin>
+    <version.maven-site-plugin>3.6</version.maven-site-plugin>
+    <version.maven-source-plugin>2.4</version.maven-source-plugin>
     <version.maven-surefire-plugin>2.20.1</version.maven-surefire-plugin>
-
-    <!-- checkstyle.xml location in the source tree -->
-    <checkstyle.consoleOutput>true</checkstyle.consoleOutput>
-    <checkstyle.failOnError>true</checkstyle.failOnError>
-    <checkstyle.includes>
-      src/**/*.java
-    </checkstyle.includes>
-    <checkstyle.excludes>
-      target/**
-    </checkstyle.excludes>
+    <version.nexus-staging-maven-plugin>1.6.7</version.nexus-staging-maven-plugin>
+    <version.org.codehaus.buildnumber-maven-plugin>1.4</version.org.codehaus.buildnumber-maven-plugin>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -76,6 +109,17 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
     <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
+
+    <!-- Checkstyle and maven-checkstyle-plugin -->
+    <version.com.puppycrawl.tools.checkstyle>6.13</version.com.puppycrawl.tools.checkstyle>
+    <checkstyle.consoleOutput>true</checkstyle.consoleOutput>
+    <checkstyle.failOnError>true</checkstyle.failOnError>
+    <checkstyle.includes>
+      src/**/*.java
+    </checkstyle.includes>
+    <checkstyle.excludes>
+      target/**
+    </checkstyle.excludes>
 
     <!-- license-maven-plugin -->
     <license.failIfMissing>true</license.failIfMissing>
@@ -225,6 +269,44 @@
           <groupId>com.mycila</groupId>
           <artifactId>license-maven-plugin</artifactId>
           <version>${version.com.mycila.license-maven-plugin}</version>
+          <configuration>
+            <inlineHeader>Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+project contributors as indicated by the @author tags.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</inlineHeader>
+            <excludes>
+              <exclude>**/*.adoc</exclude>
+              <exclude>**/README.*</exclude>
+              <exclude>**/.gitkeep</exclude>
+              <exclude>.mvn/wrapper/</exclude>
+              <exclude>LICENSE</exclude>
+              <exclude>mvnw</exclude>
+              <exclude>mvnw.cmd</exclude>
+              <exclude>src/main/antlr4/org/ec4j/maven/validator/xml/XmlLexer.g4</exclude><!-- BSD License -->
+              <exclude>src/main/antlr4/org/ec4j/maven/validator/xml/XmlParser.g4</exclude><!-- BSD License -->
+              <exclude>src/test/resources/**/*.txt</exclude>
+              <exclude>src/test/resources/**/*.good</exclude>
+              <exclude>src/test/resources/**/*.bad</exclude>
+              <exclude>src/test/projects/defaults*/**/*.txt</exclude>
+            </excludes>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>check</goal>
+              </goals>
+            </execution>
+          </executions>
         </plugin>
 
         <plugin>
@@ -246,6 +328,17 @@
             </archive>
             <sourceJar>true</sourceJar>
           </configuration>
+          <executions>
+            <execution>
+              <!-- We turn takari-lifecycle-plugin's deploy off because we use nexus-staging-maven-plugin's deploy
+                   that can auto-close and release the staging repo -->
+              <id>default-deploy</id>
+              <phase>none</phase>
+              <goals>
+                <goal>deploy</goal>
+              </goals>
+            </execution>
+          </executions>
         </plugin>
 
         <plugin>
@@ -265,18 +358,229 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-antrun-plugin</artifactId>
           <version>${version.maven-antrun-plugin}</version>
+          <executions>
+            <execution>
+              <phase>prepare-package</phase>
+              <goals>
+                <goal>run</goal>
+              </goals>
+              <configuration>
+                <target>
+                  <!-- A workaround for takari-lifecycle's unability to add custion manifest entries
+                       https://github.com/takari/takari-lifecycle/issues/21 -->
+                  <manifest file="${project.build.directory}/MANIFEST.MF" encoding="${project.build.sourceEncoding}">
+                    <attribute name="Built-By" value="${user.name}" />
+                    <attribute name="Implementation-Title" value="${project.name}" />
+                    <attribute name="Built-From-Git-Branch" value="${scmBranch}" />
+                    <attribute name="Implementation-Version" value="${project.version}" />
+                    <attribute name="Built-From-Git-SHA1" value="${buildNumber}" />
+                    <attribute name="Implementation-Vendor-Id" value="${project.groupId}" />
+                    <attribute name="Build-Jdk" value="${java.version}" />
+                    <attribute name="Built-On" value="${timestamp}" />
+                  </manifest>
+                </target>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
           <version>${version.maven-checkstyle-plugin}</version>
+          <dependencies>
+            <dependency>
+              <groupId>com.puppycrawl.tools</groupId>
+              <artifactId>checkstyle</artifactId>
+              <version>${version.com.puppycrawl.tools.checkstyle}</version>
+              <exclusions>
+                <exclusion>
+                  <groupId>com.sun</groupId>
+                  <artifactId>tools</artifactId>
+                </exclusion>
+              </exclusions>
+            </dependency>
+          </dependencies>
+          <executions>
+            <execution>
+              <id>checkstyle</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>checkstyle</goal>
+              </goals>
+              <configuration>
+                <configLocation>src/build/xml/checkstyle.xml</configLocation>
+                <consoleOutput>${checkstyle.consoleOutput}</consoleOutput>
+                <failsOnError>${checkstyle.failOnError}</failsOnError>
+                <excludes>${checkstyle.excludes}</excludes>
+                <includes>${checkstyle.includes}</includes>
+                <sourceDirectory>${basedir}</sourceDirectory>
+                <useFile />
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>${version.maven-clean-plugin}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${version.maven-compiler-plugin}</version>
+          <configuration>
+            <!-- disable accidental use, must use takari-lifecycle -->
+            <skip>true</skip>
+            <skipMain>true</skipMain>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>${version.maven-deploy-plugin}</version>
+          <configuration>
+            <!-- disable accidental use, must use takari-lifecycle -->
+            <skip>true</skip>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>${version.maven-enforcer-plugin}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>${version.maven-gpg-plugin}</version>
+          <executions>
+            <execution>
+              <id>sign-artifacts</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>sign</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>${version.maven-install-plugin}</version>
+          <configuration>
+            <!-- disable accidental use, must use takari-lifecycle -->
+            <skip>true</skip>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${version.maven-jar-plugin}</version>
+          <configuration>
+            <!-- disable accidental use, must use takari-lifecycle -->
+            <skip>true</skip>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>${version.maven-javadoc-plugin}</version>
+          <configuration>
+                  <!-- disable accidental use, must use takari-lifecycle -->
+            <skip>true</skip>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>${version.maven-release-plugin}</version>
+          <configuration>
+            <tagNameFormat>@{project.version}</tagNameFormat>
+            <preparationGoals>clean generate-sources -Psync-project-versions-release -Psync-project-versions "-Dsrcdeps.version.commit.message.prefix=[maven-release-plugin] Prepare release"</preparationGoals>
+            <completionGoals>clean generate-sources -Psync-project-versions-snapshot -Psync-project-versions "-Dsrcdeps.version.commit.message.prefix=[maven-release-plugin] Set next development version"</completionGoals>
+            <goals>deploy</goals>
+            <releaseProfiles>release</releaseProfiles>
+            <autoVersionSubmodules>true</autoVersionSubmodules>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${version.maven-resources-plugin}</version>
+          <configuration>
+            <!-- disable accidental use, must use takari-lifecycle -->
+            <skip>true</skip>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-scm-plugin</artifactId>
+          <version>${version.maven-scm-plugin}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>${version.maven-site-plugin}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>${version.maven-source-plugin}</version>
+          <configuration>
+            <!-- disable accidental use, must use takari-lifecycle -->
+            <skipSource>true</skipSource>
+          </configuration>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>${version.maven-surefire-plugin}</version>
+          <configuration>
+            <systemPropertyVariables>
+              <basedir>${project.build.directory}</basedir>
+              <project.version>${project.version}</project.version>
+              <project.build.sourceEncoding>${project.build.sourceEncoding}</project.build.sourceEncoding>
+              <org.slf4j.simpleLogger.showDateTime>true</org.slf4j.simpleLogger.showDateTime>
+            </systemPropertyVariables>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>buildnumber-maven-plugin</artifactId>
+          <version>${version.org.codehaus.buildnumber-maven-plugin}</version>
+          <configuration>
+            <locale>en_US</locale>
+            <timestampFormat>{0,date,yyyy-MM-dd'T'HH:mm:ssX}</timestampFormat>
+          </configuration>
+          <executions>
+            <execution>
+              <phase>validate</phase>
+              <goals>
+                <goal>create</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.sonatype.plugins</groupId>
+          <artifactId>nexus-staging-maven-plugin</artifactId>
+          <version>${version.nexus-staging-maven-plugin}</version>
         </plugin>
 
       </plugins>
@@ -287,61 +591,12 @@
       <plugin>
         <groupId>com.mycila</groupId>
         <artifactId>license-maven-plugin</artifactId>
-        <configuration>
-          <inlineHeader>Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
-project contributors as indicated by the @author tags.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.</inlineHeader>
-          <excludes>
-            <exclude>**/*.adoc</exclude>
-            <exclude>**/README.*</exclude>
-            <exclude>**/.gitkeep</exclude>
-            <exclude>.mvn/wrapper/</exclude>
-            <exclude>LICENSE</exclude>
-            <exclude>mvnw</exclude>
-            <exclude>mvnw.cmd</exclude>
-            <exclude>src/main/antlr4/org/ec4j/maven/validator/xml/XmlLexer.g4</exclude><!-- BSD License -->
-            <exclude>src/main/antlr4/org/ec4j/maven/validator/xml/XmlParser.g4</exclude><!-- BSD License -->
-            <exclude>src/test/resources/**/*.txt</exclude>
-            <exclude>src/test/resources/**/*.good</exclude>
-            <exclude>src/test/resources/**/*.bad</exclude>
-            <exclude>src/test/projects/defaults*/**/*.txt</exclude>
-          </excludes>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
 
       <plugin>
         <groupId>io.takari.maven.plugins</groupId>
         <artifactId>takari-lifecycle-plugin</artifactId>
         <extensions>true</extensions>
-        <executions>
-          <execution>
-            <!-- We turn takari-lifecycle-plugin's deploy off because we use nexus-staging-maven-plugin's deploy
-                 that can auto-close and release the staging repo -->
-            <id>default-deploy</id>
-            <phase>none</phase>
-            <goals>
-              <goal>deploy</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
 
       <plugin>
@@ -352,81 +607,57 @@ limitations under the License.</inlineHeader>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <target>
-                <!-- A workaround for takari-lifecycle's unability to add custion manifest entries
-                     https://github.com/takari/takari-lifecycle/issues/21 -->
-                <manifest file="${project.build.directory}/MANIFEST.MF" encoding="${project.build.sourceEncoding}">
-                  <attribute name="Built-By" value="${user.name}" />
-                  <attribute name="Implementation-Title" value="${project.name}" />
-                  <attribute name="Built-From-Git-Branch" value="${scmBranch}" />
-                  <attribute name="Implementation-Version" value="${project.version}" />
-                  <attribute name="Built-From-Git-SHA1" value="${buildNumber}" />
-                  <attribute name="Implementation-Vendor-Id" value="${project.groupId}" />
-                  <attribute name="Build-Jdk" value="${java.version}" />
-                  <attribute name="Built-On" value="${timestamp}" />
-                </manifest>
-              </target>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <dependencies>
-          <dependency>
-            <groupId>com.puppycrawl.tools</groupId>
-            <artifactId>checkstyle</artifactId>
-            <version>${version.com.puppycrawl.tools.checkstyle}</version>
-            <exclusions>
-              <exclusion>
-                <groupId>com.sun</groupId>
-                <artifactId>tools</artifactId>
-              </exclusion>
-            </exclusions>
-          </dependency>
-        </dependencies>
-        <executions>
-          <execution>
-            <id>checkstyle</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>checkstyle</goal>
-            </goals>
-            <configuration>
-              <configLocation>src/build/xml/checkstyle.xml</configLocation>
-              <consoleOutput>${checkstyle.consoleOutput}</consoleOutput>
-              <failsOnError>${checkstyle.failOnError}</failsOnError>
-              <excludes>${checkstyle.excludes}</excludes>
-              <includes>${checkstyle.includes}</includes>
-              <sourceDirectory>${basedir}</sourceDirectory>
-              <useFile />
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <systemPropertyVariables>
-            <basedir>${project.build.directory}</basedir>
-            <project.version>${project.version}</project.version>
-            <project.build.sourceEncoding>${project.build.sourceEncoding}</project.build.sourceEncoding>
-            <org.slf4j.simpleLogger.showDateTime>true</org.slf4j.simpleLogger.showDateTime>
-          </systemPropertyVariables>
-        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
       </plugin>
 
     </plugins>
   </build>
+
+  <profiles>
+
+    <profile>
+      <id>release</id>
+
+      <properties>
+        <!-- This makes the buildnumber-maven-plugin fail in case of uncommitted local changes -->
+        <maven.buildNumber.doCheck>true</maven.buildNumber.doCheck>
+      </properties>
+
+      <build>
+        <plugins>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+        </plugins>
+      </build>
+
+    </profile>
+  </profiles>
+
 </project>
