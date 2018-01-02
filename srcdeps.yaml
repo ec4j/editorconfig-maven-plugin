@@ -39,3 +39,11 @@ repositories:
     urls:
     - git:file:///home/ppalaga/orgs/takari/takari-plugin-testing-project/.git
     - git:https://github.com/takari/takari-plugin-testing-project.git
+  org.apache.maven.plugin-tools:
+    selectors:
+    - org.apache.maven.plugin-tools
+    - org.apache.maven.plugins:maven-plugin-plugin
+    urls:
+    - git:file:///home/ppalaga/orgs/tools/maven-plugin-tools/.git
+    - https://github.com/apache/maven-plugin-tools.git
+

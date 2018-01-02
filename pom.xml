@@ -46,6 +46,10 @@
     </developer>
   </developers>
 
+  <prerequisites>
+    <maven>3.3.1</maven>
+  </prerequisites>
+
   <scm>
     <connection>scm:git:git@github.com:ec4j/editorconfig-maven-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:ec4j/editorconfig-maven-plugin.git</developerConnection>
@@ -65,6 +69,10 @@
       <id>ossrh</id>
       <url>${releases.repo.url}</url>
     </repository>
+    <!-- <site>
+      <id>github</id>
+      <url>scm:git:git@github.com:ec4j/editorconfig-maven-plugin.git</url>
+    </site> -->
   </distributionManagement>
 
   <properties>
@@ -80,6 +88,8 @@
     <version.org.slf4j>1.7.5</version.org.slf4j>
 
     <!-- Plugins and their dependencies -->
+    <version.asciidoctor-maven-plugin>1.5.6</version.asciidoctor-maven-plugin>
+    <version.com.github.github.site-maven-plugin>0.12</version.com.github.github.site-maven-plugin>
     <version.com.mycila.license-maven-plugin>3.0</version.com.mycila.license-maven-plugin>
     <!-- 1.11.12 is the last takari lifecycle version supporting Java 7 -->
     <version.io.takari.maven.plugins.takari-lifecycle-plugin>1.11.12</version.io.takari.maven.plugins.takari-lifecycle-plugin>
@@ -93,6 +103,8 @@
     <version.maven-install-plugin>2.5.2</version.maven-install-plugin>
     <version.maven-jar-plugin>2.6</version.maven-jar-plugin>
     <version.maven-javadoc-plugin>2.10.3</version.maven-javadoc-plugin>
+    <version.maven-plugin-plugin>3.5.1-SRC-revision-3471a5d0f34c9bee667da94f06411368b3fd6cf3</version.maven-plugin-plugin>
+    <version.maven-project-info-reports-plugin>2.9</version.maven-project-info-reports-plugin>
     <version.maven-release-plugin>2.5.3</version.maven-release-plugin>
     <version.maven-resources-plugin>2.7</version.maven-resources-plugin>
     <version.maven-scm-plugin>1.9.4</version.maven-scm-plugin>
@@ -139,6 +151,9 @@
     <!-- maven-surefire-plugin -->
     <surefire.useFile>false</surefire.useFile>
     <trimStackTrace>false</trimStackTrace>
+
+    <!-- com.github.github:site-maven-plugin -->
+    <github.global.server>github</github.global.server>
 
   </properties>
 
@@ -264,6 +279,12 @@
     <pluginManagement>
       <plugins>
         <!-- Ordering: alphabetical by groupId and artifactId -->
+
+        <plugin>
+          <groupId>com.github.github</groupId>
+          <artifactId>site-maven-plugin</artifactId>
+          <version>${version.com.github.github.site-maven-plugin}</version>
+        </plugin>
 
         <plugin>
           <groupId>com.mycila</groupId>
@@ -501,13 +522,27 @@ limitations under the License.</inlineHeader>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-plugin-plugin</artifactId>
+          <version>${version.maven-plugin-plugin}</version>
+          <configuration>
+            <goalPrefix>editorconfig</goalPrefix>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <version>${version.maven-project-info-reports-plugin}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
           <version>${version.maven-release-plugin}</version>
           <configuration>
             <tagNameFormat>@{project.version}</tagNameFormat>
-            <preparationGoals>clean generate-sources -Psync-project-versions-release -Psync-project-versions "-Dsrcdeps.version.commit.message.prefix=[maven-release-plugin] Prepare release"</preparationGoals>
-            <completionGoals>clean generate-sources -Psync-project-versions-snapshot -Psync-project-versions "-Dsrcdeps.version.commit.message.prefix=[maven-release-plugin] Set next development version"</completionGoals>
-            <goals>deploy</goals>
+            <preparationGoals>package</preparationGoals>
+            <goals>deploy site</goals>
             <releaseProfiles>release</releaseProfiles>
             <autoVersionSubmodules>true</autoVersionSubmodules>
           </configuration>
@@ -533,6 +568,26 @@ limitations under the License.</inlineHeader>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
           <version>${version.maven-site-plugin}</version>
+          <configuration>
+            <asciidoc>
+              <attributes>
+                <icons>font</icons>
+                <source-highlighter>coderay</source-highlighter>
+                <coderay-css>style</coderay-css>
+                <toclevels>2</toclevels>
+                <project-version>${project.version}</project-version>
+                <project-prerequisites-maven>${project.prerequisites.maven}</project-prerequisites-maven>
+                <maven-compiler-target>${maven.compiler.target}</maven-compiler-target>
+              </attributes>
+            </asciidoc>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>org.asciidoctor</groupId>
+              <artifactId>asciidoctor-maven-plugin</artifactId>
+              <version>${version.asciidoctor-maven-plugin}</version>
+            </dependency>
+          </dependencies>
         </plugin>
 
         <plugin>
@@ -627,6 +682,33 @@ limitations under the License.</inlineHeader>
     </plugins>
   </build>
 
+  <reporting>
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>project-team</report>
+              <report>cim</report>
+              <report>issue-tracking</report>
+              <report>license</report>
+              <report>scm</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+
+    </plugins>
+  </reporting>
+
   <profiles>
 
     <profile>
@@ -639,6 +721,23 @@ limitations under the License.</inlineHeader>
 
       <build>
         <plugins>
+
+          <plugin>
+            <groupId>com.github.github</groupId>
+            <artifactId>site-maven-plugin</artifactId>
+            <configuration>
+              <message>Creating site for ${project.artifactId} ${project.version}</message>
+              <server>github</server>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>site</goal>
+                </goals>
+                <phase>site</phase>
+              </execution>
+            </executions>
+          </plugin>
 
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
