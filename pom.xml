@@ -636,6 +636,11 @@ limitations under the License.</inlineHeader>
           <groupId>org.sonatype.plugins</groupId>
           <artifactId>nexus-staging-maven-plugin</artifactId>
           <version>${version.nexus-staging-maven-plugin}</version>
+          <configuration>
+              <nexusUrl>${oss.nexus.base.url}</nexusUrl>
+              <!-- The server "id" element from settings.xml to use authentication from -->
+              <serverId>ossrh</serverId>
+          </configuration>
         </plugin>
 
       </plugins>
@@ -677,6 +682,12 @@ limitations under the License.</inlineHeader>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+          <groupId>org.sonatype.plugins</groupId>
+          <artifactId>nexus-staging-maven-plugin</artifactId>
+          <extensions>true</extensions>
       </plugin>
 
     </plugins>
