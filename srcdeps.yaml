@@ -44,6 +44,6 @@ repositories:
     - org.apache.maven.plugin-tools
     - org.apache.maven.plugins:maven-plugin-plugin
     urls:
-    - git:file:///home/ppalaga/orgs/tools/maven-plugin-tools/.git
-    - https://github.com/apache/maven-plugin-tools.git
+    - git:https://github.com/ppalaga/maven-plugin-tools.git
+    - git:https://github.com/apache/maven-plugin-tools.git
 
