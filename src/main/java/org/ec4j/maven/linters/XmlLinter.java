@@ -38,9 +38,9 @@ import org.ec4j.core.model.PropertyType.IndentStyleValue;
 import org.ec4j.maven.lint.api.Delete;
 import org.ec4j.maven.lint.api.Edit;
 import org.ec4j.maven.lint.api.Insert;
+import org.ec4j.maven.lint.api.Linter;
 import org.ec4j.maven.lint.api.Location;
 import org.ec4j.maven.lint.api.Resource;
-import org.ec4j.maven.lint.api.Validator;
 import org.ec4j.maven.lint.api.Violation;
 import org.ec4j.maven.lint.api.ViolationHandler;
 import org.ec4j.maven.validator.xml.XmlLexer;
@@ -65,7 +65,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A {@link Validator} specialized for XML files.
+ * A {@link Linter} specialized for XML files.
  * <p>
  * Supports the following {@code .editorconfig} properties:
  * <ul>
@@ -76,7 +76,7 @@ import org.slf4j.LoggerFactory;
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  * @since 0.0.1
  */
-public class XmlValidator implements Validator {
+public class XmlLinter implements Linter {
 
     /**
      * An {@link XmlParserListener} implementation that detects formatting violations and reports them to the supplied
@@ -180,15 +180,15 @@ public class XmlValidator implements Validator {
         /** The element stack */
         private Deque<FormatParserListener.ElementEntry> stack = new java.util.ArrayDeque<FormatParserListener.ElementEntry>();
 
-        private final Validator validator;
+        private final Linter linter;
 
         /** The {@link ViolationHandler} for reporting found violations */
         private final ViolationHandler violationHandler;
 
-        FormatParserListener(Validator validator, Resource file, IndentStyleValue indentStyle, int indetSize,
+        FormatParserListener(Linter linter, Resource file, IndentStyleValue indentStyle, int indetSize,
                 ViolationHandler violationHandler) {
             super();
-            this.validator = validator;
+            this.linter = linter;
             this.file = file;
             this.indentStyle = indentStyle;
             this.indentChar = indentStyle.getIndentChar();
@@ -258,7 +258,7 @@ public class XmlValidator implements Validator {
                 }
                 final Location loc = new Location(start.getLine(), col);
 
-                Violation violation = new Violation(file, loc, fix, validator, PropertyType.indent_style.getName(),
+                Violation violation = new Violation(file, loc, fix, linter, PropertyType.indent_style.getName(),
                         indentStyle.name(), PropertyType.indent_size.getName(), String.valueOf(indentSize));
                 violationHandler.handle(violation);
             }
@@ -330,7 +330,7 @@ public class XmlValidator implements Validator {
                     }
                     final Location loc = new Location(start.getLine(), col);
 
-                    final Violation violation = new Violation(file, loc, fix, validator,
+                    final Violation violation = new Violation(file, loc, fix, linter,
                             PropertyType.indent_style.getName(), indentStyle.name(), PropertyType.indent_size.getName(),
                             String.valueOf(indentSize));
                     violationHandler.handle(violation);
@@ -462,7 +462,7 @@ public class XmlValidator implements Validator {
 
     private static final List<String> DEFAULT_INCLUDES = Collections
             .unmodifiableList(Arrays.asList("**/*.xml", "**/*.xsl"));
-    private static final Logger log = LoggerFactory.getLogger(XmlValidator.class);
+    private static final Logger log = LoggerFactory.getLogger(XmlLinter.class);
 
     @Override
     public List<String> getDefaultExcludes() {

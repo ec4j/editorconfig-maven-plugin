@@ -30,17 +30,17 @@ import org.ec4j.maven.lint.api.Delete;
 import org.ec4j.maven.lint.api.Edit;
 import org.ec4j.maven.lint.api.Insert;
 import org.ec4j.maven.lint.api.LineReader;
+import org.ec4j.maven.lint.api.Linter;
 import org.ec4j.maven.lint.api.Location;
 import org.ec4j.maven.lint.api.Replace;
 import org.ec4j.maven.lint.api.Resource;
-import org.ec4j.maven.lint.api.Validator;
 import org.ec4j.maven.lint.api.Violation;
 import org.ec4j.maven.lint.api.ViolationHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A simple line-by-line {@link Validator}.
+ * A simple line-by-line {@link Linter}.
  * <p>
  * Supports the following {@code .editorconfig} properties:
  * <ul>
@@ -52,12 +52,12 @@ import org.slf4j.LoggerFactory;
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  * @since 0.0.1
  */
-public class TextValidator implements Validator {
+public class TextLinter implements Linter {
     private static final List<String> DEFAULT_EXCLUDES = Collections.emptyList();
 
     private static final List<String> DEFAULT_INCLUDES = Collections.unmodifiableList(Arrays.asList("**/*"));
 
-    private static final Logger log = LoggerFactory.getLogger(TextValidator.class);
+    private static final Logger log = LoggerFactory.getLogger(TextLinter.class);
     private static final Pattern TRAILING_WHITESPACE_PATTERN = Pattern.compile("[ \t]+$", Pattern.MULTILINE);
 
     /**

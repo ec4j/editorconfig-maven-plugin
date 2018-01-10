@@ -32,25 +32,25 @@ public class Violation {
     private final Location location;
     private final Resource resource;
     private String toString;
-    private final Validator validator;
+    private final Linter linter;
     private final List<String> violatedProperties;
 
-    Violation(Resource resource, Location location, Edit fix, Validator validator, String... violatedProperties) {
+    Violation(Resource resource, Location location, Edit fix, Linter linter, String... violatedProperties) {
         this.resource = resource;
         this.location = location;
         this.fix = fix;
-        this.validator = validator;
+        this.linter = linter;
         this.violatedProperties = Collections.unmodifiableList(Arrays.asList(violatedProperties));
     }
 
-    public Violation(Resource resource, Location location, Edit fix, Validator validator, String violatedKey0,
+    public Violation(Resource resource, Location location, Edit fix, Linter linter, String violatedKey0,
             String violatedValue0) {
-        this(resource, location, fix, validator, new String[] { violatedKey0, violatedValue0 });
+        this(resource, location, fix, linter, new String[] { violatedKey0, violatedValue0 });
     }
 
-    public Violation(Resource resource, Location location, Edit fix, Validator validator, String violatedKey0,
+    public Violation(Resource resource, Location location, Edit fix, Linter linter, String violatedKey0,
             String violatedValue0, String violatedKey1, String violatedValue1) {
-        this(resource, location, fix, validator,
+        this(resource, location, fix, linter,
                 new String[] { violatedKey0, violatedValue0, violatedKey1, violatedValue1 });
     }
 
@@ -78,10 +78,10 @@ public class Violation {
                 return false;
         } else if (!location.equals(other.location))
             return false;
-        if (validator == null) {
-            if (other.validator != null)
+        if (linter == null) {
+            if (other.linter != null)
                 return false;
-        } else if (!validator.equals(other.validator))
+        } else if (!linter.equals(other.linter))
             return false;
         if (violatedProperties == null) {
             if (other.violatedProperties != null)
@@ -120,7 +120,7 @@ public class Violation {
         result = prime * result + ((resource == null) ? 0 : resource.hashCode());
         result = prime * result + ((fix == null) ? 0 : fix.hashCode());
         result = prime * result + ((location == null) ? 0 : location.hashCode());
-        result = prime * result + ((validator == null) ? 0 : validator.hashCode());
+        result = prime * result + ((linter == null) ? 0 : linter.hashCode());
         result = prime * result + ((violatedProperties == null) ? 0 : violatedProperties.hashCode());
         return result;
     }
@@ -145,7 +145,7 @@ public class Violation {
                 }
                 result.append(", ");
             }
-            toString = result.append("reported by ").append(validator.getClass().getName()).toString();
+            toString = result.append("reported by ").append(linter.getClass().getName()).toString();
         }
         return toString;
     }

@@ -70,33 +70,33 @@ public class EditorConfigMojosTest {
         mavenExec //
                 .execute("clean", "verify") //
                 .assertLogText(
-                        "[TRACE] Processing file '.editorconfig' using validator org.ec4j.maven.linters.TextValidator") //
+                        "[TRACE] Processing file '.editorconfig' using validator org.ec4j.maven.linters.TextLinter") //
                 .assertLogText("[DEBUG] No formatting violations found in file '.editorconfig'") //
                 .assertLogText(
-                        "[TRACE] Processing file 'pom.xml' using validator org.ec4j.maven.linters.TextValidator") //
+                        "[TRACE] Processing file 'pom.xml' using validator org.ec4j.maven.linters.TextLinter") //
                 .assertLogText(
-                        "[TRACE] Processing file 'pom.xml' using validator org.ec4j.maven.linters.XmlValidator") //
+                        "[TRACE] Processing file 'pom.xml' using validator org.ec4j.maven.linters.XmlLinter") //
                 .assertLogText("[DEBUG] No formatting violations found in file 'pom.xml'") //
                 .assertLogText(
-                        "[TRACE] Processing file 'src/main/java/org/ec4j/maven/it/defaults/App.java' using validator org.ec4j.maven.linters.TextValidator".replace('/', File.separatorChar)) //
+                        "[TRACE] Processing file 'src/main/java/org/ec4j/maven/it/defaults/App.java' using validator org.ec4j.maven.linters.TextLinter".replace('/', File.separatorChar)) //
                 .assertLogText(
                         "[DEBUG] No formatting violations found in file 'src/main/java/org/ec4j/maven/it/defaults/App.java'".replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[TRACE] Processing file 'src/main/resources/trailing-whitespace.txt' using validator org.ec4j.maven.linters.TextValidator".replace('/', File.separatorChar)) //
+                        "[TRACE] Processing file 'src/main/resources/trailing-whitespace.txt' using validator org.ec4j.maven.linters.TextLinter".replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[ERROR] src/main/resources/trailing-whitespace.txt@1,7: Delete 2 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.maven.linters.TextValidator".replace('/', File.separatorChar)) //
+                        "[ERROR] src/main/resources/trailing-whitespace.txt@1,7: Delete 2 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.maven.linters.TextLinter".replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[TRACE] Processing file 'src/main/resources/indent.xml' using validator org.ec4j.maven.linters.TextValidator".replace('/', File.separatorChar)) //
+                        "[TRACE] Processing file 'src/main/resources/indent.xml' using validator org.ec4j.maven.linters.TextLinter".replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[TRACE] Processing file 'src/main/resources/indent.xml' using validator org.ec4j.maven.linters.XmlValidator".replace('/', File.separatorChar)) //
+                        "[TRACE] Processing file 'src/main/resources/indent.xml' using validator org.ec4j.maven.linters.XmlLinter".replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[ERROR] src/main/resources/indent.xml@23,5: Delete 1 character - violates indent_style = space, indent_size = 2, reported by org.ec4j.maven.linters.XmlValidator".replace('/', File.separatorChar)) //
+                        "[ERROR] src/main/resources/indent.xml@23,5: Delete 1 character - violates indent_style = space, indent_size = 2, reported by org.ec4j.maven.linters.XmlLinter".replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[ERROR] src/main/resources/indent.xml@24,3: Delete 2 characters - violates indent_style = space, indent_size = 2, reported by org.ec4j.maven.linters.XmlValidator".replace('/', File.separatorChar)) //
+                        "[ERROR] src/main/resources/indent.xml@24,3: Delete 2 characters - violates indent_style = space, indent_size = 2, reported by org.ec4j.maven.linters.XmlLinter".replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[TRACE] Processing file 'README.adoc' using validator org.ec4j.maven.linters.TextValidator") //
+                        "[TRACE] Processing file 'README.adoc' using validator org.ec4j.maven.linters.TextLinter") //
                 .assertLogText(
-                        "[ERROR] README.adoc@2,1: Delete 2 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.maven.linters.TextValidator") //
+                        "[ERROR] README.adoc@2,1: Delete 2 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.maven.linters.TextLinter") //
                 .assertLogText("[INFO] Checked 6 files") //
                 .assertLogText("[INFO] BUILD FAILURE") //
                 .assertLogText(
@@ -117,33 +117,33 @@ public class EditorConfigMojosTest {
                 .execute("clean", "editorconfig:format") //
                 .assertErrorFreeLog() //
                 .assertLogText(
-                        "[TRACE] Processing file '.editorconfig' using validator org.ec4j.maven.linters.TextValidator") //
+                        "[TRACE] Processing file '.editorconfig' using validator org.ec4j.maven.linters.TextLinter") //
                 .assertLogText("[DEBUG] No formatting violations found in file '.editorconfig'") //
                 .assertLogText(
-                        "[TRACE] Processing file 'pom.xml' using validator org.ec4j.maven.linters.TextValidator") //
+                        "[TRACE] Processing file 'pom.xml' using validator org.ec4j.maven.linters.TextLinter") //
                 .assertLogText(
-                        "[TRACE] Processing file 'pom.xml' using validator org.ec4j.maven.linters.XmlValidator") //
+                        "[TRACE] Processing file 'pom.xml' using validator org.ec4j.maven.linters.XmlLinter") //
                 .assertLogText("[DEBUG] No formatting violations found in file 'pom.xml'") //
                 .assertLogText(
-                        "[TRACE] Processing file 'src/main/java/org/ec4j/maven/it/defaults/App.java' using validator org.ec4j.maven.linters.TextValidator".replace('/', File.separatorChar)) //
+                        "[TRACE] Processing file 'src/main/java/org/ec4j/maven/it/defaults/App.java' using validator org.ec4j.maven.linters.TextLinter".replace('/', File.separatorChar)) //
                 .assertLogText(
                         "[DEBUG] No formatting violations found in file 'src/main/java/org/ec4j/maven/it/defaults/App.java'".replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[TRACE] Processing file 'src/main/resources/trailing-whitespace.txt' using validator org.ec4j.maven.linters.TextValidator".replace('/', File.separatorChar)) //
+                        "[TRACE] Processing file 'src/main/resources/trailing-whitespace.txt' using validator org.ec4j.maven.linters.TextLinter".replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[INFO] src/main/resources/trailing-whitespace.txt@1,7: Delete 2 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.maven.linters.TextValidator".replace('/', File.separatorChar)) //
+                        "[INFO] src/main/resources/trailing-whitespace.txt@1,7: Delete 2 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.maven.linters.TextLinter".replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[TRACE] Processing file 'src/main/resources/indent.xml' using validator org.ec4j.maven.linters.TextValidator".replace('/', File.separatorChar)) //
+                        "[TRACE] Processing file 'src/main/resources/indent.xml' using validator org.ec4j.maven.linters.TextLinter".replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[TRACE] Processing file 'src/main/resources/indent.xml' using validator org.ec4j.maven.linters.XmlValidator".replace('/', File.separatorChar)) //
+                        "[TRACE] Processing file 'src/main/resources/indent.xml' using validator org.ec4j.maven.linters.XmlLinter".replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[INFO] src/main/resources/indent.xml@23,5: Delete 1 character - violates indent_style = space, indent_size = 2, reported by org.ec4j.maven.linters.XmlValidator".replace('/', File.separatorChar)) //
+                        "[INFO] src/main/resources/indent.xml@23,5: Delete 1 character - violates indent_style = space, indent_size = 2, reported by org.ec4j.maven.linters.XmlLinter".replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[INFO] src/main/resources/indent.xml@24,3: Delete 2 characters - violates indent_style = space, indent_size = 2, reported by org.ec4j.maven.linters.XmlValidator".replace('/', File.separatorChar)) //
+                        "[INFO] src/main/resources/indent.xml@24,3: Delete 2 characters - violates indent_style = space, indent_size = 2, reported by org.ec4j.maven.linters.XmlLinter".replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[TRACE] Processing file 'README.adoc' using validator org.ec4j.maven.linters.TextValidator") //
+                        "[TRACE] Processing file 'README.adoc' using validator org.ec4j.maven.linters.TextLinter") //
                 .assertLogText(
-                        "[INFO] README.adoc@2,1: Delete 2 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.maven.linters.TextValidator") // ;
+                        "[INFO] README.adoc@2,1: Delete 2 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.maven.linters.TextLinter") // ;
                 .assertLogText("[INFO] Formatted 3 out of 6 files") //
         ;
 

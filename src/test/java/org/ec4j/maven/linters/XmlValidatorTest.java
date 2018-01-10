@@ -25,13 +25,13 @@ import org.ec4j.core.model.PropertyType;
 import org.ec4j.core.model.PropertyType.IndentStyleValue;
 import org.ec4j.maven.lint.api.Delete;
 import org.ec4j.maven.lint.api.EditableResource;
+import org.ec4j.maven.lint.api.Linter;
 import org.ec4j.maven.lint.api.Location;
-import org.ec4j.maven.lint.api.Validator;
 import org.ec4j.maven.lint.api.Violation;
 import org.junit.Test;
 
 public class XmlValidatorTest {
-    private final Validator validator = new XmlValidator();
+    private final Linter linter = new XmlLinter();
 
     @Test
     public void simple() throws MojoExecutionException, IOException {
@@ -57,10 +57,10 @@ public class XmlValidatorTest {
                 .property(new Property.Builder(null).type(PropertyType.trim_trailing_whitespace).value("true").build()) //
                 .build();
 
-        ValidatorTestUtils.assertParse(validator, doc, expectedText, props, //
-                new Violation(doc, new Location(5, 5), new Delete(1), validator, PropertyType.indent_style.getName(),
+        ValidatorTestUtils.assertParse(linter, doc, expectedText, props, //
+                new Violation(doc, new Location(5, 5), new Delete(1), linter, PropertyType.indent_style.getName(),
                         IndentStyleValue.space.name(), PropertyType.indent_size.getName(), "2"), //
-                new Violation(doc, new Location(6, 3), new Delete(2), validator, PropertyType.indent_style.getName(),
+                new Violation(doc, new Location(6, 3), new Delete(2), linter, PropertyType.indent_style.getName(),
                         IndentStyleValue.space.name(), PropertyType.indent_size.getName(), "2"));
     }
 

@@ -26,15 +26,15 @@ import org.ec4j.core.model.PropertyType.EndOfLineValue;
 import org.ec4j.maven.lint.api.Delete;
 import org.ec4j.maven.lint.api.EditableResource;
 import org.ec4j.maven.lint.api.Insert;
+import org.ec4j.maven.lint.api.Linter;
 import org.ec4j.maven.lint.api.Location;
 import org.ec4j.maven.lint.api.Replace;
-import org.ec4j.maven.lint.api.Validator;
 import org.ec4j.maven.lint.api.Violation;
 import org.junit.Test;
 
 public class TextValidatorTest {
 
-    private final Validator validator = new TextValidator();
+    private final Linter linter = new TextLinter();
 
     @Test
     public void end_of_line_cr() throws IOException, MojoExecutionException {
@@ -55,11 +55,11 @@ public class TextValidatorTest {
                 "line 6 ";
         EditableResource doc = ValidatorTestUtils.createDocument(text, ".txt");
 
-        ValidatorTestUtils.assertParse(validator, doc, expectedText, props, //
+        ValidatorTestUtils.assertParse(linter, doc, expectedText, props, //
                 new Violation(doc, new Location(1, 7),
-                        Replace.endOfLine(PropertyType.EndOfLineValue.lf, PropertyType.EndOfLineValue.cr), validator,
+                        Replace.endOfLine(PropertyType.EndOfLineValue.lf, PropertyType.EndOfLineValue.cr), linter,
                         PropertyType.end_of_line.getName(), "cr"), //
-                new Violation(doc, new Location(4, 8), new Delete(1), validator, PropertyType.end_of_line.getName(),
+                new Violation(doc, new Location(4, 8), new Delete(1), linter, PropertyType.end_of_line.getName(),
                         "cr") //
         );
     }
@@ -83,10 +83,10 @@ public class TextValidatorTest {
                 "line 6 ";
         EditableResource doc = ValidatorTestUtils.createDocument(text, ".txt");
 
-        ValidatorTestUtils.assertParse(validator, doc, expectedText, props, //
-                new Violation(doc, new Location(1, 7), Insert.endOfLine(PropertyType.EndOfLineValue.cr), validator,
+        ValidatorTestUtils.assertParse(linter, doc, expectedText, props, //
+                new Violation(doc, new Location(1, 7), Insert.endOfLine(PropertyType.EndOfLineValue.cr), linter,
                         PropertyType.end_of_line.getName(), "crlf"), //
-                new Violation(doc, new Location(5, 8), Insert.endOfLine(PropertyType.EndOfLineValue.lf), validator,
+                new Violation(doc, new Location(5, 8), Insert.endOfLine(PropertyType.EndOfLineValue.lf), linter,
                         PropertyType.end_of_line.getName(), "crlf") //
         );
     }
@@ -110,11 +110,11 @@ public class TextValidatorTest {
                 "line 6 ";
         EditableResource doc = ValidatorTestUtils.createDocument(text, ".txt");
 
-        ValidatorTestUtils.assertParse(validator, doc, expectedText, props, //
-                new Violation(doc, new Location(4, 7), new Delete(1), validator, PropertyType.end_of_line.getName(),
+        ValidatorTestUtils.assertParse(linter, doc, expectedText, props, //
+                new Violation(doc, new Location(4, 7), new Delete(1), linter, PropertyType.end_of_line.getName(),
                         "lf"), //
                 new Violation(doc, new Location(5, 7),
-                        Replace.endOfLine(PropertyType.EndOfLineValue.cr, PropertyType.EndOfLineValue.lf), validator,
+                        Replace.endOfLine(PropertyType.EndOfLineValue.cr, PropertyType.EndOfLineValue.lf), linter,
                         PropertyType.end_of_line.getName(), "lf"));
     }
 
@@ -132,8 +132,8 @@ public class TextValidatorTest {
         ;
         EditableResource doc = ValidatorTestUtils.createDocument(text, ".txt");
 
-        ValidatorTestUtils.assertParse(validator, doc, expectedText, props, //
-                new Violation(doc, new Location(2, 7), Insert.endOfLine(EndOfLineValue.lf), validator,
+        ValidatorTestUtils.assertParse(linter, doc, expectedText, props, //
+                new Violation(doc, new Location(2, 7), Insert.endOfLine(EndOfLineValue.lf), linter,
                         PropertyType.insert_final_newline.getName(), "true"));
     }
 
@@ -147,8 +147,8 @@ public class TextValidatorTest {
         String expectedText = "\n";
         EditableResource doc = ValidatorTestUtils.createDocument(text, ".txt");
 
-        ValidatorTestUtils.assertParse(validator, doc, expectedText, props, //
-                new Violation(doc, new Location(1, 1), Insert.endOfLine(EndOfLineValue.lf), validator,
+        ValidatorTestUtils.assertParse(linter, doc, expectedText, props, //
+                new Violation(doc, new Location(1, 1), Insert.endOfLine(EndOfLineValue.lf), linter,
                         PropertyType.insert_final_newline.getName(), "true"));
     }
 
@@ -171,12 +171,12 @@ public class TextValidatorTest {
                 "line 6";
         EditableResource doc = ValidatorTestUtils.createDocument(text, ".txt");
 
-        ValidatorTestUtils.assertParse(validator, doc, expectedText, props, //
-                new Violation(doc, new Location(2, 7), new Delete(1), validator,
+        ValidatorTestUtils.assertParse(linter, doc, expectedText, props, //
+                new Violation(doc, new Location(2, 7), new Delete(1), linter,
                         PropertyType.trim_trailing_whitespace.getName(), "true"), //
-                new Violation(doc, new Location(3, 7), new Delete(1), validator,
+                new Violation(doc, new Location(3, 7), new Delete(1), linter,
                         PropertyType.trim_trailing_whitespace.getName(), "true"), //
-                new Violation(doc, new Location(6, 7), new Delete(1), validator,
+                new Violation(doc, new Location(6, 7), new Delete(1), linter,
                         PropertyType.trim_trailing_whitespace.getName(), "true"));
 
     }

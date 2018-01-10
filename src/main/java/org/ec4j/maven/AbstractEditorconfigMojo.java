@@ -36,9 +36,9 @@ import org.ec4j.core.ResourceProperties;
 import org.ec4j.core.ResourcePropertiesService;
 import org.ec4j.core.model.PropertyType;
 import org.ec4j.maven.lint.api.FormatException;
+import org.ec4j.maven.lint.api.Linter;
+import org.ec4j.maven.lint.api.LinterRegistry;
 import org.ec4j.maven.lint.api.Resource;
-import org.ec4j.maven.lint.api.Validator;
-import org.ec4j.maven.lint.api.ValidatorRegistry;
 import org.ec4j.maven.lint.api.ViolationHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,8 +53,8 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
     private static final Logger log = LoggerFactory.getLogger(AbstractEditorconfigMojo.class);
 
     /**
-     * If set to {@code true}, the class path will be scanned for implementations of {@link Validator} and all
-     * {@link Validator}s found will be added to {@link #validators} with their default includes and excludes.
+     * If set to {@code true}, the class path will be scanned for implementations of {@link Linter} and all
+     * {@link Linter}s found will be added to {@link #linters} with their default includes and excludes.
      *
      * @since 0.0.1
      */
@@ -121,27 +121,27 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
     private boolean skip;
 
     /**
-     * Set the includes and excludes for the individual {@link Validator}s
+     * Set the includes and excludes for the individual {@link Linter}s
      *
      * @since 0.0.1
      */
     @Parameter
-    protected List<ValidatorConfig> validators = new ArrayList<>();
+    protected List<ValidatorConfig> linters = new ArrayList<>();
 
     public AbstractEditorconfigMojo() {
         super();
     }
 
-    protected ValidatorRegistry buildValidatorRegistry() {
+    protected LinterRegistry buildValidatorRegistry() {
 
-        final ValidatorRegistry.Builder validatorRegistryBuilder = ValidatorRegistry.builder();
+        final LinterRegistry.Builder validatorRegistryBuilder = LinterRegistry.builder();
 
         if (addValidatorsFromClassPath) {
             validatorRegistryBuilder.scan(getClass().getClassLoader());
         }
 
-        if (validators != null && !validators.isEmpty()) {
-            for (ValidatorConfig validator : validators) {
+        if (linters != null && !linters.isEmpty()) {
+            for (ValidatorConfig validator : linters) {
                 if (validator.isEnabled()) {
                     validatorRegistryBuilder.entry(validator.getId(), validator.getClassName(),
                             this.getClass().getClassLoader(), validator.getIncludes(), validator.getExcludes(),
@@ -186,7 +186,7 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
         this.charset = Charset.forName(this.encoding);
         this.basedirPath = basedir.toPath();
 
-        ValidatorRegistry validatorRegistry = buildValidatorRegistry();
+        LinterRegistry linterRegistry = buildValidatorRegistry();
         final String[] includedFiles = scanIncludedFiles();
 
         try {
@@ -210,16 +210,16 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
                     final Charset useEncoding = Charset
                             .forName(editorConfigProperties.getValue(PropertyType.charset, encoding, true));
                     final Resource resource = createResource(absFile, file, useEncoding);
-                    final List<Validator> filteredValidators = validatorRegistry.filter(file);
+                    final List<Linter> filteredValidators = linterRegistry.filter(file);
                     ViolationHandler.ReturnState state = ViolationHandler.ReturnState.RECHECK;
                     while (state != ViolationHandler.ReturnState.FINISHED) {
-                        for (Validator validator : filteredValidators) {
+                        for (Linter linter : filteredValidators) {
                             if (log.isTraceEnabled()) {
                                 log.trace("Processing file '{}' using validator {}", file,
-                                        validator.getClass().getName());
+                                        linter.getClass().getName());
                             }
                             handler.startFile(resource);
-                            validator.process(resource, editorConfigProperties, handler);
+                            linter.process(resource, editorConfigProperties, handler);
                         }
                         state = handler.endFile();
                     }

@@ -25,20 +25,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 
-import org.ec4j.maven.linters.TextValidator;
-import org.ec4j.maven.linters.XmlValidator;
+import org.ec4j.maven.linters.TextLinter;
+import org.ec4j.maven.linters.XmlLinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A registry for {@link Validator}s.
+ * A registry for {@link Linter}s.
  *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
-public class ValidatorRegistry {
+public class LinterRegistry {
 
     /**
-     * A {@link ValidatorRegistry} builder.
+     * A {@link LinterRegistry} builder.
      */
     public static class Builder {
         private final Map<String, ValidatorEntry.Builder> entries = new LinkedHashMap<>();
@@ -48,14 +48,14 @@ public class ValidatorRegistry {
         }
 
         /**
-         * @return a new {@link ValidatorRegistry}
+         * @return a new {@link LinterRegistry}
          */
-        public ValidatorRegistry build() {
+        public LinterRegistry build() {
             Map<String, ValidatorEntry> useEntries = new LinkedHashMap<>(entries.size());
             for (Map.Entry<String, ValidatorEntry.Builder> en : entries.entrySet()) {
                 useEntries.put(en.getKey(), en.getValue().build());
             }
-            return new ValidatorRegistry(Collections.unmodifiableMap(useEntries));
+            return new LinterRegistry(Collections.unmodifiableMap(useEntries));
         }
 
         /**
@@ -73,9 +73,9 @@ public class ValidatorRegistry {
             if (en == null) {
                 try {
                     @SuppressWarnings("unchecked")
-                    Class<Validator> cl = (Class<Validator>) classLoader.loadClass(validatorClass);
-                    Validator validator = cl.newInstance();
-                    en = new ValidatorEntry.Builder(validator);
+                    Class<Linter> cl = (Class<Linter>) classLoader.loadClass(validatorClass);
+                    Linter linter = cl.newInstance();
+                    en = new ValidatorEntry.Builder(linter);
                     entries.put(id, en);
                 } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
                     throw new RuntimeException("Could not load class " + validatorClass, e);
@@ -88,11 +88,11 @@ public class ValidatorRegistry {
             return this;
         }
 
-        public Builder entry(Validator validator) {
-            final String validatorClass = validator.getClass().getName();
+        public Builder entry(Linter linter) {
+            final String validatorClass = linter.getClass().getName();
             ValidatorEntry.Builder en = entries.get(validatorClass);
             if (en == null) {
-                en = new ValidatorEntry.Builder(validator);
+                en = new ValidatorEntry.Builder(linter);
 
                 entries.put(validatorClass, en);
             }
@@ -106,13 +106,13 @@ public class ValidatorRegistry {
         }
 
         public Builder scan(ClassLoader classLoader) {
-            entry(new TextValidator());
-            entry(new XmlValidator());
-            final ServiceLoader<Validator> loader = java.util.ServiceLoader.load(Validator.class, classLoader);
-            final Iterator<Validator> it = loader.iterator();
+            entry(new TextLinter());
+            entry(new XmlLinter());
+            final ServiceLoader<Linter> loader = java.util.ServiceLoader.load(Linter.class, classLoader);
+            final Iterator<Linter> it = loader.iterator();
             while (it.hasNext()) {
-                Validator validator = it.next();
-                entry(validator);
+                Linter linter = it.next();
+                entry(linter);
             }
             return this;
         }
@@ -120,7 +120,7 @@ public class ValidatorRegistry {
     }
 
     /**
-     * A pair consisting of a {@link PathSet} and a {@link Validator}.
+     * A pair consisting of a {@link PathSet} and a {@link Linter}.
      */
     static class ValidatorEntry {
 
@@ -130,11 +130,11 @@ public class ValidatorRegistry {
         public static class Builder {
             private final PathSet.Builder pathSetBuilder = new PathSet.Builder();
             private boolean useDefaultIncludesAndExcludes = true;
-            private final Validator validator;
+            private final Linter linter;
 
-            Builder(Validator validator) {
+            Builder(Linter linter) {
                 super();
-                this.validator = validator;
+                this.linter = linter;
             }
 
             /**
@@ -142,24 +142,24 @@ public class ValidatorRegistry {
              */
             public ValidatorEntry build() {
                 if (this.useDefaultIncludesAndExcludes) {
-                    pathSetBuilder.includes(validator.getDefaultIncludes());
-                    pathSetBuilder.excludes(validator.getDefaultExcludes());
+                    pathSetBuilder.includes(linter.getDefaultIncludes());
+                    pathSetBuilder.excludes(linter.getDefaultExcludes());
                 }
-                return new ValidatorEntry(validator, pathSetBuilder.build());
+                return new ValidatorEntry(linter, pathSetBuilder.build());
             }
         }
 
         private final PathSet pathSet;
-        private final Validator validator;
+        private final Linter linter;
 
-        ValidatorEntry(Validator validator, PathSet pathSet) {
+        ValidatorEntry(Linter linter, PathSet pathSet) {
             super();
-            this.validator = validator;
+            this.linter = linter;
             this.pathSet = pathSet;
         }
 
         /**
-         * @return a {@link PathSet} whose {@link Path}s should be handled by the {@link Validator} returned by
+         * @return a {@link PathSet} whose {@link Path}s should be handled by the {@link Linter} returned by
          *         {@link #getValidator()}
          */
         public PathSet getPathSet() {
@@ -167,16 +167,16 @@ public class ValidatorRegistry {
         }
 
         /**
-         * @return the Validator responsible for handling {@link Path}s contained in the {@link PathSet} returned by
+         * @return the Linter responsible for handling {@link Path}s contained in the {@link PathSet} returned by
          *         {@link #getPathSet()}
          */
-        public Validator getValidator() {
-            return validator;
+        public Linter getValidator() {
+            return linter;
         }
 
     }
 
-    private static final Logger log = LoggerFactory.getLogger(ValidatorRegistry.class);
+    private static final Logger log = LoggerFactory.getLogger(LinterRegistry.class);
 
     public static Builder builder() {
         return new Builder();
@@ -184,7 +184,7 @@ public class ValidatorRegistry {
 
     private final Map<String, ValidatorEntry> entries;
 
-    ValidatorRegistry(Map<String, ValidatorEntry> entries) {
+    LinterRegistry(Map<String, ValidatorEntry> entries) {
         super();
         this.entries = entries;
     }
@@ -193,19 +193,19 @@ public class ValidatorRegistry {
      * Iterates through registered entries and filters those ones whose {@link PathSet} contains the given {@link Path}.
      *
      * @param path
-     *            the {@link Path} to find {@link Validator}s for
-     * @return an unmodifiable list of {@link Validator}s
+     *            the {@link Path} to find {@link Linter}s for
+     * @return an unmodifiable list of {@link Linter}s
      */
-    public List<Validator> filter(Path path) {
-        log.trace("Filtering validators for file '{}'", path);
-        final List<Validator> result = new ArrayList<>(entries.size());
+    public List<Linter> filter(Path path) {
+        log.trace("Filtering linters for file '{}'", path);
+        final List<Linter> result = new ArrayList<>(entries.size());
         for (ValidatorEntry validatorEntry : entries.values()) {
             if (validatorEntry.getPathSet().contains(path)) {
-                final Validator validator = validatorEntry.getValidator();
+                final Linter linter = validatorEntry.getValidator();
                 if (log.isTraceEnabled()) {
-                    log.trace("Adding validator {}", validator.getClass().getName());
+                    log.trace("Adding linter {}", linter.getClass().getName());
                 }
-                result.add(validator);
+                result.add(linter);
             }
         }
         return Collections.unmodifiableList(result);

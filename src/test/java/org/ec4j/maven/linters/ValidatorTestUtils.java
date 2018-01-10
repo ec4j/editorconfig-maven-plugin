@@ -28,21 +28,21 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.ec4j.core.ResourceProperties;
 import org.ec4j.maven.lint.api.EditableResource;
 import org.ec4j.maven.lint.api.FormattingHandler;
+import org.ec4j.maven.lint.api.Linter;
 import org.ec4j.maven.lint.api.Resource;
-import org.ec4j.maven.lint.api.Validator;
 import org.ec4j.maven.lint.api.Violation;
 import org.ec4j.maven.lint.api.ViolationCollector;
 import org.junit.Assert;
 
 public class ValidatorTestUtils {
 
-    public static void assertParse(Validator validator, EditableResource doc, String expectedText,
+    public static void assertParse(Linter linter, EditableResource doc, String expectedText,
             ResourceProperties props, Violation... expected) throws IOException, MojoExecutionException {
 
         ViolationCollector collector = new ViolationCollector(false);
         collector.startFiles();
         collector.startFile(doc);
-        validator.process(doc, props, collector);
+        linter.process(doc, props, collector);
         collector.endFile();
         collector.endFiles();
 
@@ -59,7 +59,7 @@ public class ValidatorTestUtils {
         FormattingHandler formatter = new FormattingHandler(false, false);
         formatter.startFiles();
         formatter.startFile(doc);
-        validator.process(doc, props, formatter);
+        linter.process(doc, props, formatter);
         formatter.endFile();
         formatter.endFiles();
 

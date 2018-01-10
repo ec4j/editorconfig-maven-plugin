@@ -16,11 +16,11 @@
  */
 package org.ec4j.maven;
 
-import org.ec4j.maven.lint.api.Validator;
-import org.ec4j.maven.linters.TextValidator;
+import org.ec4j.maven.lint.api.Linter;
+import org.ec4j.maven.linters.TextLinter;
 
 /**
- * A configuration of a {@link Validator}.
+ * A configuration of a {@link Linter}.
  *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
@@ -34,7 +34,7 @@ public class ValidatorConfig {
     private boolean useDefaultIncludesAndExcludes = true;
 
     public String getClassName() {
-        return className.indexOf('.') < 0 ? TextValidator.class.getPackage().getName() + "." + className + "Validator"
+        return className.indexOf('.') < 0 ? TextLinter.class.getPackage().getName() + "." + className + "Linter"
                 : className;
     }
 

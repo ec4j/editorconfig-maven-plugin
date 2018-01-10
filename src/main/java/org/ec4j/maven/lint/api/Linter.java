@@ -27,15 +27,15 @@ import org.ec4j.core.ResourceProperties;
  *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
-public interface Validator {
+public interface Linter {
 
     /**
-     * @return the default {@link List} of globs this {@link Validator} should not handle
+     * @return the default {@link List} of globs this {@link Linter} should not handle
      */
     List<String> getDefaultExcludes();
 
     /**
-     * @return the default {@link List} of globs this {@link Validator} should handle
+     * @return the default {@link List} of globs this {@link Linter} should handle
      */
     List<String> getDefaultIncludes();
 
