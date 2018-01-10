@@ -24,7 +24,7 @@ import org.ec4j.maven.linters.TextLinter;
  *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
-public class ValidatorConfig {
+public class LinterConfig {
 
     private String className;
     private boolean enabled = true;

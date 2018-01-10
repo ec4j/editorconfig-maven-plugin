@@ -32,7 +32,7 @@ import org.ec4j.maven.lint.api.Replace;
 import org.ec4j.maven.lint.api.Violation;
 import org.junit.Test;
 
-public class TextValidatorTest {
+public class TextLinterTest {
 
     private final Linter linter = new TextLinter();
 
@@ -53,9 +53,9 @@ public class TextValidatorTest {
                 "line 4\r" + //
                 "line 5\r" + //
                 "line 6 ";
-        EditableResource doc = ValidatorTestUtils.createDocument(text, ".txt");
+        EditableResource doc = LinterTestUtils.createDocument(text, ".txt");
 
-        ValidatorTestUtils.assertParse(linter, doc, expectedText, props, //
+        LinterTestUtils.assertParse(linter, doc, expectedText, props, //
                 new Violation(doc, new Location(1, 7),
                         Replace.endOfLine(PropertyType.EndOfLineValue.lf, PropertyType.EndOfLineValue.cr), linter,
                         PropertyType.end_of_line.getName(), "cr"), //
@@ -81,9 +81,9 @@ public class TextValidatorTest {
                 "line 4\r\n" + //
                 "line 5\r\n" + //
                 "line 6 ";
-        EditableResource doc = ValidatorTestUtils.createDocument(text, ".txt");
+        EditableResource doc = LinterTestUtils.createDocument(text, ".txt");
 
-        ValidatorTestUtils.assertParse(linter, doc, expectedText, props, //
+        LinterTestUtils.assertParse(linter, doc, expectedText, props, //
                 new Violation(doc, new Location(1, 7), Insert.endOfLine(PropertyType.EndOfLineValue.cr), linter,
                         PropertyType.end_of_line.getName(), "crlf"), //
                 new Violation(doc, new Location(5, 8), Insert.endOfLine(PropertyType.EndOfLineValue.lf), linter,
@@ -108,9 +108,9 @@ public class TextValidatorTest {
                 "line 4\n" + //
                 "line 5\n" + //
                 "line 6 ";
-        EditableResource doc = ValidatorTestUtils.createDocument(text, ".txt");
+        EditableResource doc = LinterTestUtils.createDocument(text, ".txt");
 
-        ValidatorTestUtils.assertParse(linter, doc, expectedText, props, //
+        LinterTestUtils.assertParse(linter, doc, expectedText, props, //
                 new Violation(doc, new Location(4, 7), new Delete(1), linter, PropertyType.end_of_line.getName(),
                         "lf"), //
                 new Violation(doc, new Location(5, 7),
@@ -130,9 +130,9 @@ public class TextValidatorTest {
         String expectedText = "line 1\n" + //
                 "line 2\n" //
         ;
-        EditableResource doc = ValidatorTestUtils.createDocument(text, ".txt");
+        EditableResource doc = LinterTestUtils.createDocument(text, ".txt");
 
-        ValidatorTestUtils.assertParse(linter, doc, expectedText, props, //
+        LinterTestUtils.assertParse(linter, doc, expectedText, props, //
                 new Violation(doc, new Location(2, 7), Insert.endOfLine(EndOfLineValue.lf), linter,
                         PropertyType.insert_final_newline.getName(), "true"));
     }
@@ -145,9 +145,9 @@ public class TextValidatorTest {
                 .build();
         String text = "";
         String expectedText = "\n";
-        EditableResource doc = ValidatorTestUtils.createDocument(text, ".txt");
+        EditableResource doc = LinterTestUtils.createDocument(text, ".txt");
 
-        ValidatorTestUtils.assertParse(linter, doc, expectedText, props, //
+        LinterTestUtils.assertParse(linter, doc, expectedText, props, //
                 new Violation(doc, new Location(1, 1), Insert.endOfLine(EndOfLineValue.lf), linter,
                         PropertyType.insert_final_newline.getName(), "true"));
     }
@@ -169,9 +169,9 @@ public class TextValidatorTest {
                 "line 4\r\n" + //
                 "line 5\r" + //
                 "line 6";
-        EditableResource doc = ValidatorTestUtils.createDocument(text, ".txt");
+        EditableResource doc = LinterTestUtils.createDocument(text, ".txt");
 
-        ValidatorTestUtils.assertParse(linter, doc, expectedText, props, //
+        LinterTestUtils.assertParse(linter, doc, expectedText, props, //
                 new Violation(doc, new Location(2, 7), new Delete(1), linter,
                         PropertyType.trim_trailing_whitespace.getName(), "true"), //
                 new Violation(doc, new Location(3, 7), new Delete(1), linter,

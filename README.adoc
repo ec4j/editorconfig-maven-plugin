@@ -67,32 +67,32 @@ See http://ec4j.github.io/editorconfig-maven-plugin/check-mojo.html[editorconfig
 
 == How it works
 
-`editorconfig-maven-plugin` is designed around the concept of a Validator.
-https://github.com/ec4j/editorconfig-maven-plugin/blob/master/src/main/java/org/ec4j/maven/core/Validator.java[Validator]
+`editorconfig-maven-plugin` is designed around the concept of a Linter.
+https://github.com/ec4j/editorconfig-maven-plugin/blob/master/src/main/java/org/ec4j/maven/lint/api/Linter.java[Linter]
 is a processor specialized for some particular file format (such as YAML or XML) for which it can detect whether some
 particular `.editorconfig` properties are satisfied and eventually propose a
 https://github.com/ec4j/editorconfig-maven-plugin/blob/master/src/main/java/org/ec4j/maven/core/Edit.java[fix] that can
 be applied automatically.
 
-.Validators available in `editorconfig-maven-plugin`
+.Linters available in `editorconfig-maven-plugin`
 |===
 |Class name |Default includes|Default excludes |Supported `.editorconfig` properties
 
-|https://github.com/ec4j/editorconfig-maven-plugin/blob/master/src/main/java/org/ec4j/maven/validator/TextValidator.java[TextValidator]
+|https://github.com/ec4j/editorconfig-maven-plugin/blob/master/src/main/java/org/ec4j/maven/linters/TextLinter.java[TextLinter]
 |`pass:[**/*]`
 |
 |`https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#end_of_line[end_of_line]`,
 `https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#trim_trailing_whitespace[trim_trailing_whitespace]`,
 `https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#insert_final_newline[insert_final_newline]`
 
-|https://github.com/ec4j/editorconfig-maven-plugin/blob/master/src/main/java/org/ec4j/maven/validator/XmlValidator.java[XmlValidator]
+|https://github.com/ec4j/editorconfig-maven-plugin/blob/master/src/main/java/org/ec4j/maven/linters/XmlLinter.java[XmlLinter]
 |`pass:[**/*.xml]`, `pass:[**/*.xsl]`
 |
 |`https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#indent_style[indent_style]`,
 `https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#indent_size[indent_size]`
 |===
 
-Contributions of further Validators are highly welcome! Please
+Contributions of further Linters are highly welcome! Please
 https://github.com/ec4j/editorconfig-maven-plugin/issues[open an issue] when you start working on something to avoid
 duplicate work.
 

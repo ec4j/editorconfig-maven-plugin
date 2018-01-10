@@ -312,8 +312,8 @@ limitations under the License.</inlineHeader>
               <exclude>LICENSE</exclude>
               <exclude>mvnw</exclude>
               <exclude>mvnw.cmd</exclude>
-              <exclude>src/main/antlr4/org/ec4j/maven/validator/xml/XmlLexer.g4</exclude><!-- BSD License -->
-              <exclude>src/main/antlr4/org/ec4j/maven/validator/xml/XmlParser.g4</exclude><!-- BSD License -->
+              <exclude>src/main/antlr4/org/ec4j/maven/linters/xml/XmlLexer.g4</exclude><!-- BSD License -->
+              <exclude>src/main/antlr4/org/ec4j/maven/linters/xml/XmlParser.g4</exclude><!-- BSD License -->
               <exclude>src/test/resources/**/*.txt</exclude>
               <exclude>src/test/resources/**/*.good</exclude>
               <exclude>src/test/resources/**/*.bad</exclude>

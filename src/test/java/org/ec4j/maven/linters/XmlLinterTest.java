@@ -30,7 +30,7 @@ import org.ec4j.maven.lint.api.Location;
 import org.ec4j.maven.lint.api.Violation;
 import org.junit.Test;
 
-public class XmlValidatorTest {
+public class XmlLinterTest {
     private final Linter linter = new XmlLinter();
 
     @Test
@@ -49,7 +49,7 @@ public class XmlValidatorTest {
                 "    <text-1>text in text-1</text-1>\n" + //
                 "  </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = ValidatorTestUtils.createDocument(text, ".xml");
+        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("2").build()) //
@@ -57,7 +57,7 @@ public class XmlValidatorTest {
                 .property(new Property.Builder(null).type(PropertyType.trim_trailing_whitespace).value("true").build()) //
                 .build();
 
-        ValidatorTestUtils.assertParse(linter, doc, expectedText, props, //
+        LinterTestUtils.assertParse(linter, doc, expectedText, props, //
                 new Violation(doc, new Location(5, 5), new Delete(1), linter, PropertyType.indent_style.getName(),
                         IndentStyleValue.space.name(), PropertyType.indent_size.getName(), "2"), //
                 new Violation(doc, new Location(6, 3), new Delete(2), linter, PropertyType.indent_style.getName(),

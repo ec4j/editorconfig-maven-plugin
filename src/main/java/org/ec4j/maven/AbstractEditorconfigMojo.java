@@ -58,8 +58,8 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
      *
      * @since 0.0.1
      */
-    @Parameter(property = "editorconfig.addValidatorsFromClassPath", defaultValue = "true")
-    protected boolean addValidatorsFromClassPath;
+    @Parameter(property = "editorconfig.addLintersFromClassPath", defaultValue = "true")
+    protected boolean addLintersFromClassPath;
 
     /**
      * The base directory of the current Maven project.
@@ -126,33 +126,33 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
      * @since 0.0.1
      */
     @Parameter
-    protected List<ValidatorConfig> linters = new ArrayList<>();
+    protected List<LinterConfig> linters = new ArrayList<>();
 
     public AbstractEditorconfigMojo() {
         super();
     }
 
-    protected LinterRegistry buildValidatorRegistry() {
+    protected LinterRegistry buildLinterRegistry() {
 
-        final LinterRegistry.Builder validatorRegistryBuilder = LinterRegistry.builder();
+        final LinterRegistry.Builder linterRegistryBuilder = LinterRegistry.builder();
 
-        if (addValidatorsFromClassPath) {
-            validatorRegistryBuilder.scan(getClass().getClassLoader());
+        if (addLintersFromClassPath) {
+            linterRegistryBuilder.scan(getClass().getClassLoader());
         }
 
         if (linters != null && !linters.isEmpty()) {
-            for (ValidatorConfig validator : linters) {
-                if (validator.isEnabled()) {
-                    validatorRegistryBuilder.entry(validator.getId(), validator.getClassName(),
-                            this.getClass().getClassLoader(), validator.getIncludes(), validator.getExcludes(),
-                            validator.isUseDefaultIncludesAndExcludes());
+            for (LinterConfig linter : linters) {
+                if (linter.isEnabled()) {
+                    linterRegistryBuilder.entry(linter.getId(), linter.getClassName(),
+                            this.getClass().getClassLoader(), linter.getIncludes(), linter.getExcludes(),
+                            linter.isUseDefaultIncludesAndExcludes());
                 } else {
-                    validatorRegistryBuilder.removeEntry(validator.getId());
+                    linterRegistryBuilder.removeEntry(linter.getId());
                 }
             }
         }
 
-        return validatorRegistryBuilder.build();
+        return linterRegistryBuilder.build();
 
     }
 
@@ -186,7 +186,7 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
         this.charset = Charset.forName(this.encoding);
         this.basedirPath = basedir.toPath();
 
-        LinterRegistry linterRegistry = buildValidatorRegistry();
+        LinterRegistry linterRegistry = buildLinterRegistry();
         final String[] includedFiles = scanIncludedFiles();
 
         try {
@@ -210,12 +210,12 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
                     final Charset useEncoding = Charset
                             .forName(editorConfigProperties.getValue(PropertyType.charset, encoding, true));
                     final Resource resource = createResource(absFile, file, useEncoding);
-                    final List<Linter> filteredValidators = linterRegistry.filter(file);
+                    final List<Linter> filteredLinters = linterRegistry.filter(file);
                     ViolationHandler.ReturnState state = ViolationHandler.ReturnState.RECHECK;
                     while (state != ViolationHandler.ReturnState.FINISHED) {
-                        for (Linter linter : filteredValidators) {
+                        for (Linter linter : filteredLinters) {
                             if (log.isTraceEnabled()) {
-                                log.trace("Processing file '{}' using validator {}", file,
+                                log.trace("Processing file '{}' using linter {}", file,
                                         linter.getClass().getName());
                             }
                             handler.startFile(resource);

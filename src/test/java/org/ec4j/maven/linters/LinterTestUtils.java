@@ -34,7 +34,7 @@ import org.ec4j.maven.lint.api.Violation;
 import org.ec4j.maven.lint.api.ViolationCollector;
 import org.junit.Assert;
 
-public class ValidatorTestUtils {
+public class LinterTestUtils {
 
     public static void assertParse(Linter linter, EditableResource doc, String expectedText,
             ResourceProperties props, Violation... expected) throws IOException, MojoExecutionException {
@@ -68,7 +68,7 @@ public class ValidatorTestUtils {
     }
 
     public static EditableResource createDocument(String text, String fileExtension) throws IOException {
-        Path file = File.createTempFile(XmlValidatorTest.class.getSimpleName(), fileExtension).toPath();
+        Path file = File.createTempFile(XmlLinterTest.class.getSimpleName(), fileExtension).toPath();
         EditableResource doc = new EditableResource(file, file, StandardCharsets.UTF_8, text);
         return doc;
     }

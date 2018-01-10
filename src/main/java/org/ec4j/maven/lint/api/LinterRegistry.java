@@ -41,7 +41,7 @@ public class LinterRegistry {
      * A {@link LinterRegistry} builder.
      */
     public static class Builder {
-        private final Map<String, ValidatorEntry.Builder> entries = new LinkedHashMap<>();
+        private final Map<String, LinterEntry.Builder> entries = new LinkedHashMap<>();
 
         Builder() {
             super();
@@ -51,8 +51,8 @@ public class LinterRegistry {
          * @return a new {@link LinterRegistry}
          */
         public LinterRegistry build() {
-            Map<String, ValidatorEntry> useEntries = new LinkedHashMap<>(entries.size());
-            for (Map.Entry<String, ValidatorEntry.Builder> en : entries.entrySet()) {
+            Map<String, LinterEntry> useEntries = new LinkedHashMap<>(entries.size());
+            for (Map.Entry<String, LinterEntry.Builder> en : entries.entrySet()) {
                 useEntries.put(en.getKey(), en.getValue().build());
             }
             return new LinterRegistry(Collections.unmodifiableMap(useEntries));
@@ -60,25 +60,25 @@ public class LinterRegistry {
 
         /**
          * @param id
-         * @param validatorClass
+         * @param linterClass
          * @param classLoader
          * @param includes
          * @param excludes
          * @param useDefaultIncludesAndExcludes
          * @return
          */
-        public Builder entry(String id, String validatorClass, final ClassLoader classLoader, String[] includes,
+        public Builder entry(String id, String linterClass, final ClassLoader classLoader, String[] includes,
                 String[] excludes, boolean useDefaultIncludesAndExcludes) {
-            ValidatorEntry.Builder en = entries.get(id);
+            LinterEntry.Builder en = entries.get(id);
             if (en == null) {
                 try {
                     @SuppressWarnings("unchecked")
-                    Class<Linter> cl = (Class<Linter>) classLoader.loadClass(validatorClass);
+                    Class<Linter> cl = (Class<Linter>) classLoader.loadClass(linterClass);
                     Linter linter = cl.newInstance();
-                    en = new ValidatorEntry.Builder(linter);
+                    en = new LinterEntry.Builder(linter);
                     entries.put(id, en);
                 } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-                    throw new RuntimeException("Could not load class " + validatorClass, e);
+                    throw new RuntimeException("Could not load class " + linterClass, e);
                 }
             }
             en.useDefaultIncludesAndExcludes = useDefaultIncludesAndExcludes;
@@ -89,12 +89,12 @@ public class LinterRegistry {
         }
 
         public Builder entry(Linter linter) {
-            final String validatorClass = linter.getClass().getName();
-            ValidatorEntry.Builder en = entries.get(validatorClass);
+            final String linterClass = linter.getClass().getName();
+            LinterEntry.Builder en = entries.get(linterClass);
             if (en == null) {
-                en = new ValidatorEntry.Builder(linter);
+                en = new LinterEntry.Builder(linter);
 
-                entries.put(validatorClass, en);
+                entries.put(linterClass, en);
             }
 
             return this;
@@ -122,10 +122,10 @@ public class LinterRegistry {
     /**
      * A pair consisting of a {@link PathSet} and a {@link Linter}.
      */
-    static class ValidatorEntry {
+    static class LinterEntry {
 
         /**
-         * A {@link ValidatorEntry} builder.
+         * A {@link LinterEntry} builder.
          */
         public static class Builder {
             private final PathSet.Builder pathSetBuilder = new PathSet.Builder();
@@ -138,21 +138,21 @@ public class LinterRegistry {
             }
 
             /**
-             * @return a new {@link ValidatorEntry}
+             * @return a new {@link LinterEntry}
              */
-            public ValidatorEntry build() {
+            public LinterEntry build() {
                 if (this.useDefaultIncludesAndExcludes) {
                     pathSetBuilder.includes(linter.getDefaultIncludes());
                     pathSetBuilder.excludes(linter.getDefaultExcludes());
                 }
-                return new ValidatorEntry(linter, pathSetBuilder.build());
+                return new LinterEntry(linter, pathSetBuilder.build());
             }
         }
 
         private final PathSet pathSet;
         private final Linter linter;
 
-        ValidatorEntry(Linter linter, PathSet pathSet) {
+        LinterEntry(Linter linter, PathSet pathSet) {
             super();
             this.linter = linter;
             this.pathSet = pathSet;
@@ -160,7 +160,7 @@ public class LinterRegistry {
 
         /**
          * @return a {@link PathSet} whose {@link Path}s should be handled by the {@link Linter} returned by
-         *         {@link #getValidator()}
+         *         {@link #getLinter()}
          */
         public PathSet getPathSet() {
             return pathSet;
@@ -170,7 +170,7 @@ public class LinterRegistry {
          * @return the Linter responsible for handling {@link Path}s contained in the {@link PathSet} returned by
          *         {@link #getPathSet()}
          */
-        public Linter getValidator() {
+        public Linter getLinter() {
             return linter;
         }
 
@@ -182,9 +182,9 @@ public class LinterRegistry {
         return new Builder();
     }
 
-    private final Map<String, ValidatorEntry> entries;
+    private final Map<String, LinterEntry> entries;
 
-    LinterRegistry(Map<String, ValidatorEntry> entries) {
+    LinterRegistry(Map<String, LinterEntry> entries) {
         super();
         this.entries = entries;
     }
@@ -199,9 +199,9 @@ public class LinterRegistry {
     public List<Linter> filter(Path path) {
         log.trace("Filtering linters for file '{}'", path);
         final List<Linter> result = new ArrayList<>(entries.size());
-        for (ValidatorEntry validatorEntry : entries.values()) {
-            if (validatorEntry.getPathSet().contains(path)) {
-                final Linter linter = validatorEntry.getValidator();
+        for (LinterEntry linterEntry : entries.values()) {
+            if (linterEntry.getPathSet().contains(path)) {
+                final Linter linter = linterEntry.getLinter();
                 if (log.isTraceEnabled()) {
                     log.trace("Adding linter {}", linter.getClass().getName());
                 }
