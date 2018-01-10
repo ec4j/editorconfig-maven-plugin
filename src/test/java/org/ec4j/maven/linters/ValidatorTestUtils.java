@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ec4j.maven.validator;
+package org.ec4j.maven.linters;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,12 +26,12 @@ import java.util.Map;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.ec4j.core.ResourceProperties;
-import org.ec4j.maven.core.EditableResource;
-import org.ec4j.maven.core.FormattingHandler;
-import org.ec4j.maven.core.Resource;
-import org.ec4j.maven.core.Validator;
-import org.ec4j.maven.core.Violation;
-import org.ec4j.maven.core.ViolationCollector;
+import org.ec4j.maven.lint.api.EditableResource;
+import org.ec4j.maven.lint.api.FormattingHandler;
+import org.ec4j.maven.lint.api.Resource;
+import org.ec4j.maven.lint.api.Validator;
+import org.ec4j.maven.lint.api.Violation;
+import org.ec4j.maven.lint.api.ViolationCollector;
 import org.junit.Assert;
 
 public class ValidatorTestUtils {

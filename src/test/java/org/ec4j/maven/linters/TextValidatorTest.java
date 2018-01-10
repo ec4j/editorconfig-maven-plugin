@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ec4j.maven.validator;
+package org.ec4j.maven.linters;
 
 import java.io.IOException;
 
@@ -23,13 +23,13 @@ import org.ec4j.core.ResourceProperties;
 import org.ec4j.core.model.Property;
 import org.ec4j.core.model.PropertyType;
 import org.ec4j.core.model.PropertyType.EndOfLineValue;
-import org.ec4j.maven.core.Delete;
-import org.ec4j.maven.core.EditableResource;
-import org.ec4j.maven.core.Insert;
-import org.ec4j.maven.core.Location;
-import org.ec4j.maven.core.Replace;
-import org.ec4j.maven.core.Validator;
-import org.ec4j.maven.core.Violation;
+import org.ec4j.maven.lint.api.Delete;
+import org.ec4j.maven.lint.api.EditableResource;
+import org.ec4j.maven.lint.api.Insert;
+import org.ec4j.maven.lint.api.Location;
+import org.ec4j.maven.lint.api.Replace;
+import org.ec4j.maven.lint.api.Validator;
+import org.ec4j.maven.lint.api.Violation;
 import org.junit.Test;
 
 public class TextValidatorTest {

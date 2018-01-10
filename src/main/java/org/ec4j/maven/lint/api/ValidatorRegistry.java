@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ec4j.maven.core;
+package org.ec4j.maven.lint.api;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 
-import org.ec4j.maven.validator.TextValidator;
-import org.ec4j.maven.validator.XmlValidator;
+import org.ec4j.maven.linters.TextValidator;
+import org.ec4j.maven.linters.XmlValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

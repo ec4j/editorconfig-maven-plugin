@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ec4j.maven.validator;
+package org.ec4j.maven.linters;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -26,16 +26,16 @@ import java.util.regex.Pattern;
 import org.ec4j.core.ResourceProperties;
 import org.ec4j.core.model.PropertyType;
 import org.ec4j.core.model.PropertyType.EndOfLineValue;
-import org.ec4j.maven.core.Delete;
-import org.ec4j.maven.core.Edit;
-import org.ec4j.maven.core.Insert;
-import org.ec4j.maven.core.LineReader;
-import org.ec4j.maven.core.Location;
-import org.ec4j.maven.core.Replace;
-import org.ec4j.maven.core.Resource;
-import org.ec4j.maven.core.Validator;
-import org.ec4j.maven.core.Violation;
-import org.ec4j.maven.core.ViolationHandler;
+import org.ec4j.maven.lint.api.Delete;
+import org.ec4j.maven.lint.api.Edit;
+import org.ec4j.maven.lint.api.Insert;
+import org.ec4j.maven.lint.api.LineReader;
+import org.ec4j.maven.lint.api.Location;
+import org.ec4j.maven.lint.api.Replace;
+import org.ec4j.maven.lint.api.Resource;
+import org.ec4j.maven.lint.api.Validator;
+import org.ec4j.maven.lint.api.Violation;
+import org.ec4j.maven.lint.api.ViolationHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

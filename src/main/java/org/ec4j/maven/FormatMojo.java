@@ -22,10 +22,10 @@ import java.nio.file.Path;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.ec4j.maven.core.EditableResource;
-import org.ec4j.maven.core.FormattingHandler;
-import org.ec4j.maven.core.Resource;
-import org.ec4j.maven.core.ViolationHandler;
+import org.ec4j.maven.lint.api.EditableResource;
+import org.ec4j.maven.lint.api.FormattingHandler;
+import org.ec4j.maven.lint.api.Resource;
+import org.ec4j.maven.lint.api.ViolationHandler;
 
 /**
  * Formats a set of files so that they comply with rules defined in {@code .editorconfig} files.

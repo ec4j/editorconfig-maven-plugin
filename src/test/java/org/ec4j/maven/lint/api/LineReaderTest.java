@@ -14,15 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ec4j.maven.core;
+package org.ec4j.maven.lint.api;
 
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ec4j.maven.core.LineReader.DelegatingLineReader;
-import org.ec4j.maven.core.LineReader.StringBuilderReader;
+import org.ec4j.maven.lint.api.LineReader.DelegatingLineReader;
+import org.ec4j.maven.lint.api.LineReader.StringBuilderReader;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -16,8 +16,8 @@
  */
 package org.ec4j.maven;
 
-import org.ec4j.maven.core.Validator;
-import org.ec4j.maven.validator.TextValidator;
+import org.ec4j.maven.lint.api.Validator;
+import org.ec4j.maven.linters.TextValidator;
 
 /**
  * A configuration of a {@link Validator}.

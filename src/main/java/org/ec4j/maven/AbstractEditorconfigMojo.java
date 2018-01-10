@@ -35,11 +35,11 @@ import org.ec4j.core.ResourcePath.ResourcePaths;
 import org.ec4j.core.ResourceProperties;
 import org.ec4j.core.ResourcePropertiesService;
 import org.ec4j.core.model.PropertyType;
-import org.ec4j.maven.core.FormatException;
-import org.ec4j.maven.core.Resource;
-import org.ec4j.maven.core.Validator;
-import org.ec4j.maven.core.ValidatorRegistry;
-import org.ec4j.maven.core.ViolationHandler;
+import org.ec4j.maven.lint.api.FormatException;
+import org.ec4j.maven.lint.api.Resource;
+import org.ec4j.maven.lint.api.Validator;
+import org.ec4j.maven.lint.api.ValidatorRegistry;
+import org.ec4j.maven.lint.api.ViolationHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
