@@ -20,19 +20,19 @@ under the License.
 <rss version="0.91">
   <channel>
     <title>EditorConfig Maven Plugin - Checkstyle report</title>
-    <link>https://github.com/ec4j/editorconfig-maven-plugin</link>
+    <link>https://github.com/ec4j/editorconfig-maven-plugin/editorconfig-maven-plugin</link>
     <description>EditorConfig Maven Plugin - Checkstyle report</description>
     <language>en-us</language>
     <copyright>&#169;2017 - 2018</copyright>
     <item>
-      <title>File: 31,
+      <title>File: 7,
              Errors: 0,
              Warnings: 0,
              Infos: 0
       </title>
-            <link>https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html</link>
+            <link>https://github.com/ec4j/editorconfig-maven-plugin/editorconfig-maven-plugin/checkstyle.html</link>
       <description>
-        <p>Click <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html">here</a> for the full Checkstyle report.</p>
+        <p>Click <a href="https://github.com/ec4j/editorconfig-maven-plugin/editorconfig-maven-plugin/checkstyle.html">here</a> for the full Checkstyle report.</p>
 
         <table summary="Files" boder="1">
           <thead>
@@ -46,7 +46,7 @@ under the License.
           <tbody>
                           <tr>
                 <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.ValidatorConfig.java">src/main/java/org/ec4j/maven/ValidatorConfig.java</a>
+                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.LinterConfig.java">src/main/java/org/ec4j/maven/LinterConfig.java</a>
                 </td>
                 <td>
                   0
@@ -60,7 +60,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.test.java.org.ec4j.maven.validator.XmlValidatorTest.java">src/test/java/org/ec4j/maven/validator/XmlValidatorTest.java</a>
+                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/editorconfig-maven-plugin/checkstyle.html#src.test.projects.defaults.src.main.java.org.ec4j.maven.it.defaults.App.java">src/test/projects/defaults/src/main/java/org/ec4j/maven/it/defaults/App.java</a>
                 </td>
                 <td>
                   0
@@ -74,7 +74,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.core.Delete.java">src/main/java/org/ec4j/maven/core/Delete.java</a>
+                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.CheckMojo.java">src/main/java/org/ec4j/maven/CheckMojo.java</a>
                 </td>
                 <td>
                   0
@@ -88,7 +88,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.core.Replace.java">src/main/java/org/ec4j/maven/core/Replace.java</a>
+                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/editorconfig-maven-plugin/checkstyle.html#src.test.projects.defaults-formatted.src.main.java.org.ec4j.maven.it.defaults.App.java">src/test/projects/defaults-formatted/src/main/java/org/ec4j/maven/it/defaults/App.java</a>
                 </td>
                 <td>
                   0
@@ -102,7 +102,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.core.Insert.java">src/main/java/org/ec4j/maven/core/Insert.java</a>
+                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.AbstractEditorconfigMojo.java">src/main/java/org/ec4j/maven/AbstractEditorconfigMojo.java</a>
                 </td>
                 <td>
                   0
@@ -116,7 +116,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.test.java.org.ec4j.maven.EditorConfigMojosTest.java">src/test/java/org/ec4j/maven/EditorConfigMojosTest.java</a>
+                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.FormatMojo.java">src/main/java/org/ec4j/maven/FormatMojo.java</a>
                 </td>
                 <td>
                   0
@@ -130,343 +130,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.core.EditableResource.java">src/main/java/org/ec4j/maven/core/EditableResource.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.core.Edit.java">src/main/java/org/ec4j/maven/core/Edit.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.test.java.org.ec4j.maven.core.LineReaderTest.java">src/test/java/org/ec4j/maven/core/LineReaderTest.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.core.Resource.java">src/main/java/org/ec4j/maven/core/Resource.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.test.java.org.ec4j.maven.core.PathSetTest.java">src/test/java/org/ec4j/maven/core/PathSetTest.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.core.Violation.java">src/main/java/org/ec4j/maven/core/Violation.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.core.LineReader.java">src/main/java/org/ec4j/maven/core/LineReader.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.core.ValidatorRegistry.java">src/main/java/org/ec4j/maven/core/ValidatorRegistry.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.AbstractEditorconfigMojo.java">src/main/java/org/ec4j/maven/AbstractEditorconfigMojo.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.test.java.org.ec4j.maven.validator.TextValidatorTest.java">src/test/java/org/ec4j/maven/validator/TextValidatorTest.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.core.PathSet.java">src/main/java/org/ec4j/maven/core/PathSet.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.test.projects.defaults.src.main.java.org.ec4j.maven.it.defaults.App.java">src/test/projects/defaults/src/main/java/org/ec4j/maven/it/defaults/App.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.core.Location.java">src/main/java/org/ec4j/maven/core/Location.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.test.projects.defaults-formatted.src.main.java.org.ec4j.maven.it.defaults.App.java">src/test/projects/defaults-formatted/src/main/java/org/ec4j/maven/it/defaults/App.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.validator.XmlValidator.java">src/main/java/org/ec4j/maven/validator/XmlValidator.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.core.FormattingHandler.java">src/main/java/org/ec4j/maven/core/FormattingHandler.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.core.ViolationHandler.java">src/main/java/org/ec4j/maven/core/ViolationHandler.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.core.ViolationCollector.java">src/main/java/org/ec4j/maven/core/ViolationCollector.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.test.java.org.ec4j.maven.validator.ValidatorTestUtils.java">src/test/java/org/ec4j/maven/validator/ValidatorTestUtils.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.FormatMojo.java">src/main/java/org/ec4j/maven/FormatMojo.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.core.FormatException.java">src/main/java/org/ec4j/maven/core/FormatException.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.test.java.org.ec4j.maven.core.EditableResourceTest.java">src/test/java/org/ec4j/maven/core/EditableResourceTest.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.CheckMojo.java">src/main/java/org/ec4j/maven/CheckMojo.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.core.Validator.java">src/main/java/org/ec4j/maven/core/Validator.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/checkstyle.html#src.main.java.org.ec4j.maven.validator.TextValidator.java">src/main/java/org/ec4j/maven/validator/TextValidator.java</a>
+                  <a href="https://github.com/ec4j/editorconfig-maven-plugin/editorconfig-maven-plugin/checkstyle.html#src.test.java.org.ec4j.maven.EditorConfigMojosTest.java">src/test/java/org/ec4j/maven/EditorConfigMojosTest.java</a>
                 </td>
                 <td>
                   0
