@@ -25,6 +25,8 @@
   <packaging>pom</packaging>
 
   <name>EditorConfig Maven Plugin Parent</name>
+  <description>See editorconfig-maven-plugin</description>
+
   <url>https://github.com/ec4j/editorconfig-maven-plugin</url>
   <inceptionYear>2017</inceptionYear>
   <licenses>

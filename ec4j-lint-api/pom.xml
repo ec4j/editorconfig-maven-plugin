@@ -28,6 +28,7 @@
   <packaging>takari-jar</packaging>
 
   <name>ec4j lint API</name>
+  <description>ec4j lint API for building linters. Default linters live in ec4j-linters</description>
 
   <dependencies>
 

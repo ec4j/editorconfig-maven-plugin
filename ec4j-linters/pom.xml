@@ -28,6 +28,7 @@
   <packaging>takari-jar</packaging>
 
   <name>ec4j linters</name>
+  <description>ec4j linter implementations</description>
 
   <dependencies>
 
