@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 
-import org.ec4j.maven.linters.TextLinter;
-import org.ec4j.maven.linters.XmlLinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -106,8 +104,6 @@ public class LinterRegistry {
         }
 
         public Builder scan(ClassLoader classLoader) {
-            entry(new TextLinter());
-            entry(new XmlLinter());
             final ServiceLoader<Linter> loader = java.util.ServiceLoader.load(Linter.class, classLoader);
             final Iterator<Linter> it = loader.iterator();
             while (it.hasNext()) {

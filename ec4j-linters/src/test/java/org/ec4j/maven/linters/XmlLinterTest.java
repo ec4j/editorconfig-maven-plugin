@@ -18,7 +18,6 @@ package org.ec4j.maven.linters;
 
 import java.io.IOException;
 
-import org.apache.maven.plugin.MojoExecutionException;
 import org.ec4j.core.ResourceProperties;
 import org.ec4j.core.model.Property;
 import org.ec4j.core.model.PropertyType;
@@ -34,7 +33,7 @@ public class XmlLinterTest {
     private final Linter linter = new XmlLinter();
 
     @Test
-    public void simple() throws MojoExecutionException, IOException {
+    public void simple() throws IOException {
         String text = "<?xml version=\"1.0\"?>\n" + //
                 "<!-- license -->\n" + //
                 "<root>\n" + //

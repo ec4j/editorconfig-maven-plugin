@@ -74,6 +74,8 @@
 
   <modules>
     <module>editorconfig-maven-plugin</module>
+    <module>ec4j-lint-api</module>
+    <module>ec4j-linters</module>
   </modules>
 
   <properties>
@@ -214,6 +216,18 @@
         <groupId>org.ec4j.core</groupId>
         <artifactId>ec4j-core</artifactId>
         <version>${version.org.ec4j.core}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.ec4j.maven</groupId>
+        <artifactId>ec4j-lint-api</artifactId>
+        <version>0.0.2-SNAPSHOT</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.ec4j.maven</groupId>
+        <artifactId>ec4j-linters</artifactId>
+        <version>0.0.2-SNAPSHOT</version>
       </dependency>
 
       <dependency>

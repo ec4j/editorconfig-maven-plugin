@@ -18,7 +18,6 @@ package org.ec4j.maven.linters;
 
 import java.io.IOException;
 
-import org.apache.maven.plugin.MojoExecutionException;
 import org.ec4j.core.ResourceProperties;
 import org.ec4j.core.model.Property;
 import org.ec4j.core.model.PropertyType;
@@ -37,7 +36,7 @@ public class TextLinterTest {
     private final Linter linter = new TextLinter();
 
     @Test
-    public void end_of_line_cr() throws IOException, MojoExecutionException {
+    public void end_of_line_cr() throws IOException {
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.end_of_line).value("cr").build()) //
                 .build();
@@ -65,7 +64,7 @@ public class TextLinterTest {
     }
 
     @Test
-    public void end_of_line_crlf() throws IOException, MojoExecutionException {
+    public void end_of_line_crlf() throws IOException {
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.end_of_line).value("crlf").build()) //
                 .build();
@@ -92,7 +91,7 @@ public class TextLinterTest {
     }
 
     @Test
-    public void end_of_line_lf() throws IOException, MojoExecutionException {
+    public void end_of_line_lf() throws IOException {
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.end_of_line).value("lf").build()) //
                 .build();
@@ -119,7 +118,7 @@ public class TextLinterTest {
     }
 
     @Test
-    public void insert_final_newline() throws IOException, MojoExecutionException {
+    public void insert_final_newline() throws IOException {
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.insert_final_newline).value("true").build()) //
                 .property(new Property.Builder(null).type(PropertyType.end_of_line).value("lf").build()) //
@@ -138,7 +137,7 @@ public class TextLinterTest {
     }
 
     @Test
-    public void insert_final_newline_empty() throws IOException, MojoExecutionException {
+    public void insert_final_newline_empty() throws IOException {
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.insert_final_newline).value("true").build()) //
                 .property(new Property.Builder(null).type(PropertyType.end_of_line).value("lf").build()) //
@@ -153,7 +152,7 @@ public class TextLinterTest {
     }
 
     @Test
-    public void trim_trailing_whitespace() throws IOException, MojoExecutionException {
+    public void trim_trailing_whitespace() throws IOException {
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.trim_trailing_whitespace).value("true").build()) //
                 .build();

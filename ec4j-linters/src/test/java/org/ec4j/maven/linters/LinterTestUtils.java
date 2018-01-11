@@ -24,7 +24,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.maven.plugin.MojoExecutionException;
 import org.ec4j.core.ResourceProperties;
 import org.ec4j.maven.lint.api.EditableResource;
 import org.ec4j.maven.lint.api.FormattingHandler;
@@ -37,7 +36,7 @@ import org.junit.Assert;
 public class LinterTestUtils {
 
     public static void assertParse(Linter linter, EditableResource doc, String expectedText,
-            ResourceProperties props, Violation... expected) throws IOException, MojoExecutionException {
+            ResourceProperties props, Violation... expected) throws IOException {
 
         ViolationCollector collector = new ViolationCollector(false);
         collector.startFiles();

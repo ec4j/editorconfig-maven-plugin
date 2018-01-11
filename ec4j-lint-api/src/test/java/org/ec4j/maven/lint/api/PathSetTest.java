@@ -16,13 +16,8 @@
  */
 package org.ec4j.maven.lint.api;
 
-import java.io.File;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
-import org.codehaus.plexus.util.DirectoryScanner;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -43,21 +38,6 @@ public class PathSetTest {
         assertContains(ps, "dir1/file.good", true);
         assertContains(ps, "file.bad", false);
         assertContains(ps, "dir1/file.bad", false);
-    }
-
-    @Test
-    public void containsScanner() {
-        final DirectoryScanner scanner = new DirectoryScanner();
-        scanner.setBasedir("target/test-classes/pathset");
-        scanner.setIncludes(new String[] { "**/*" });
-        scanner.setExcludes(new String[] { "**/*.bad" });
-        scanner.scan();
-        Set<String> includedFiles = new HashSet<>(Arrays.asList(scanner.getIncludedFiles()));
-
-        Assert.assertTrue(includedFiles.contains("file.good"));
-        Assert.assertTrue(includedFiles.contains("dir1/file.good".replace('/', File.separatorChar)));
-        Assert.assertFalse(includedFiles.contains("file.bad"));
-        Assert.assertFalse(includedFiles.contains("dir1/file.bad".replace('/', File.separatorChar)));
     }
 
 }
