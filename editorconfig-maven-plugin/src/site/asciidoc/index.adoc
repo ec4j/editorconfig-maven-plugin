@@ -1,14 +1,4 @@
-ifdef::env-github[]
-:warning-caption: :warning:
-endif::[]
-
-= `editorconfig-maven-plugin`
-
-https://github.com/ec4j/editorconfig-maven-plugin/blob/master/LICENSE[image:https://img.shields.io/github/license/ec4j/editorconfig-maven-plugin.svg[License]]
-http://search.maven.org/#search%7Cga%7C1%7Corg.ec4j.maven[image:https://img.shields.io/maven-central/v/org.ec4j.maven/editorconfig-maven-plugin.svg[Maven
-Central]]
-http://travis-ci.org/ec4j/editorconfig-maven-plugin[image:https://img.shields.io/travis/ec4j/editorconfig-maven-plugin/master.svg?logo=travis&color=white&label=Travis+CI[Travis CI build status]]
-https://ci.appveyor.com/project/ppalaga/editorconfig-maven-plugin[image:https://img.shields.io/appveyor/ci/ppalaga/editorconfig-maven-plugin/master.svg?logo=appveyor&color=white&label=AppVeyor+Windows+CI[AppVeyor Windows CI build status]]
+= Introduction
 
 `editorconfig-maven-plugin` is a Maven plugin for checking whether project files comply with format rules
 defined in `http://editorconfig.org/[.editorconfig]` files and eventually also for fixing the violations.
@@ -16,19 +6,18 @@ defined in `http://editorconfig.org/[.editorconfig]` files and eventually also f
 WARNING: `editorconfig-maven-plugin` is new. Expect issues of all kinds which is not to say that you should not
 https://github.com/ec4j/editorconfig-maven-plugin/issues[report] them :)
 
-
 == Basic usage
 
-`editorconfig-maven-plugin` requires Java 7+ and Maven 3.3.1+.
+`editorconfig-maven-plugin` requires Java {maven-compiler-target}+ and Maven {project-prerequisites-maven}+.
 
 To make the build fail if any of your source files does not comply with `.editorconfig` rules, add the following to your project:
 
-[source,xml]
+[source,xml,subs=attributes+]
 ----
   <plugin>
     <groupId>org.ec4j.maven</groupId>
     <artifactId>editorconfig-maven-plugin</artifactId>
-    <version><!-- check the latest on http://central.maven.org/maven2/org/ec4j/maven/editorconfig-maven-plugin/ --></version>
+    <version>{project-version}</version>
     <executions>
       <execution>
         <id>check</id>
@@ -61,9 +50,6 @@ In case any violations are detected, you may want to fix them automagically by r
 mvn editorconfig:format
 ----
 
-== Configuration
-
-See http://ec4j.github.io/editorconfig-maven-plugin/check-mojo.html[editorconfig:check] and http://ec4j.github.io/editorconfig-maven-plugin/format-mojo.html[editorconfig:format].
 
 == How it works
 
@@ -75,6 +61,7 @@ https://github.com/ec4j/editorconfig-maven-plugin/blob/master/src/main/java/org/
 be applied automatically.
 
 .Linters available in `editorconfig-maven-plugin`
+[cols="1,1,1,4"]
 |===
 |Class name |Default includes|Default excludes |Supported `.editorconfig` properties
 
@@ -92,33 +79,7 @@ be applied automatically.
 `https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#indent_size[indent_size]`
 |===
 
+
 Contributions of further Linters are highly welcome! Please
 https://github.com/ec4j/editorconfig-maven-plugin/issues[open an issue] when you start working on something to avoid
 duplicate work.
-
-== How to build
-
-Prerequisites:
-
-* Java 7+
-* Optionally Maven 3.5.0+, unless you want to use `./mvnw` or `mvnw.bat` delivered by the project
-
-The most common build with unit tests:
-
-[source,shell]
-----
-./mvnw clean install
-----
-
-On Windows:
-
-[source,shell]
-----
-.\mvnw.cmd clean install
-----
-
-
-== Misc.
-
-* All code and contributions are under link:/LICENSE[Apache License]
-* Issues and Discussions: https://github.com/ec4j/editorconfig-maven-plugin/issues
