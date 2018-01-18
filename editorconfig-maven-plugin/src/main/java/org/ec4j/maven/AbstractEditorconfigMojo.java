@@ -183,7 +183,12 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
             return;
         }
 
-        this.charset = Charset.forName(this.encoding);
+        if (this.encoding == null || this.encoding.isEmpty()) {
+            this.charset = Charset.defaultCharset();
+            log.warn("Using current platform's default encoding {} to read .editorconfig files. You do not want this. Set either 'project.build.sourceEncoding' or 'editorconfig.encoding' property.", charset);
+        } else {
+            this.charset = Charset.forName(this.encoding);
+        }
         this.basedirPath = basedir.toPath();
 
         LinterRegistry linterRegistry = buildLinterRegistry();
