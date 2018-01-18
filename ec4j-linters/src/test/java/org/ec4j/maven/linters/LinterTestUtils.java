@@ -52,8 +52,8 @@ public class LinterTestUtils {
             Assert.assertNull("" + expected.length + " violations expected, found " + actual, actual);
         } else {
             Assert.assertNotNull("" + expected.length + " violations expected, found none", actual);
+            Assert.assertEquals(Arrays.asList(expected), actual);
         }
-        Assert.assertEquals(Arrays.asList(expected), actual);
 
         FormattingHandler formatter = new FormattingHandler(false, false);
         formatter.startFiles();

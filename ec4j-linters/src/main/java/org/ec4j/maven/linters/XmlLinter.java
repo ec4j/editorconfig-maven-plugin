@@ -165,7 +165,7 @@ public class XmlLinter implements Linter {
 
         private final StringBuilder charBuffer = new StringBuilder();
 
-        private int charLineNumber;
+        private int charBufferEndLineNumber;
 
         /** The file being checked */
         private final Resource file;
@@ -185,6 +185,8 @@ public class XmlLinter implements Linter {
         /** The {@link ViolationHandler} for reporting found violations */
         private final ViolationHandler violationHandler;
 
+        private Boolean charBufferStartsAtStartOfDocument;
+
         FormatParserListener(Linter linter, Resource file, IndentStyleValue indentStyle, int indetSize,
                 ViolationHandler violationHandler) {
             super();
@@ -197,8 +199,12 @@ public class XmlLinter implements Linter {
         }
 
         private void consumeText(ParserRuleContext ctx) {
+            if (charBufferStartsAtStartOfDocument == null) {
+                Token start = ctx.getStart();
+                charBufferStartsAtStartOfDocument = start.getLine() == 1 && start.getCharPositionInLine() == 0;
+            }
             charBuffer.append(ctx.getText());
-            charLineNumber = ctx.getStop().getLine();
+            charBufferEndLineNumber = ctx.getStop().getLine();
         }
 
         @Override
@@ -430,7 +436,7 @@ public class XmlLinter implements Linter {
                 switch (ch) {
                 case '\n':
                 case '\r':
-                    lastIndent = new Indent(charLineNumber, indentLength);
+                    lastIndent = new Indent(charBufferEndLineNumber, indentLength);
                     charBuffer.setLength(0);
                     return;
                 case ' ':
@@ -446,6 +452,11 @@ public class XmlLinter implements Linter {
                     return;
                 }
             }
+            if (charBufferStartsAtStartOfDocument != null && charBufferStartsAtStartOfDocument.booleanValue()) {
+                lastIndent = new Indent(charBufferEndLineNumber, indentLength);
+                charBuffer.setLength(0);
+            }
+            charBufferStartsAtStartOfDocument = null;
         }
 
         @Override

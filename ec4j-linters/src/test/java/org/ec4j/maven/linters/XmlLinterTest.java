@@ -33,6 +33,85 @@ public class XmlLinterTest {
     private final Linter linter = new XmlLinter();
 
     @Test
+    public void indentedRootElement() throws IOException {
+        String text = "        <root>\n" + //
+                "            <child1>\n" + //
+                "                <child2 />\n" + //
+                "            </child1>\n" + //
+                "        </root>\n";
+        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+
+        final ResourceProperties props = ResourceProperties.builder() //
+                .property(new Property.Builder(null).type(PropertyType.indent_size).value("4").build()) //
+                .property(new Property.Builder(null).type(PropertyType.indent_style).value("space").build()) //
+                .property(new Property.Builder(null).type(PropertyType.trim_trailing_whitespace).value("true").build()) //
+                .build();
+
+        /* no change, no violations */
+        LinterTestUtils.assertParse(linter, doc, text, props);
+    }
+
+    @Test
+    public void indentedRootElementAfterCommentSameLevel() throws IOException {
+        String text = "        <!-- comment -->\n" + //
+                "        <root>\n" + //
+                "            <child1>\n" + //
+                "                <child2 />\n" + //
+                "            </child1>\n" + //
+                "        </root>\n";
+        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+
+        final ResourceProperties props = ResourceProperties.builder() //
+                .property(new Property.Builder(null).type(PropertyType.indent_size).value("4").build()) //
+                .property(new Property.Builder(null).type(PropertyType.indent_style).value("space").build()) //
+                .property(new Property.Builder(null).type(PropertyType.trim_trailing_whitespace).value("true").build()) //
+                .build();
+
+        /* no change, no violations */
+        LinterTestUtils.assertParse(linter, doc, text, props);
+    }
+
+    @Test
+    public void indentedRootElementAfterUnindentedComment() throws IOException {
+        String text = "<!-- comment -->\n" + //
+                "        <root>\n" + //
+                "            <child1>\n" + //
+                "                <child2 />\n" + //
+                "            </child1>\n" + //
+                "        </root>\n";
+        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+
+        final ResourceProperties props = ResourceProperties.builder() //
+                .property(new Property.Builder(null).type(PropertyType.indent_size).value("4").build()) //
+                .property(new Property.Builder(null).type(PropertyType.indent_style).value("space").build()) //
+                .property(new Property.Builder(null).type(PropertyType.trim_trailing_whitespace).value("true").build()) //
+                .build();
+
+        /* no change, no violations */
+        LinterTestUtils.assertParse(linter, doc, text, props);
+    }
+
+    @Test
+    public void indentedRootElementAfterCommentDiffLevel() throws IOException {
+        String text = "<!-- comment -->\n" + //
+                "        <root>\n" + //
+                "            <child1>\n" + //
+                "                <child2 />\n" + //
+                "            </child1>\n" + //
+                "        </root>\n";
+        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+
+        final ResourceProperties props = ResourceProperties.builder() //
+                .property(new Property.Builder(null).type(PropertyType.indent_size).value("4").build()) //
+                .property(new Property.Builder(null).type(PropertyType.indent_style).value("space").build()) //
+                .property(new Property.Builder(null).type(PropertyType.trim_trailing_whitespace).value("true").build()) //
+                .build();
+
+        /* no change, no violations */
+        LinterTestUtils.assertParse(linter, doc, text, props);
+    }
+
+    @Test
     public void simple() throws IOException {
         String text = "<?xml version=\"1.0\"?>\n" + //
                 "<!-- license -->\n" + //
