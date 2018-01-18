@@ -31,7 +31,6 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.ec4j.core.Cache.Caches;
 import org.ec4j.core.Resource.Resources;
-import org.ec4j.core.ResourcePath.ResourcePaths;
 import org.ec4j.core.ResourceProperties;
 import org.ec4j.core.ResourcePropertiesService;
 import org.ec4j.core.model.PropertyType;
@@ -196,11 +195,9 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
 
         try {
             final ViolationHandler handler = createHandler();
-            final Path sourceTreeRoot = Paths.get(System.getProperty("maven.multiModuleProjectDirectory"));
 
             final ResourcePropertiesService resourcePropertiesService = ResourcePropertiesService.builder() //
                     .cache(Caches.permanent()) //
-                    .rootDirectory(ResourcePaths.ofPath(sourceTreeRoot, charset)) //
                     .build();
             handler.startFiles();
             boolean propertyMatched = false;
