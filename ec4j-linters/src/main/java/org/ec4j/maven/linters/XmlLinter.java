@@ -19,6 +19,7 @@ package org.ec4j.maven.linters;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
@@ -40,6 +41,7 @@ import org.ec4j.maven.lint.api.Edit;
 import org.ec4j.maven.lint.api.Insert;
 import org.ec4j.maven.lint.api.Linter;
 import org.ec4j.maven.lint.api.Location;
+import org.ec4j.maven.lint.api.Replace;
 import org.ec4j.maven.lint.api.Resource;
 import org.ec4j.maven.lint.api.Violation;
 import org.ec4j.maven.lint.api.ViolationHandler;
@@ -124,7 +126,33 @@ public class XmlLinter implements Linter {
             /**
              * An {@link Indent} usable at the beginning of a typical XML file.
              */
-            public static final FormatParserListener.Indent START = new Indent(1, 0);
+            public static final FormatParserListener.Indent START = new Indent(1, 0, -1, 0);
+
+            public static Indent of(int lineNumber, int size, BitSet edits, int editsLength) {
+                if (editsLength == 0) {
+                    return new Indent(lineNumber, size, -1, 0);
+                } else {
+                    int badStartColumn = 1;
+                    int badLength = editsLength;
+                    for (int i = editsLength - 1; i >= 0; i--) {
+                        if (!edits.get(i)) {
+                            badLength--;
+                            badStartColumn++;
+                        } else {
+                            break;
+                        }
+                    }
+                    return new Indent(lineNumber, size, badStartColumn, badLength);
+                }
+            }
+
+            /**
+             * The number of elements that need to be replaced or removed.
+             */
+            private final int badLength;
+
+            /** The 1-based column number where the first bad indent character is located */
+            private final int badStartColumn;
 
             /**
              * The line number where this {@link Indent} occurs. The first line number in a file is {@code 1}.
@@ -134,16 +162,20 @@ public class XmlLinter implements Linter {
             /** The number of spaces in this {@link Indent}. */
             private final int size;
 
-            Indent(int lineNumber, int size) {
+            Indent(int lineNumber, int size, int badStartColumn, int badLength) {
                 super();
                 this.lineNumber = lineNumber;
                 this.size = size;
+                this.badStartColumn = badStartColumn;
+                this.badLength = badLength;
             }
 
             @Override
             public String toString() {
-                return "Indent [size=" + size + ", lineNumber=" + lineNumber + "]";
+                return "Indent [lineNumber=" + lineNumber + ", size=" + size + ", badLength=" + badLength
+                        + ", badStartColumn=" + badStartColumn + "]";
             }
+
         }
 
         static class LastTerminalFinder extends AbstractParseTreeVisitor<Object> {
@@ -167,25 +199,29 @@ public class XmlLinter implements Linter {
 
         private int charBufferEndLineNumber;
 
+        /** Helps to detect the initial whitespace in the document */
+        private Boolean charBufferStartsAtStartOfDocument;
+
         /** The file being checked */
         private final Resource file;
 
+        /** The indentation character, such as tab or space */
         private final char indentChar;
+
+        /** The number of {@link #indentChar}s to use for one level of indentation */
         private final int indentSize;
 
         private final IndentStyleValue indentStyle;
 
         private FormatParserListener.Indent lastIndent = Indent.START;
 
+        private final Linter linter;
+
         /** The element stack */
         private Deque<FormatParserListener.ElementEntry> stack = new java.util.ArrayDeque<FormatParserListener.ElementEntry>();
 
-        private final Linter linter;
-
         /** The {@link ViolationHandler} for reporting found violations */
         private final ViolationHandler violationHandler;
-
-        private Boolean charBufferStartsAtStartOfDocument;
 
         FormatParserListener(Linter linter, Resource file, IndentStyleValue indentStyle, int indetSize,
                 ViolationHandler violationHandler) {
@@ -196,6 +232,30 @@ public class XmlLinter implements Linter {
             this.indentChar = indentStyle.getIndentChar();
             this.indentSize = indetSize;
             this.violationHandler = violationHandler;
+        }
+
+        private void adjustIndentLength(Token start, Indent foundIndent, final int expectedIndent,
+                int columnAdjustment) {
+            /* proper indentation characters, but bad length */
+            final int opValue = expectedIndent - foundIndent.size;
+
+            final Edit fix;
+            final int len = Math.abs(opValue);
+            int col = start.getCharPositionInLine() //
+                    + 1 // because getCharPositionInLine() is zero based
+                    - columnAdjustment // because we want the column of '<' while we are on the first char of the name
+            ;
+            if (opValue > 0) {
+                fix = Insert.repeat(indentChar, len);
+            } else {
+                fix = new Delete(len);
+                col -= len;
+            }
+            final Location loc = new Location(start.getLine(), col);
+
+            final Violation violation = new Violation(file, loc, fix, linter, PropertyType.indent_style.getName(),
+                    indentStyle.name(), PropertyType.indent_size.getName(), String.valueOf(indentSize));
+            violationHandler.handle(violation);
         }
 
         private void consumeText(ParserRuleContext ctx) {
@@ -241,32 +301,19 @@ public class XmlLinter implements Linter {
                 throw new IllegalStateException("Stack must not be empty when closing the element " + qName
                         + " around line " + start.getLine() + " and column " + (start.getCharPositionInLine() + 1));
             }
-            ElementEntry startEntry = stack.pop();
-            int indentDiff = lastIndent.size - startEntry.expectedIndent.size;
-            int expectedIndent = startEntry.expectedIndent.size;
-            if (lastIndent.lineNumber != startEntry.foundIndent.lineNumber && indentDiff != 0) {
-                /*
-                 * diff should be zero unless we are on the same line as start element
-                 */
-                int opValue = expectedIndent - lastIndent.size;
-                final Edit fix;
-                final int len = Math.abs(opValue);
-                final Token start = ctx.getStart();
-                int col = start.getCharPositionInLine() //
-                        + 1 // because getCharPositionInLine() is zero based
-                        - 2 // because we want the column of '<' while we are on the first char of the name
-                ;
-                if (opValue > 0) {
-                    fix = Insert.repeat(indentChar, len);
-                } else {
-                    fix = new Delete(len);
-                    col -= len;
+            final ElementEntry startEntry = stack.pop();
+            final int expectedIndent = startEntry.expectedIndent.size;
+            if (lastIndent.lineNumber != startEntry.foundIndent.lineNumber) {
+                if (lastIndent.badLength > 0) {
+                    /* the length of the indent is correct, but some indent chars need to get replaced */
+                    replaceIndentCharsAndAdjustIndentLength(expectedIndent, lastIndent, ctx.getStart());
+                } else if (lastIndent.size != expectedIndent) {
+                    /*
+                     * diff should be zero unless we are on the same line as start element
+                     */
+                    /* the available indent chars are correct, but the lenght of indent needs to be adjusted */
+                    adjustIndentLength(ctx.getStart(), lastIndent, expectedIndent, 2);
                 }
-                final Location loc = new Location(start.getLine(), col);
-
-                Violation violation = new Violation(file, loc, fix, linter, PropertyType.indent_style.getName(),
-                        indentStyle.name(), PropertyType.indent_size.getName(), String.valueOf(indentSize));
-                violationHandler.handle(violation);
             }
         }
 
@@ -297,56 +344,54 @@ public class XmlLinter implements Linter {
 
         @Override
         public void enterStartEndName(StartEndNameContext ctx) {
+            enterStartNameInternal(ctx, false);
         }
 
         @Override
         public void enterStartName(StartNameContext ctx) {
+            enterStartNameInternal(ctx, true);
+        }
+
+        void enterStartNameInternal(ParserRuleContext ctx, boolean pushToStack) {
             flushWs();
             final String qName = ctx.getText();
             ElementEntry currentEntry = new ElementEntry(qName, lastIndent);
             if (!stack.isEmpty()) {
-                ElementEntry parentEntry = stack.peek();
+                final ElementEntry parentEntry = stack.peek();
                 /*
                  * note that we use parentEntry.expectedIndent rather than parentEntry.foundIndent this is to make the
                  * messages more useful
                  */
-                int indentDiff = currentEntry.foundIndent.size - parentEntry.expectedIndent.size;
-                int expectedIndent = parentEntry.expectedIndent.size + indentSize;
+                final int indentDiff = currentEntry.foundIndent.size - parentEntry.expectedIndent.size;
+                final int expectedIndent = parentEntry.expectedIndent.size + indentSize;
+                final int badLength = lastIndent.badLength;
                 if (indentDiff == 0 && currentEntry.foundIndent.lineNumber == parentEntry.foundIndent.lineNumber) {
                     /*
-                     * Zero foundIndent acceptable only if current is on the same line as parent This is OK, therefore
-                     * do nothing
+                     * Zero indentDiff acceptable only if current is on the same line as parent. This is OK, so do
+                     * nothing
                      */
-                } else if (indentDiff != indentSize) {
-                    /* generally unexpected foundIndent */
-                    int opValue = expectedIndent - currentEntry.foundIndent.size;
+                } else if (badLength > 0) {
+                    /* the length of the indent is correct, but some indent chars need to get replaced */
+                    replaceIndentCharsAndAdjustIndentLength(expectedIndent, lastIndent, ctx.getStart());
 
-                    final Edit fix;
-                    final int len = Math.abs(opValue);
-                    final Token start = ctx.getStart();
-                    int col = start.getCharPositionInLine() //
-                            + 1 // because getCharPositionInLine() is zero based
-                            - 1 // because we want the column of '<' while we are on the first char of the name
-                    ;
-                    if (opValue > 0) {
-                        fix = Insert.repeat(indentChar, len);
-                    } else {
-                        fix = new Delete(len);
-                        col -= len;
+                    if (pushToStack && indentDiff != indentSize) {
+                        /* reset the expected indent in the entry we'll push */
+                        currentEntry = new ElementEntry(qName, lastIndent,
+                                new Indent(lastIndent.lineNumber, expectedIndent, -1, 0));
                     }
-                    final Location loc = new Location(start.getLine(), col);
+                } else if (indentDiff != indentSize) {
+                    adjustIndentLength(ctx.getStart(), currentEntry.foundIndent, expectedIndent, 1);
 
-                    final Violation violation = new Violation(file, loc, fix, linter,
-                            PropertyType.indent_style.getName(), indentStyle.name(), PropertyType.indent_size.getName(),
-                            String.valueOf(indentSize));
-                    violationHandler.handle(violation);
-
-                    /* reset the expected indent in the entry we'll push */
-                    currentEntry = new ElementEntry(qName, lastIndent,
-                            new Indent(lastIndent.lineNumber, expectedIndent));
+                    if (pushToStack) {
+                        /* reset the expected indent in the entry we'll push */
+                        currentEntry = new ElementEntry(qName, lastIndent,
+                                new Indent(lastIndent.lineNumber, expectedIndent, -1, 0));
+                    }
                 }
             }
-            stack.push(currentEntry);
+            if (pushToStack) {
+                stack.push(currentEntry);
+            }
         }
 
         @Override
@@ -427,7 +472,9 @@ public class XmlLinter implements Linter {
          */
         private void flushWs() {
             int indentLength = 0;
-            int len = charBuffer.length();
+            final int len = charBuffer.length();
+            BitSet edits = null;
+            int editsLength = 0;
             /*
              * Count characters from end of ignorable whitespace to first end of line we hit
              */
@@ -436,11 +483,21 @@ public class XmlLinter implements Linter {
                 switch (ch) {
                 case '\n':
                 case '\r':
-                    lastIndent = new Indent(charBufferEndLineNumber, indentLength);
+                    lastIndent = Indent.of(charBufferEndLineNumber, indentLength, edits, editsLength);
                     charBuffer.setLength(0);
+                    charBufferStartsAtStartOfDocument = null;
                     return;
                 case ' ':
                 case '\t':
+                    if (ch != indentChar) {
+                        if (edits == null) {
+                            edits = new BitSet();
+                        }
+                        edits.set(editsLength);
+                    }
+                    if (edits != null) {
+                        editsLength++;
+                    }
                     indentLength++;
                     break;
                 default:
@@ -449,14 +506,38 @@ public class XmlLinter implements Linter {
                      * ignorable whitespace unchanged
                      */
                     charBuffer.setLength(0);
+                    charBufferStartsAtStartOfDocument = null;
                     return;
                 }
             }
             if (charBufferStartsAtStartOfDocument != null && charBufferStartsAtStartOfDocument.booleanValue()) {
-                lastIndent = new Indent(charBufferEndLineNumber, indentLength);
-                charBuffer.setLength(0);
+                lastIndent = Indent.of(charBufferEndLineNumber, indentLength, edits, editsLength);
             }
+            charBuffer.setLength(0);
             charBufferStartsAtStartOfDocument = null;
+        }
+
+        private void replaceIndentCharsAndAdjustIndentLength(int expectedIndent, Indent lastIndent, Token start) {
+            final int diff = expectedIndent - lastIndent.size;
+            final int replacementLength = lastIndent.badLength + diff;
+            final Edit fix;
+            final int column;
+            if (replacementLength <= 0) {
+                fix = new Delete(-1 * diff);
+                if (replacementLength * -1 > lastIndent.badLength) {
+                    column = lastIndent.badStartColumn + replacementLength;
+                } else {
+                    column = lastIndent.badStartColumn;
+                }
+            } else {
+                fix = Replace.indent(lastIndent.badLength, indentStyle, replacementLength);
+                column = lastIndent.badStartColumn;
+            }
+
+            final Location loc = new Location(start.getLine(), column);
+            final Violation violation = new Violation(file, loc, fix, linter, PropertyType.indent_style.getName(),
+                    indentStyle.name(), PropertyType.indent_size.getName(), String.valueOf(indentSize));
+            violationHandler.handle(violation);
         }
 
         @Override

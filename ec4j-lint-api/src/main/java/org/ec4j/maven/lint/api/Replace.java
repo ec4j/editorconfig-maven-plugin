@@ -16,7 +16,11 @@
  */
 package org.ec4j.maven.lint.api;
 
+import java.util.Arrays;
+
 import org.ec4j.core.model.PropertyType;
+import org.ec4j.core.model.PropertyType.EndOfLineValue;
+import org.ec4j.core.model.PropertyType.IndentStyleValue;
 
 /**
  * A replacement operation.
@@ -24,14 +28,42 @@ import org.ec4j.core.model.PropertyType;
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
 public class Replace implements Edit {
+
+    /**
+     * @param replaced
+     *            the replaced {@link EndOfLineValue}
+     * @param replacement
+     *            the replacing {@link EndOfLineValue}
+     * @return a new {@link Replace} operation that replaces the {@code replaced} EOL string with the {@code replacing}
+     *         EOL string
+     */
     public static Replace endOfLine(PropertyType.EndOfLineValue replaced, PropertyType.EndOfLineValue replacement) {
         return new Replace(replaced.getEndOfLineString().length(), replacement.getEndOfLineString(),
                 "Replace '" + replaced.name() + "' with '" + replacement.name() + "'");
     }
 
     /**
-     * @param replaced the string to replace
-     * @param replacement the replacement
+     * @param replacedLength
+     *            the number of characters to replace
+     * @param indentStyle
+     *            the {@link IndentStyleValue} to use as a replacement
+     * @param replacementLength
+     *            the number of replacement characters to insert
+     * @return a new {@link Replace} operation that replaces the {@code replacedLength} number of characters with the
+     *         {@code replacementLength} number of {@code indentStyle.getIndentChar()} characters
+     */
+    public static Replace indent(int replacedLength, IndentStyleValue indentStyle, int replacementLength) {
+        char[] replacementArr = new char[replacementLength];
+        Arrays.fill(replacementArr, indentStyle.getIndentChar());
+        return new Replace(replacedLength, new String(replacementArr), "Replace " + replacedLength + " characters with "
+                + replacementLength + " " + indentStyle.name() + (replacedLength != 1 ? "s" : ""));
+    }
+
+    /**
+     * @param replaced
+     *            the string to replace
+     * @param replacement
+     *            the replacement
      * @return a new {@link Replace} operation
      */
     public static Replace ofReplaced(String replaced, String replacement) {
@@ -45,9 +77,12 @@ public class Replace implements Edit {
     private final String replacement;
 
     /**
-     * @param replacedLength the length of the span to replace
-     * @param replacement the replacement
-     * @param message a human readable description of this {@link Replace} operation
+     * @param replacedLength
+     *            the length of the span to replace
+     * @param replacement
+     *            the replacement
+     * @param message
+     *            a human readable description of this {@link Replace} operation
      */
     public Replace(int replacedLength, String replacement, String message) {
         super();
@@ -75,12 +110,6 @@ public class Replace implements Edit {
 
     /** {@inheritDoc} */
     @Override
-    public void perform(EditableResource document, int offset) {
-        document.replace(offset, offset + replacedLength, replacement);
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public String getMessage() {
         return message;
     }
@@ -92,5 +121,11 @@ public class Replace implements Edit {
         result = 31 * result + (message != null ? message.hashCode() : 0);
         result = 31 * result + replacedLength;
         return result;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void perform(EditableResource document, int offset) {
+        document.replace(offset, offset + replacedLength, replacement);
     }
 }

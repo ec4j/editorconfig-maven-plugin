@@ -51,7 +51,9 @@ public class LinterTestUtils {
         if (expected.length == 0) {
             Assert.assertNull("" + expected.length + " violations expected, found " + actual, actual);
         } else {
-            Assert.assertNotNull("" + expected.length + " violations expected, found none", actual);
+            Assert.assertNotNull(
+                    "found none while expected " + expected.length + " violations: " + Arrays.toString(expected),
+                    actual);
             Assert.assertEquals(Arrays.asList(expected), actual);
         }
 
