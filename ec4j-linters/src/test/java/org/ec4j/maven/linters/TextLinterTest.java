@@ -58,8 +58,7 @@ public class TextLinterTest {
                 new Violation(doc, new Location(1, 7),
                         Replace.endOfLine(PropertyType.EndOfLineValue.lf, PropertyType.EndOfLineValue.cr), linter,
                         PropertyType.end_of_line.getName(), "cr"), //
-                new Violation(doc, new Location(4, 8), new Delete(1), linter, PropertyType.end_of_line.getName(),
-                        "cr") //
+                new Violation(doc, new Location(4, 8), new Delete(1), linter, PropertyType.end_of_line.getName(), "cr") //
         );
     }
 
@@ -110,8 +109,7 @@ public class TextLinterTest {
         EditableResource doc = LinterTestUtils.createDocument(text, ".txt");
 
         LinterTestUtils.assertParse(linter, doc, expectedText, props, //
-                new Violation(doc, new Location(4, 7), new Delete(1), linter, PropertyType.end_of_line.getName(),
-                        "lf"), //
+                new Violation(doc, new Location(4, 7), new Delete(1), linter, PropertyType.end_of_line.getName(), "lf"), //
                 new Violation(doc, new Location(5, 7),
                         Replace.endOfLine(PropertyType.EndOfLineValue.cr, PropertyType.EndOfLineValue.lf), linter,
                         PropertyType.end_of_line.getName(), "lf"));
