@@ -87,6 +87,7 @@
     <version.junit>4.12</version.junit>
     <version.org.antlr>4.7</version.org.antlr>
     <version.org.apache.maven>3.3.9</version.org.apache.maven>
+    <version.org.apache.maven.maven-project>3.0-alpha-2</version.org.apache.maven.maven-project>
     <version.org.apache.maven.plugin-tools>3.5</version.org.apache.maven.plugin-tools>
     <version.org.codehaus.plexus.plexus-utils>3.0.17</version.org.codehaus.plexus.plexus-utils>
     <version.org.ec4j.core>0.0.1</version.org.ec4j.core>
@@ -200,6 +201,12 @@
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-model</artifactId>
         <version>${version.org.apache.maven}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-project</artifactId>
+        <version>${version.org.apache.maven.maven-project}</version>
       </dependency>
 
       <dependency>
