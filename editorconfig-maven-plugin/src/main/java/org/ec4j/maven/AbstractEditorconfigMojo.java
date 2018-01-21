@@ -22,18 +22,23 @@ import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.ec4j.core.Cache.Caches;
 import org.ec4j.core.Resource.Resources;
 import org.ec4j.core.ResourceProperties;
 import org.ec4j.core.ResourcePropertiesService;
 import org.ec4j.core.model.PropertyType;
+import org.ec4j.maven.lint.api.Constants;
 import org.ec4j.maven.lint.api.FormatException;
 import org.ec4j.maven.lint.api.Linter;
 import org.ec4j.maven.lint.api.LinterRegistry;
@@ -84,13 +89,32 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
     protected String encoding;
 
     /**
+     * If {@code true} the default exclude patterns (that exclude binary files and other non-source code files, see
+     * {@link Constants#DEFAULT_EXCLUDES}) will be prepended to the list of {@link #excludes}. Otherwise, no defaults will be
+     * prepended to {@link #excludes}.
+     *
+     * @since 0.0.3
+     */
+    @Parameter(property = "editorconfig.excludeNonSourceFiles", defaultValue = "true")
+    protected boolean excludeNonSourceFiles;
+
+    /**
      * File patterns to exclude from the set of files to process. The patterns are relative to the current project's
-     * {@code baseDir}.
+     * {@code baseDir}. See also {@link #excludeNonSourceFiles} and {@link #excludeSubmodules}.
      *
      * @since 0.0.1
      */
     @Parameter(property = "editorconfig.excludes")
     protected String[] excludes;
+
+    /**
+     * If {@code true} the Maven submodule directories of the current project will be prepended to the list of
+     * {@link #excludes}. Otherwise, the module directories will not be excluded.
+     *
+     * @since 0.0.3
+     */
+    @Parameter(property = "editorconfig.excludeSubmodules", defaultValue = "true")
+    protected boolean excludeSubmodules;
 
     /**
      * If {@code true} the plugin execution will fail with an error in case no single {@code .editorconfig} property
@@ -108,16 +132,8 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
      *
      * @since 0.0.1
      */
-    @Parameter(property = "editorconfig.includes", defaultValue = "*,src/**/*")
+    @Parameter(property = "editorconfig.includes", defaultValue = "**")
     protected String[] includes;
-
-    /**
-     * If {@code true} the execution of the Mojo will be skipped; otherwise the Mojo will be executed.
-     *
-     * @since 0.0.1
-     */
-    @Parameter(property = "editorconfig.skip", defaultValue = "false")
-    private boolean skip;
 
     /**
      * Set the includes and excludes for the individual {@link Linter}s
@@ -126,6 +142,17 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
      */
     @Parameter
     protected List<LinterConfig> linters = new ArrayList<>();
+
+    @Component
+    public MavenProject project;
+
+    /**
+     * If {@code true} the execution of the Mojo will be skipped; otherwise the Mojo will be executed.
+     *
+     * @since 0.0.1
+     */
+    @Parameter(property = "editorconfig.skip", defaultValue = "false")
+    private boolean skip;
 
     public AbstractEditorconfigMojo() {
         super();
@@ -142,9 +169,8 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
         if (linters != null && !linters.isEmpty()) {
             for (LinterConfig linter : linters) {
                 if (linter.isEnabled()) {
-                    linterRegistryBuilder.entry(linter.getId(), linter.getClassName(),
-                            this.getClass().getClassLoader(), linter.getIncludes(), linter.getExcludes(),
-                            linter.isUseDefaultIncludesAndExcludes());
+                    linterRegistryBuilder.entry(linter.getId(), linter.getClassName(), this.getClass().getClassLoader(),
+                            linter.getIncludes(), linter.getExcludes(), linter.isUseDefaultIncludesAndExcludes());
                 } else {
                     linterRegistryBuilder.removeEntry(linter.getId());
                 }
@@ -184,7 +210,9 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
 
         if (this.encoding == null || this.encoding.isEmpty()) {
             this.charset = Charset.defaultCharset();
-            log.warn("Using current platform's default encoding {} to read .editorconfig files. You do not want this. Set either 'project.build.sourceEncoding' or 'editorconfig.encoding' property.", charset);
+            log.warn(
+                    "Using current platform's default encoding {} to read .editorconfig files. You do not want this. Set either 'project.build.sourceEncoding' or 'editorconfig.encoding' property.",
+                    charset);
         } else {
             this.charset = Charset.forName(this.encoding);
         }
@@ -217,8 +245,7 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
                     while (state != ViolationHandler.ReturnState.FINISHED) {
                         for (Linter linter : filteredLinters) {
                             if (log.isTraceEnabled()) {
-                                log.trace("Processing file '{}' using linter {}", file,
-                                        linter.getClass().getName());
+                                log.trace("Processing file '{}' using linter {}", file, linter.getClass().getName());
                             }
                             handler.startFile(resource);
                             linter.process(resource, editorConfigProperties, handler);
@@ -252,9 +279,23 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
         final DirectoryScanner scanner = new DirectoryScanner();
         scanner.setBasedir(basedir);
         scanner.setIncludes(includes);
-        if (excludes != null && excludes.length > 0) {
-            scanner.setExcludes(excludes);
+
+        HashSet<String> excls = new LinkedHashSet<>();
+        if (excludeNonSourceFiles) {
+            excls.addAll(Constants.DEFAULT_EXCLUDES);
         }
+        if (excludeSubmodules && project != null && project.getModules() != null) {
+            for (String module : (List<String>) project.getModules()) {
+                excls.add(module + "/**");
+            }
+        }
+        if (excludes != null && excludes.length > 0) {
+            for (String include : excludes) {
+                excls.add(include);
+            }
+        }
+        scanner.setExcludes(excls.toArray(new String[0]));
+
         scanner.scan();
         return scanner.getIncludedFiles();
     }
