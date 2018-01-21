@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.charset.MalformedInputException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.regex.Matcher;
@@ -127,6 +128,8 @@ public class EditableResource extends Resource implements CharSequence {
                 }
                 this.text = sb;
                 this.hashCodeLoaded = hash;
+            } catch (MalformedInputException e) {
+                throw new FormatException("Could not read " + absPath + ". This may mean that it is a binary file and you should exclude it from editorconfig processing.", e);
             } finally {
                 if (r != null) {
                     r.close();
