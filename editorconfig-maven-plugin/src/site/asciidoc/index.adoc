@@ -29,15 +29,15 @@ To make the build fail if any of your source files does not comply with `.editor
     </executions>
     <configuration>
       <excludes>
-        <!-- You can exclude some files from processing -->
+        <!-- Note that maven submodule directories and many non-source file patterns are excluded by default -->
+        <!-- - see https://github.com/ec4j/editorconfig-maven-plugin/blob/master/ec4j-lint-api/src/main/java/org/ec4j/maven/lint/api/Constants.java#L37
+        <!-- You can exclude further files from processing: -->
         <exclude>src/main/**/*.whatever</exclude>
       </excludes>
-      <!-- These are the default includes:
+      <!-- All files are included by default:
       <includes>
-        <include>*</include>
-        <include>src/**/*</include>
+        <include>**</include>
       </includes>
-      If you need to include something else, you need to configure the plugin accordingly
       -->
     </configuration>
   </plugin>
@@ -54,10 +54,10 @@ mvn editorconfig:format
 == How it works
 
 `editorconfig-maven-plugin` is designed around the concept of a Linter.
-https://github.com/ec4j/editorconfig-maven-plugin/blob/master/src/main/java/org/ec4j/maven/lint/api/Linter.java[Linter]
+https://github.com/ec4j/editorconfig-maven-plugin/blob/master/ec4j-lint-api/src/main/java/org/ec4j/maven/lint/api/Linter.java[Linter]
 is a processor specialized for some particular file format (such as YAML or XML) for which it can detect whether some
 particular `.editorconfig` properties are satisfied and eventually propose a
-https://github.com/ec4j/editorconfig-maven-plugin/blob/master/src/main/java/org/ec4j/maven/core/Edit.java[fix] that can
+https://github.com/ec4j/editorconfig-maven-plugin/blob/master/ec4j-lint-api/src/main/java/org/ec4j/maven/lint/api/Edit.java[fix] that can
 be applied automatically.
 
 .Linters available in `editorconfig-maven-plugin`
