@@ -22,10 +22,11 @@ import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.maven.model.Profile;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -280,14 +281,32 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
         scanner.setBasedir(basedir);
         scanner.setIncludes(includes);
 
-        HashSet<String> excls = new LinkedHashSet<>();
+        Set<String> excls = new LinkedHashSet<>();
         if (excludeNonSourceFiles) {
             excls.addAll(Constants.DEFAULT_EXCLUDES);
         }
-        if (excludeSubmodules && project != null && project.getModules() != null) {
-            for (String module : (List<String>) project.getModules()) {
-                excls.add(module + "/**");
+        if (excludeSubmodules && project != null) {
+            {
+                final List<String> modules = project.getModules();
+                if (modules != null) {
+                    for (String module : modules) {
+                        excls.add(module + "/**");
+                    }
+                }
             }
+
+            final List<Profile> profiles = project.getModel().getProfiles();
+            if (profiles != null) {
+                for (Profile profile : profiles) {
+                    final List<String> modules = profile.getModules();
+                    if (modules != null) {
+                        for (String module : modules) {
+                            excls.add(module + "/**");
+                        }
+                    }
+                }
+            }
+
         }
         if (excludes != null && excludes.length > 0) {
             for (String include : excludes) {
