@@ -38,13 +38,13 @@ public class FormattingHandler implements ViolationHandler {
     private static final Logger log = LoggerFactory.getLogger(FormattingHandler.class);
     private final boolean backup;
 
-    private final boolean backupSuffix;
+    private final String backupSuffix;
     private EditableResource currentFile;
     private int editedFileCount = 0;
     private int processedFileCount = 0;
     private List<Violation> violations = new ArrayList<Violation>();
 
-    public FormattingHandler(boolean backup, boolean backupSuffix) {
+    public FormattingHandler(boolean backup, String backupSuffix) {
         super();
         this.backup = backup;
         this.backupSuffix = backupSuffix;

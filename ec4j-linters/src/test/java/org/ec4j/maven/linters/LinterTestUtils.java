@@ -57,7 +57,7 @@ public class LinterTestUtils {
             Assert.assertEquals(Arrays.asList(expected), actual);
         }
 
-        FormattingHandler formatter = new FormattingHandler(false, false);
+        FormattingHandler formatter = new FormattingHandler(false, ".bak");
         formatter.startFiles();
         formatter.startFile(doc);
         linter.process(doc, props, formatter);

@@ -52,7 +52,7 @@ public class FormatMojo extends AbstractEditorconfigMojo {
      * @since 0.0.1
      */
     @Parameter(property = "editorconfig.backupSuffix", defaultValue = ".bak")
-    private boolean backupSuffix;
+    private String backupSuffix;
 
     /** {@inheritDoc} */
     @Override
