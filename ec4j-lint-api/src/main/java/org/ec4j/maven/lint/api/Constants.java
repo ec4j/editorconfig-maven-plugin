@@ -103,13 +103,17 @@ public final class Constants {
             "**/-darcs-backup*", //
             "**/.darcs-temp-mail", //
 
-            // maven project's temporary files
+            // Maven
             "**/target/**", //
             "**/test-output/**", //
             "**/release.properties", //
             "**/dependency-reduced-pom.xml", //
             "**/release-pom.xml", //
             "**/pom.xml.releaseBackup", //
+
+            // Gradle
+            "**/build/**", //
+            "**/.gradle/**", //
 
             // code coverage tools
             "**/cobertura.ser", //

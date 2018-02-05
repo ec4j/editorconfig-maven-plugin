@@ -17,6 +17,7 @@
 package org.ec4j.maven.linters;
 
 import java.io.IOException;
+import java.nio.charset.MalformedInputException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -28,6 +29,7 @@ import org.ec4j.core.model.PropertyType;
 import org.ec4j.core.model.PropertyType.EndOfLineValue;
 import org.ec4j.maven.lint.api.Delete;
 import org.ec4j.maven.lint.api.Edit;
+import org.ec4j.maven.lint.api.FormatException;
 import org.ec4j.maven.lint.api.Insert;
 import org.ec4j.maven.lint.api.LineReader;
 import org.ec4j.maven.lint.api.Linter;
@@ -251,6 +253,8 @@ public class TextLinter implements Linter {
                     }
                 }
             }
+        } catch (MalformedInputException e) {
+            throw new FormatException("Could not read " + resource.getPath() + ". This may mean that it is a binary file and you should exclude it from editorconfig processing.", e);
         }
     }
 

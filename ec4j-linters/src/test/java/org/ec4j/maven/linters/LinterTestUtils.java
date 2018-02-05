@@ -38,7 +38,7 @@ public class LinterTestUtils {
     public static void assertParse(Linter linter, EditableResource doc, String expectedText,
             ResourceProperties props, Violation... expected) throws IOException {
 
-        ViolationCollector collector = new ViolationCollector(false);
+        ViolationCollector collector = new ViolationCollector(false, "mvn editorconfig:format");
         collector.startFiles();
         collector.startFile(doc);
         linter.process(doc, props, collector);
