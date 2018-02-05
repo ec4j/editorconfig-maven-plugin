@@ -103,8 +103,9 @@ public class EditorConfigMojosTest {
                         "[ERROR] README.adoc@2,1: Delete 2 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.maven.linters.TextLinter") //
                 .assertLogText("[INFO] Checked 6 files") //
                 .assertLogText("[INFO] BUILD FAILURE") //
-                .assertLogText(
-                        "There are .editorconfig violations. You may want to run mvn editorconfig:format to fix them automagically.") //
+                .assertLogText("There are .editorconfig violations. You may want to run") //
+                .assertLogText("    mvn editorconfig:format") //
+                .assertLogText("to fix them automagically.") //
         ;
     }
 

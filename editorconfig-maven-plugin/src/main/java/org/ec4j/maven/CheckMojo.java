@@ -50,7 +50,7 @@ public class CheckMojo extends AbstractEditorconfigMojo {
     /** {@inheritDoc} */
     @Override
     protected ViolationHandler createHandler() {
-        return new ViolationCollector(failOnFormatViolation);
+        return new ViolationCollector(failOnFormatViolation, "mvn editorconfig:format");
     }
 
     /** {@inheritDoc} */

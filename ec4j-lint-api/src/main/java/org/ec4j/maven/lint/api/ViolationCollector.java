@@ -34,14 +34,16 @@ import org.slf4j.LoggerFactory;
 public class ViolationCollector implements ViolationHandler {
     private static final Logger log = LoggerFactory.getLogger(ViolationCollector.class);
 
+    private final String correctiveAction;
     private Resource currentFile;
     private final boolean failOnFormatViolation;
     private int processedFileCount = 0;
     private final Map<Resource, List<Violation>> violations = new LinkedHashMap<Resource, List<Violation>>();
 
-    public ViolationCollector(boolean failOnFormatViolation) {
+    public ViolationCollector(boolean failOnFormatViolation, String correctiveAction) {
         super();
         this.failOnFormatViolation = failOnFormatViolation;
+        this.correctiveAction = correctiveAction;
     }
 
     /** {@inheritDoc} */
@@ -63,8 +65,8 @@ public class ViolationCollector implements ViolationHandler {
     public void endFiles() {
         log.info("Checked {} {}", processedFileCount, (processedFileCount == 1 ? "file" : "files"));
         if (failOnFormatViolation && hasViolations()) {
-            throw new FormatException(
-                    "There are .editorconfig violations. You may want to run mvn editorconfig:format to fix them automagically.");
+            throw new FormatException("There are .editorconfig violations. You may want to run\n\n    "
+                    + correctiveAction + "\n\nto fix them automagically.");
         }
     }
 
