@@ -110,6 +110,30 @@ public class EditorConfigMojosTest {
     }
 
     @Test
+    public void encoding() throws Exception {
+
+        File projDir = resources.getBasedir("encoding");
+
+        MavenExecution mavenExec = verifier.forProject(projDir) //
+                .withCliOption("-B") // batch
+        ;
+
+        MavenExecutionResult result = mavenExec //
+                .execute("clean", "editorconfig:check") //
+                .assertErrorFreeLog() //
+                .assertLogText("[TRACE] Processing file '.editorconfig' using linter org.ec4j.maven.linters.TextLinter") //
+                .assertLogText("[TRACE] Creating a Resource for path '.editorconfig' with encoding 'UTF-8'") //
+                .assertLogText("[DEBUG] No formatting violations found in file '.editorconfig'") //
+                .assertLogText("[TRACE] Processing file 'src/main/resources/simplelogger.properties' using linter org.ec4j.maven.linters.TextLinter".replace('/', File.separatorChar)) //
+                .assertLogText("[TRACE] Creating a Resource for path 'src/main/resources/simplelogger.properties' with encoding 'ISO-8859-1'".replace('/', File.separatorChar)) //
+                .assertLogText("[DEBUG] No formatting violations found in file 'src/main/resources/simplelogger.properties'".replace('/', File.separatorChar)) //
+                .assertLogText("[INFO] Checked 3 files") //
+        ;
+
+    }
+
+
+    @Test
     public void format() throws Exception {
 
         File projDir = resources.getBasedir("defaults");

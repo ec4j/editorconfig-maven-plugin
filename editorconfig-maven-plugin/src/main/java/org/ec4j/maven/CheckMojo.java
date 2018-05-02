@@ -25,6 +25,8 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.ec4j.maven.lint.api.Resource;
 import org.ec4j.maven.lint.api.ViolationCollector;
 import org.ec4j.maven.lint.api.ViolationHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Checks whether files are formatted according to rules defined in {@code .editorconfig} files. If fomat violations are
@@ -36,6 +38,8 @@ import org.ec4j.maven.lint.api.ViolationHandler;
  */
 @Mojo(defaultPhase = LifecyclePhase.VERIFY, name = "check")
 public class CheckMojo extends AbstractEditorconfigMojo {
+
+    private static final Logger log = LoggerFactory.getLogger(CheckMojo.class);
 
     /**
      * Tells the mojo what to do in case formatting violations are found. if {@code true}, all violations will be
@@ -56,6 +60,10 @@ public class CheckMojo extends AbstractEditorconfigMojo {
     /** {@inheritDoc} */
     @Override
     protected Resource createResource(Path absFile, Path relFile, Charset encoding) {
+        if (log.isTraceEnabled()) {
+            log.trace("Creating a {} for path '{}' with encoding '{}'", Resource.class.getSimpleName(), relFile,
+                    encoding);
+        }
         return new Resource(absFile, relFile, encoding);
     }
 
