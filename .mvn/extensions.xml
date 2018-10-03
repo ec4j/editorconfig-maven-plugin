@@ -21,11 +21,11 @@
   <extension>
     <groupId>org.srcdeps.mvn</groupId>
     <artifactId>srcdeps-maven-local-repository</artifactId>
-    <version>3.1.0</version>
+    <version>3.3.2</version>
   </extension>
   <extension>
     <groupId>org.srcdeps.mvn</groupId>
     <artifactId>srcdeps-maven-enforcer</artifactId>
-    <version>3.1.0</version>
+    <version>3.3.2</version>
   </extension>
 </extensions>

@@ -109,7 +109,7 @@
     <version.maven-install-plugin>2.5.2</version.maven-install-plugin>
     <version.maven-jar-plugin>2.6</version.maven-jar-plugin>
     <version.maven-javadoc-plugin>2.10.3</version.maven-javadoc-plugin>
-    <version.maven-plugin-plugin>3.5.1-SRC-revision-7cd2069f5bb7208af00f5e633ebb213e863fc530</version.maven-plugin-plugin>
+    <version.maven-plugin-plugin>3.5.2</version.maven-plugin-plugin>
     <version.maven-project-info-reports-plugin>2.9</version.maven-project-info-reports-plugin>
     <version.maven-release-plugin>2.5.3</version.maven-release-plugin>
     <version.maven-resources-plugin>2.7</version.maven-resources-plugin>
