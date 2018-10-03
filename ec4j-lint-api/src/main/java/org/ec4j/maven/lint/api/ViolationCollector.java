@@ -23,27 +23,25 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * A {@link ViolationHandler} that just collects the {@link Violation}s reported to it.
  *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
 public class ViolationCollector implements ViolationHandler {
-    private static final Logger log = LoggerFactory.getLogger(ViolationCollector.class);
-
     private final String correctiveAction;
     private Resource currentFile;
+
     private final boolean failOnFormatViolation;
+    private final Logger log;
     private int processedFileCount = 0;
     private final Map<Resource, List<Violation>> violations = new LinkedHashMap<Resource, List<Violation>>();
 
-    public ViolationCollector(boolean failOnFormatViolation, String correctiveAction) {
+    public ViolationCollector(boolean failOnFormatViolation, String correctiveAction, Logger log) {
         super();
         this.failOnFormatViolation = failOnFormatViolation;
         this.correctiveAction = correctiveAction;
+        this.log = log;
     }
 
     /** {@inheritDoc} */
@@ -68,6 +66,12 @@ public class ViolationCollector implements ViolationHandler {
             throw new FormatException("There are .editorconfig violations. You may want to run\n\n    "
                     + correctiveAction + "\n\nto fix them automagically.");
         }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Logger getLogger() {
+        return log;
     }
 
     /**
@@ -102,8 +106,7 @@ public class ViolationCollector implements ViolationHandler {
     }
 
     /**
-     * @param resource
-     *            the resource for which to check whether any violations were reported for it
+     * @param resource the resource for which to check whether any violations were reported for it
      * @return {@code true} if violations were reported for the given {@link Path} via {@link #handle(Violation)}
      */
     public boolean hasViolations(Resource resource) {

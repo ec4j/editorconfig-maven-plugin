@@ -45,10 +45,15 @@ public interface ViolationHandler {
     void endFiles();
 
     /**
+     * @return a {@link Logger}
+     * @since 0.0.6
+     */
+    Logger getLogger();
+
+    /**
      * Called when an {@link Violation} is found.
      *
-     * @param violation
-     *            the reported violation
+     * @param violation the reported violation
      */
     void handle(Violation violation);
 

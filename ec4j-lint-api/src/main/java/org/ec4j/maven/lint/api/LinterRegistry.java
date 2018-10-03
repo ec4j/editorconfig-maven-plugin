@@ -23,10 +23,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ServiceLoader;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A registry for {@link Linter}s.
@@ -40,6 +38,7 @@ public class LinterRegistry {
      */
     public static class Builder {
         private final Map<String, LinterEntry.Builder> entries = new LinkedHashMap<>();
+        private Logger log;
 
         Builder() {
             super();
@@ -53,7 +52,19 @@ public class LinterRegistry {
             for (Map.Entry<String, LinterEntry.Builder> en : entries.entrySet()) {
                 useEntries.put(en.getKey(), en.getValue().build());
             }
-            return new LinterRegistry(Collections.unmodifiableMap(useEntries));
+            return new LinterRegistry(Collections.unmodifiableMap(useEntries), log);
+        }
+
+        public Builder entry(Linter linter) {
+            final String linterClass = linter.getClass().getName();
+            LinterEntry.Builder en = entries.get(linterClass);
+            if (en == null) {
+                en = new LinterEntry.Builder(linter);
+
+                entries.put(linterClass, en);
+            }
+
+            return this;
         }
 
         /**
@@ -86,15 +97,8 @@ public class LinterRegistry {
             return this;
         }
 
-        public Builder entry(Linter linter) {
-            final String linterClass = linter.getClass().getName();
-            LinterEntry.Builder en = entries.get(linterClass);
-            if (en == null) {
-                en = new LinterEntry.Builder(linter);
-
-                entries.put(linterClass, en);
-            }
-
+        public Builder log(Logger log) {
+            this.log = log;
             return this;
         }
 
@@ -124,9 +128,9 @@ public class LinterRegistry {
          * A {@link LinterEntry} builder.
          */
         public static class Builder {
+            private final Linter linter;
             private final PathSet.Builder pathSetBuilder = new PathSet.Builder();
             private boolean useDefaultIncludesAndExcludes = true;
-            private final Linter linter;
 
             Builder(Linter linter) {
                 super();
@@ -145,21 +149,13 @@ public class LinterRegistry {
             }
         }
 
-        private final PathSet pathSet;
         private final Linter linter;
+        private final PathSet pathSet;
 
         LinterEntry(Linter linter, PathSet pathSet) {
             super();
             this.linter = linter;
             this.pathSet = pathSet;
-        }
-
-        /**
-         * @return a {@link PathSet} whose {@link Path}s should be handled by the {@link Linter} returned by
-         *         {@link #getLinter()}
-         */
-        public PathSet getPathSet() {
-            return pathSet;
         }
 
         /**
@@ -170,9 +166,15 @@ public class LinterRegistry {
             return linter;
         }
 
-    }
+        /**
+         * @return a {@link PathSet} whose {@link Path}s should be handled by the {@link Linter} returned by
+         *         {@link #getLinter()}
+         */
+        public PathSet getPathSet() {
+            return pathSet;
+        }
 
-    private static final Logger log = LoggerFactory.getLogger(LinterRegistry.class);
+    }
 
     public static Builder builder() {
         return new Builder();
@@ -180,16 +182,19 @@ public class LinterRegistry {
 
     private final Map<String, LinterEntry> entries;
 
-    LinterRegistry(Map<String, LinterEntry> entries) {
+    private final Logger log;
+
+    LinterRegistry(Map<String, LinterEntry> entries, Logger log) {
         super();
         this.entries = entries;
+        Objects.requireNonNull(log, "log");
+        this.log = log;
     }
 
     /**
      * Iterates through registered entries and filters those ones whose {@link PathSet} contains the given {@link Path}.
      *
-     * @param path
-     *            the {@link Path} to find {@link Linter}s for
+     * @param path the {@link Path} to find {@link Linter}s for
      * @return an unmodifiable list of {@link Linter}s
      */
     public List<Linter> filter(Path path) {

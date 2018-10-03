@@ -91,8 +91,8 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
 
     /**
      * If {@code true} the default exclude patterns (that exclude binary files and other non-source code files, see
-     * {@link Constants#DEFAULT_EXCLUDES}) will be prepended to the list of {@link #excludes}. Otherwise, no defaults will be
-     * prepended to {@link #excludes}.
+     * {@link Constants#DEFAULT_EXCLUDES}) will be prepended to the list of {@link #excludes}. Otherwise, no defaults
+     * will be prepended to {@link #excludes}.
      *
      * @since 0.0.3
      */
@@ -161,7 +161,8 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
 
     protected LinterRegistry buildLinterRegistry() {
 
-        final LinterRegistry.Builder linterRegistryBuilder = LinterRegistry.builder();
+        final LinterRegistry.Builder linterRegistryBuilder = LinterRegistry.builder()
+                .log(new Slf4jLintLogger(LoggerFactory.getLogger(LinterRegistry.class)));
 
         if (addLintersFromClassPath) {
             linterRegistryBuilder.scan(getClass().getClassLoader());
@@ -185,10 +186,8 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
     protected abstract ViolationHandler createHandler();
 
     /**
-     * @param absFile
-     *            the {@link Path} to create a {@link Resource} for. Must be absolute.
-     * @param relFile
-     *            the {@link Path} to create a {@link Resource} for. Must be relative to {@link #basedirPath}.
+     * @param absFile  the {@link Path} to create a {@link Resource} for. Must be absolute.
+     * @param relFile  the {@link Path} to create a {@link Resource} for. Must be relative to {@link #basedirPath}.
      * @param encoding
      * @return
      */
@@ -197,10 +196,8 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
     /**
      * Called by Maven for executing the Mojo.
      *
-     * @throws MojoExecutionException
-     *             Running the Mojo failed.
-     * @throws MojoFailureException
-     *             A configuration error was detected.
+     * @throws MojoExecutionException Running the Mojo failed.
+     * @throws MojoFailureException   A configuration error was detected.
      */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {

@@ -45,8 +45,16 @@ public class EditorConfigMojosTest {
     public final MavenRuntime verifier;
 
     public EditorConfigMojosTest(MavenRuntimeBuilder runtimeBuilder) throws Exception {
+        final String logOpt = "-Dorg.slf4j.simpleLogger.log." + CheckMojo.class.getPackage().getName() + "=trace";
+        final String[] opts;
+        if (System.getProperty("java.version").startsWith("1.7.")) {
+            opts = new String[] {logOpt, "-Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2"};
+        } else {
+            opts = new String[] {logOpt};
+        }
+
         this.verifier = runtimeBuilder //
-                .withCliOptions("-Dorg.slf4j.simpleLogger.log." + CheckMojo.class.getPackage().getName() + "=trace") //
+                .withCliOptions(opts) //
                 .build();
     }
 
@@ -64,6 +72,7 @@ public class EditorConfigMojosTest {
         File projDir = resources.getBasedir("defaults");
 
         MavenExecution mavenExec = verifier.forProject(projDir) //
+                //.withCliOption("-X") // stacktrace
                 .withCliOption("-B") // batch
         ;
 
@@ -124,14 +133,19 @@ public class EditorConfigMojosTest {
                 .assertLogText("[TRACE] Processing file '.editorconfig' using linter org.ec4j.maven.linters.TextLinter") //
                 .assertLogText("[TRACE] Creating a Resource for path '.editorconfig' with encoding 'UTF-8'") //
                 .assertLogText("[DEBUG] No formatting violations found in file '.editorconfig'") //
-                .assertLogText("[TRACE] Processing file 'src/main/resources/simplelogger.properties' using linter org.ec4j.maven.linters.TextLinter".replace('/', File.separatorChar)) //
-                .assertLogText("[TRACE] Creating a Resource for path 'src/main/resources/simplelogger.properties' with encoding 'ISO-8859-1'".replace('/', File.separatorChar)) //
-                .assertLogText("[DEBUG] No formatting violations found in file 'src/main/resources/simplelogger.properties'".replace('/', File.separatorChar)) //
+                .assertLogText(
+                        "[TRACE] Processing file 'src/main/resources/simplelogger.properties' using linter org.ec4j.maven.linters.TextLinter"
+                                .replace('/', File.separatorChar)) //
+                .assertLogText(
+                        "[TRACE] Creating a Resource for path 'src/main/resources/simplelogger.properties' with encoding 'ISO-8859-1'"
+                                .replace('/', File.separatorChar)) //
+                .assertLogText(
+                        "[DEBUG] No formatting violations found in file 'src/main/resources/simplelogger.properties'"
+                                .replace('/', File.separatorChar)) //
                 .assertLogText("[INFO] Checked 3 files") //
         ;
 
     }
-
 
     @Test
     public void format() throws Exception {

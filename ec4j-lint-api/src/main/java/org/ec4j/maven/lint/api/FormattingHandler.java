@@ -25,9 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * A {@link ViolationHandler} that performs the {@link Edit} operations on the files for which they were reported.
  *
@@ -35,19 +32,21 @@ import org.slf4j.LoggerFactory;
  */
 public class FormattingHandler implements ViolationHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(FormattingHandler.class);
     private final boolean backup;
-
     private final String backupSuffix;
+
     private EditableResource currentFile;
     private int editedFileCount = 0;
+    private final Logger log;
     private int processedFileCount = 0;
+
     private List<Violation> violations = new ArrayList<Violation>();
 
-    public FormattingHandler(boolean backup, String backupSuffix) {
+    public FormattingHandler(boolean backup, String backupSuffix, Logger log) {
         super();
         this.backup = backup;
         this.backupSuffix = backupSuffix;
+        this.log = log;
     }
 
     /**
@@ -121,6 +120,12 @@ public class FormattingHandler implements ViolationHandler {
     public void endFiles() {
         log.info("Formatted {} out of {} {}", editedFileCount, processedFileCount,
                 (editedFileCount == 1 ? "file" : "files"));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Logger getLogger() {
+        return log;
     }
 
     /** {@inheritDoc} */

@@ -23,7 +23,7 @@ install:
   - cmd: SET PATH=C:\Users\appveyor\.m2\apache-maven-3.5.2-bin\28qa8v9e2mq69covern8vmdkj0\apache-maven-3.5.2\bin;%JAVA_HOME%\bin;%PATH%
   
 build_script:
-  - .\mvnw.cmd clean verify
+  - .\mvnw.cmd clean verify -Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2
 
 # on_failure:
 #   - type editorconfig-maven-plugin\target\test-projects\EditorConfigMojosTest_encoding[3.5.0]_encoding\log.txt

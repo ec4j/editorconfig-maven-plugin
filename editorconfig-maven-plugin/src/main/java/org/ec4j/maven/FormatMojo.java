@@ -26,6 +26,7 @@ import org.ec4j.maven.lint.api.EditableResource;
 import org.ec4j.maven.lint.api.FormattingHandler;
 import org.ec4j.maven.lint.api.Resource;
 import org.ec4j.maven.lint.api.ViolationHandler;
+import org.slf4j.LoggerFactory;
 
 /**
  * Formats a set of files so that they comply with rules defined in {@code .editorconfig} files.
@@ -57,7 +58,8 @@ public class FormatMojo extends AbstractEditorconfigMojo {
     /** {@inheritDoc} */
     @Override
     protected ViolationHandler createHandler() {
-        return new FormattingHandler(backup, backupSuffix);
+        return new FormattingHandler(backup, backupSuffix,
+                new Slf4jLintLogger(LoggerFactory.getLogger(FormattingHandler.class)));
     }
 
     /** {@inheritDoc} */

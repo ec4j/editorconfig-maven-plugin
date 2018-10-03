@@ -41,6 +41,7 @@ import org.ec4j.maven.lint.api.Edit;
 import org.ec4j.maven.lint.api.Insert;
 import org.ec4j.maven.lint.api.Linter;
 import org.ec4j.maven.lint.api.Location;
+import org.ec4j.maven.lint.api.Logger;
 import org.ec4j.maven.lint.api.Replace;
 import org.ec4j.maven.lint.api.Resource;
 import org.ec4j.maven.lint.api.Violation;
@@ -63,8 +64,6 @@ import org.ec4j.maven.linters.xml.XmlParser.StartEndNameContext;
 import org.ec4j.maven.linters.xml.XmlParser.StartNameContext;
 import org.ec4j.maven.linters.xml.XmlParser.TextContext;
 import org.ec4j.maven.linters.xml.XmlParserListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A {@link Linter} specialized for XML files.
@@ -554,7 +553,6 @@ public class XmlLinter implements Linter {
 
     private static final List<String> DEFAULT_INCLUDES = Collections
             .unmodifiableList(Arrays.asList("**/*.xml", "**/*.xsl"));
-    private static final Logger log = LoggerFactory.getLogger(XmlLinter.class);
 
     @Override
     public List<String> getDefaultExcludes() {
@@ -569,9 +567,9 @@ public class XmlLinter implements Linter {
     @Override
     public void process(Resource resource, ResourceProperties properties, ViolationHandler violationHandler)
             throws IOException {
-
-        IndentStyleValue indentStyle = properties.getValue(PropertyType.indent_style, null, false);
-        Integer indentSize = properties.getValue(PropertyType.indent_size, null, false);
+        final Logger log = violationHandler.getLogger();
+        final IndentStyleValue indentStyle = properties.getValue(PropertyType.indent_style, null, false);
+        final Integer indentSize = properties.getValue(PropertyType.indent_size, null, false);
         if (log.isTraceEnabled()) {
             log.trace("Checking indent_style value '{}' in {}", indentStyle, resource);
             log.trace("Checking indent_size value '{}' in {}", indentSize, resource);

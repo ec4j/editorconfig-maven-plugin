@@ -34,12 +34,11 @@ import org.ec4j.maven.lint.api.Insert;
 import org.ec4j.maven.lint.api.LineReader;
 import org.ec4j.maven.lint.api.Linter;
 import org.ec4j.maven.lint.api.Location;
+import org.ec4j.maven.lint.api.Logger;
 import org.ec4j.maven.lint.api.Replace;
 import org.ec4j.maven.lint.api.Resource;
 import org.ec4j.maven.lint.api.Violation;
 import org.ec4j.maven.lint.api.ViolationHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A simple line-by-line {@link Linter}.
@@ -59,17 +58,14 @@ public class TextLinter implements Linter {
 
     private static final List<String> DEFAULT_INCLUDES = Collections.unmodifiableList(Arrays.asList("**/*"));
 
-    private static final Logger log = LoggerFactory.getLogger(TextLinter.class);
     private static final Pattern TRAILING_WHITESPACE_PATTERN = Pattern.compile("[ \t]+$", Pattern.MULTILINE);
 
     /**
      * Replace the EOL string at the end of the given {@code line} with its respective escape sequence ({@code "\n"},
      * {@code "\r"} or {@code "\r\n"})
      *
-     * @param line
-     *            the line to escape
-     * @param eol
-     *            the {@link EndOfLineValue} detected at the end of {@code line}
+     * @param line the line to escape
+     * @param eol  the {@link EndOfLineValue} detected at the end of {@code line}
      * @return the escaped {@code line}
      */
     static String escape(String line, EndOfLineValue eol) {
@@ -96,8 +92,7 @@ public class TextLinter implements Linter {
     /**
      * Find the EOL string at the end of the given {@code line}.
      *
-     * @param line
-     *            the line to detect the EOL string in
+     * @param line the line to detect the EOL string in
      * @return any of the common EOL strings ({@code "\n"}, {@code "\r"} or {@code "\r\n"}) found at the and of the
      *         given {@code line} or {@code ""} in case there is no EOL string there
      */
@@ -137,7 +132,8 @@ public class TextLinter implements Linter {
     @Override
     public void process(Resource resource, ResourceProperties properties, ViolationHandler violationHandler)
             throws IOException {
-        PropertyType.EndOfLineValue eol = properties.getValue(PropertyType.end_of_line, null, true);
+        final Logger log = violationHandler.getLogger();
+        final PropertyType.EndOfLineValue eol = properties.getValue(PropertyType.end_of_line, null, true);
         final Boolean trimTrailingWsBox = properties.getValue(PropertyType.trim_trailing_whitespace, Boolean.FALSE,
                 true);
         final boolean trimTrailingWs = trimTrailingWsBox != null && trimTrailingWsBox.booleanValue();
@@ -254,7 +250,9 @@ public class TextLinter implements Linter {
                 }
             }
         } catch (MalformedInputException e) {
-            throw new FormatException("Could not read " + resource.getPath() + ". This may mean that it is a binary file and you should exclude it from editorconfig processing.", e);
+            throw new FormatException("Could not read " + resource.getPath()
+                    + ". This may mean that it is a binary file and you should exclude it from editorconfig processing.",
+                    e);
         }
     }
 
