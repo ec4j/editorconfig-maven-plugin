@@ -45,8 +45,16 @@ public class EditorConfigMojosTest {
     public final MavenRuntime verifier;
 
     public EditorConfigMojosTest(MavenRuntimeBuilder runtimeBuilder) throws Exception {
+        final String logOpt = "-Dorg.slf4j.simpleLogger.log." + CheckMojo.class.getPackage().getName() + "=trace";
+        final String[] opts;
+        if (System.getProperty("java.version").startsWith("1.7.")) {
+            opts = new String[] {logOpt, "-Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2"};
+        } else {
+            opts = new String[] {logOpt};
+        }
+
         this.verifier = runtimeBuilder //
-                .withCliOptions("-Dorg.slf4j.simpleLogger.log." + CheckMojo.class.getPackage().getName() + "=trace") //
+                .withCliOptions(opts) //
                 .build();
     }
 
