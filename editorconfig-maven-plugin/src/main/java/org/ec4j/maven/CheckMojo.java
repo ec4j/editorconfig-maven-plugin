@@ -54,7 +54,8 @@ public class CheckMojo extends AbstractEditorconfigMojo {
     /** {@inheritDoc} */
     @Override
     protected ViolationHandler createHandler() {
-        return new ViolationCollector(failOnFormatViolation, "mvn editorconfig:format");
+        return new ViolationCollector(failOnFormatViolation, "mvn editorconfig:format",
+                new Slf4jLintLogger(LoggerFactory.getLogger(ViolationCollector.class)));
     }
 
     /** {@inheritDoc} */

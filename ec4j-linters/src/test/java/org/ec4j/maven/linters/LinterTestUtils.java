@@ -28,6 +28,7 @@ import org.ec4j.core.ResourceProperties;
 import org.ec4j.maven.lint.api.EditableResource;
 import org.ec4j.maven.lint.api.FormattingHandler;
 import org.ec4j.maven.lint.api.Linter;
+import org.ec4j.maven.lint.api.Logger;
 import org.ec4j.maven.lint.api.Resource;
 import org.ec4j.maven.lint.api.Violation;
 import org.ec4j.maven.lint.api.ViolationCollector;
@@ -35,10 +36,10 @@ import org.junit.Assert;
 
 public class LinterTestUtils {
 
-    public static void assertParse(Linter linter, EditableResource doc, String expectedText,
-            ResourceProperties props, Violation... expected) throws IOException {
+    public static void assertParse(Linter linter, EditableResource doc, String expectedText, ResourceProperties props,
+            Violation... expected) throws IOException {
 
-        ViolationCollector collector = new ViolationCollector(false, "mvn editorconfig:format");
+        ViolationCollector collector = new ViolationCollector(false, "mvn editorconfig:format", Logger.NO_OP);
         collector.startFiles();
         collector.startFile(doc);
         linter.process(doc, props, collector);
@@ -57,7 +58,7 @@ public class LinterTestUtils {
             Assert.assertEquals(Arrays.asList(expected), actual);
         }
 
-        FormattingHandler formatter = new FormattingHandler(false, ".bak");
+        FormattingHandler formatter = new FormattingHandler(false, ".bak", Logger.NO_OP);
         formatter.startFiles();
         formatter.startFile(doc);
         linter.process(doc, props, formatter);
