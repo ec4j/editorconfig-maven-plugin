@@ -27,23 +27,22 @@
 configModelVersion: 2.1
 repositories:
   org.ec4j.core:
-    selectors:
+    includes:
     - org.ec4j.core
     urls:
     - git:https://github.com/ec4j/ec4j.git
     verbosity: info
   io.takari.maven.plugins.takari-plugin-testing:
-    selectors:
+    includes:
     - io.takari.maven.plugins:takari-plugin-testing*
     - io.takari.maven.plugins:takari-plugin-integration-testing
     urls:
     - git:file:///home/ppalaga/orgs/takari/takari-plugin-testing-project/.git
     - git:https://github.com/takari/takari-plugin-testing-project.git
   org.apache.maven.plugin-tools:
-    selectors:
+    includes:
     - org.apache.maven.plugin-tools
     - org.apache.maven.plugins:maven-plugin-plugin
     urls:
-    - git:https://github.com/ppalaga/maven-plugin-tools.git
     - git:https://github.com/apache/maven-plugin-tools.git
 
