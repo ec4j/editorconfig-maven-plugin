@@ -23,71 +23,52 @@ import org.ec4j.maven.lint.api.Logger;
  *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
-public class Slf4jLintLogger implements Logger {
+public class Slf4jLintLogger extends Logger.AbstractLogger {
+    static LogLevel toEc4jLogLevel(org.slf4j.Logger log) {
+        if (log.isTraceEnabled()) {
+            return LogLevel.TRACE;
+        } else if (log.isDebugEnabled()) {
+            return LogLevel.DEBUG;
+        } else if (log.isDebugEnabled()) {
+            return LogLevel.INFO;
+        } else if (log.isDebugEnabled()) {
+            return LogLevel.WARN;
+        } else if (log.isDebugEnabled()) {
+            return LogLevel.ERROR;
+        } else {
+            throw new IllegalStateException("Could not find " + LogLevel.class.getName() + " for "
+                    + org.slf4j.Logger.class.getName() + " [" + log + "]");
+        }
+    }
+
     private final org.slf4j.Logger delegate;
 
     public Slf4jLintLogger(org.slf4j.Logger delegate) {
-        super();
+        super(toEc4jLogLevel(delegate));
         this.delegate = delegate;
     }
 
-    /** {@inheritDoc} */
     @Override
-    public void debug(String arg0, Object... arg1) {
-        delegate.debug(arg0, arg1);
+    public void log(LogLevel level, String string, Object... args) {
+        switch (level) {
+        case TRACE:
+            delegate.trace(string, args);
+            break;
+        case DEBUG:
+            delegate.debug(string, args);
+            break;
+        case INFO:
+            delegate.info(string, args);
+            break;
+        case WARN:
+            delegate.warn(string, args);
+            break;
+        case ERROR:
+            delegate.error(string, args);
+            break;
+        default:
+            throw new IllegalStateException("Unexpected " + LogLevel.class.getName() + " [" + level + "]");
+        }
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public void error(String arg0, Object... arg1) {
-        delegate.error(arg0, arg1);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void info(String arg0, Object... arg1) {
-        delegate.info(arg0, arg1);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean isDebugEnabled() {
-        return delegate.isDebugEnabled();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean isErrorEnabled() {
-        return delegate.isErrorEnabled();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean isInfoEnabled() {
-        return delegate.isInfoEnabled();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean isTraceEnabled() {
-        return delegate.isTraceEnabled();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean isWarnEnabled() {
-        return delegate.isWarnEnabled();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void trace(String arg0, Object... arg1) {
-        delegate.trace(arg0, arg1);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void warn(String arg0, Object... arg1) {
-        delegate.warn(arg0, arg1);
-    }
 }
