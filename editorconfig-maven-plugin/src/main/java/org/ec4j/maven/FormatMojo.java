@@ -22,10 +22,10 @@ import java.nio.file.Path;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.ec4j.maven.lint.api.EditableResource;
-import org.ec4j.maven.lint.api.FormattingHandler;
-import org.ec4j.maven.lint.api.Resource;
-import org.ec4j.maven.lint.api.ViolationHandler;
+import org.ec4j.lint.api.EditableResource;
+import org.ec4j.lint.api.FormattingHandler;
+import org.ec4j.lint.api.Resource;
+import org.ec4j.lint.api.ViolationHandler;
 import org.slf4j.LoggerFactory;
 
 /**

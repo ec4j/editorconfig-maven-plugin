@@ -16,7 +16,7 @@
  */
 package org.ec4j.maven;
 
-import org.ec4j.maven.lint.api.Logger;
+import org.ec4j.lint.api.Logger;
 
 /**
  * A {@link Slf4jLintLogger} that delegates to a SLF4J {@link org.slf4j.Logger}.
@@ -29,11 +29,11 @@ public class Slf4jLintLogger extends Logger.AbstractLogger {
             return LogLevel.TRACE;
         } else if (log.isDebugEnabled()) {
             return LogLevel.DEBUG;
-        } else if (log.isDebugEnabled()) {
+        } else if (log.isInfoEnabled()) {
             return LogLevel.INFO;
-        } else if (log.isDebugEnabled()) {
+        } else if (log.isWarnEnabled()) {
             return LogLevel.WARN;
-        } else if (log.isDebugEnabled()) {
+        } else if (log.isErrorEnabled()) {
             return LogLevel.ERROR;
         } else {
             throw new IllegalStateException("Could not find " + LogLevel.class.getName() + " for "

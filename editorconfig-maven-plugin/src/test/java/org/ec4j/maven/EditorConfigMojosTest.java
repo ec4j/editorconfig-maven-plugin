@@ -72,44 +72,44 @@ public class EditorConfigMojosTest {
         File projDir = resources.getBasedir("defaults");
 
         MavenExecution mavenExec = verifier.forProject(projDir) //
-                //.withCliOption("-X") // stacktrace
+                .withCliOption("-X") // debug
                 .withCliOption("-B") // batch
         ;
 
         mavenExec //
                 .execute("clean", "verify") //
-                .assertLogText("[TRACE] Processing file '.editorconfig' using linter org.ec4j.maven.linters.TextLinter") //
+                .assertLogText("[TRACE] Processing file '.editorconfig' using linter org.ec4j.linters.TextLinter") //
                 .assertLogText("[DEBUG] No formatting violations found in file '.editorconfig'") //
-                .assertLogText("[TRACE] Processing file 'pom.xml' using linter org.ec4j.maven.linters.TextLinter") //
-                .assertLogText("[TRACE] Processing file 'pom.xml' using linter org.ec4j.maven.linters.XmlLinter") //
+                .assertLogText("[TRACE] Processing file 'pom.xml' using linter org.ec4j.linters.TextLinter") //
+                .assertLogText("[TRACE] Processing file 'pom.xml' using linter org.ec4j.linters.XmlLinter") //
                 .assertLogText("[DEBUG] No formatting violations found in file 'pom.xml'") //
                 .assertLogText(
-                        "[TRACE] Processing file 'src/main/java/org/ec4j/maven/it/defaults/App.java' using linter org.ec4j.maven.linters.TextLinter"
+                        "[TRACE] Processing file 'src/main/java/org/ec4j/maven/it/defaults/App.java' using linter org.ec4j.linters.TextLinter"
                                 .replace('/', File.separatorChar)) //
                 .assertLogText(
                         "[DEBUG] No formatting violations found in file 'src/main/java/org/ec4j/maven/it/defaults/App.java'"
                                 .replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[TRACE] Processing file 'src/main/resources/trailing-whitespace.txt' using linter org.ec4j.maven.linters.TextLinter"
+                        "[TRACE] Processing file 'src/main/resources/trailing-whitespace.txt' using linter org.ec4j.linters.TextLinter"
                                 .replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[ERROR] src/main/resources/trailing-whitespace.txt@1,7: Delete 2 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.maven.linters.TextLinter"
+                        "[ERROR] src/main/resources/trailing-whitespace.txt@1,7: Delete 2 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.linters.TextLinter"
                                 .replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[TRACE] Processing file 'src/main/resources/indent.xml' using linter org.ec4j.maven.linters.TextLinter"
+                        "[TRACE] Processing file 'src/main/resources/indent.xml' using linter org.ec4j.linters.TextLinter"
                                 .replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[TRACE] Processing file 'src/main/resources/indent.xml' using linter org.ec4j.maven.linters.XmlLinter"
+                        "[TRACE] Processing file 'src/main/resources/indent.xml' using linter org.ec4j.linters.XmlLinter"
                                 .replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[ERROR] src/main/resources/indent.xml@23,5: Delete 1 character - violates indent_style = space, indent_size = 2, reported by org.ec4j.maven.linters.XmlLinter"
+                        "[ERROR] src/main/resources/indent.xml@23,5: Delete 1 character - violates indent_style = space, indent_size = 2, reported by org.ec4j.linters.XmlLinter"
                                 .replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[ERROR] src/main/resources/indent.xml@24,3: Delete 2 characters - violates indent_style = space, indent_size = 2, reported by org.ec4j.maven.linters.XmlLinter"
+                        "[ERROR] src/main/resources/indent.xml@24,3: Delete 2 characters - violates indent_style = space, indent_size = 2, reported by org.ec4j.linters.XmlLinter"
                                 .replace('/', File.separatorChar)) //
-                .assertLogText("[TRACE] Processing file 'README.adoc' using linter org.ec4j.maven.linters.TextLinter") //
+                .assertLogText("[TRACE] Processing file 'README.adoc' using linter org.ec4j.linters.TextLinter") //
                 .assertLogText(
-                        "[ERROR] README.adoc@2,1: Delete 2 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.maven.linters.TextLinter") //
+                        "[ERROR] README.adoc@2,1: Delete 2 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.linters.TextLinter") //
                 .assertLogText("[INFO] Checked 6 files") //
                 .assertLogText("[INFO] BUILD FAILURE") //
                 .assertLogText("There are .editorconfig violations. You may want to run") //
@@ -124,17 +124,18 @@ public class EditorConfigMojosTest {
         File projDir = resources.getBasedir("encoding");
 
         MavenExecution mavenExec = verifier.forProject(projDir) //
+                .withCliOption("-X") // debug
                 .withCliOption("-B") // batch
         ;
 
         MavenExecutionResult result = mavenExec //
                 .execute("clean", "editorconfig:check") //
                 .assertErrorFreeLog() //
-                .assertLogText("[TRACE] Processing file '.editorconfig' using linter org.ec4j.maven.linters.TextLinter") //
+                .assertLogText("[TRACE] Processing file '.editorconfig' using linter org.ec4j.linters.TextLinter") //
                 .assertLogText("[TRACE] Creating a Resource for path '.editorconfig' with encoding 'UTF-8'") //
                 .assertLogText("[DEBUG] No formatting violations found in file '.editorconfig'") //
                 .assertLogText(
-                        "[TRACE] Processing file 'src/main/resources/simplelogger.properties' using linter org.ec4j.maven.linters.TextLinter"
+                        "[TRACE] Processing file 'src/main/resources/simplelogger.properties' using linter org.ec4j.linters.TextLinter"
                                 .replace('/', File.separatorChar)) //
                 .assertLogText(
                         "[TRACE] Creating a Resource for path 'src/main/resources/simplelogger.properties' with encoding 'ISO-8859-1'"
@@ -153,44 +154,45 @@ public class EditorConfigMojosTest {
         File projDir = resources.getBasedir("defaults");
 
         MavenExecution mavenExec = verifier.forProject(projDir) //
+                .withCliOption("-X") // debug
                 .withCliOption("-B") // batch
         ;
 
         MavenExecutionResult result = mavenExec //
                 .execute("clean", "editorconfig:format") //
                 .assertErrorFreeLog() //
-                .assertLogText("[TRACE] Processing file '.editorconfig' using linter org.ec4j.maven.linters.TextLinter") //
+                .assertLogText("[TRACE] Processing file '.editorconfig' using linter org.ec4j.linters.TextLinter") //
                 .assertLogText("[DEBUG] No formatting violations found in file '.editorconfig'") //
-                .assertLogText("[TRACE] Processing file 'pom.xml' using linter org.ec4j.maven.linters.TextLinter") //
-                .assertLogText("[TRACE] Processing file 'pom.xml' using linter org.ec4j.maven.linters.XmlLinter") //
+                .assertLogText("[TRACE] Processing file 'pom.xml' using linter org.ec4j.linters.TextLinter") //
+                .assertLogText("[TRACE] Processing file 'pom.xml' using linter org.ec4j.linters.XmlLinter") //
                 .assertLogText("[DEBUG] No formatting violations found in file 'pom.xml'") //
                 .assertLogText(
-                        "[TRACE] Processing file 'src/main/java/org/ec4j/maven/it/defaults/App.java' using linter org.ec4j.maven.linters.TextLinter"
+                        "[TRACE] Processing file 'src/main/java/org/ec4j/maven/it/defaults/App.java' using linter org.ec4j.linters.TextLinter"
                                 .replace('/', File.separatorChar)) //
                 .assertLogText(
                         "[DEBUG] No formatting violations found in file 'src/main/java/org/ec4j/maven/it/defaults/App.java'"
                                 .replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[TRACE] Processing file 'src/main/resources/trailing-whitespace.txt' using linter org.ec4j.maven.linters.TextLinter"
+                        "[TRACE] Processing file 'src/main/resources/trailing-whitespace.txt' using linter org.ec4j.linters.TextLinter"
                                 .replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[INFO] src/main/resources/trailing-whitespace.txt@1,7: Delete 2 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.maven.linters.TextLinter"
+                        "[INFO] src/main/resources/trailing-whitespace.txt@1,7: Delete 2 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.linters.TextLinter"
                                 .replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[TRACE] Processing file 'src/main/resources/indent.xml' using linter org.ec4j.maven.linters.TextLinter"
+                        "[TRACE] Processing file 'src/main/resources/indent.xml' using linter org.ec4j.linters.TextLinter"
                                 .replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[TRACE] Processing file 'src/main/resources/indent.xml' using linter org.ec4j.maven.linters.XmlLinter"
+                        "[TRACE] Processing file 'src/main/resources/indent.xml' using linter org.ec4j.linters.XmlLinter"
                                 .replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[INFO] src/main/resources/indent.xml@23,5: Delete 1 character - violates indent_style = space, indent_size = 2, reported by org.ec4j.maven.linters.XmlLinter"
+                        "[INFO] src/main/resources/indent.xml@23,5: Delete 1 character - violates indent_style = space, indent_size = 2, reported by org.ec4j.linters.XmlLinter"
                                 .replace('/', File.separatorChar)) //
                 .assertLogText(
-                        "[INFO] src/main/resources/indent.xml@24,3: Delete 2 characters - violates indent_style = space, indent_size = 2, reported by org.ec4j.maven.linters.XmlLinter"
+                        "[INFO] src/main/resources/indent.xml@24,3: Delete 2 characters - violates indent_style = space, indent_size = 2, reported by org.ec4j.linters.XmlLinter"
                                 .replace('/', File.separatorChar)) //
-                .assertLogText("[TRACE] Processing file 'README.adoc' using linter org.ec4j.maven.linters.TextLinter") //
+                .assertLogText("[TRACE] Processing file 'README.adoc' using linter org.ec4j.linters.TextLinter") //
                 .assertLogText(
-                        "[INFO] README.adoc@2,1: Delete 2 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.maven.linters.TextLinter") // ;
+                        "[INFO] README.adoc@2,1: Delete 2 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.linters.TextLinter") // ;
                 .assertLogText("[INFO] Formatted 3 out of 6 files") //
         ;
 
@@ -216,12 +218,12 @@ public class EditorConfigMojosTest {
         mavenExec //
                 .execute("clean", "verify") //
                 .assertErrorFreeLog()
-                .assertLogText("[TRACE] Processing file 'good-1.adoc' using linter org.ec4j.maven.linters.TextLinter") //
+                .assertLogText("[TRACE] Processing file 'good-1.adoc' using linter org.ec4j.linters.TextLinter") //
                 .assertNoLogText(
-                        "[TRACE] Processing file 'module-1/good-1.adoc' using linter org.ec4j.maven.linters.TextLinter") //
+                        "[TRACE] Processing file 'module-1/good-1.adoc' using linter org.ec4j.linters.TextLinter") //
                 .assertNoLogText(
-                        "[TRACE] Processing file 'module-2/bad.xml' using linter org.ec4j.maven.linters.TextLinter") //
-                .assertNoLogText("[TRACE] Processing file 'bad.xml' using linter org.ec4j.maven.linters.TextLinter") //
+                        "[TRACE] Processing file 'module-2/bad.xml' using linter org.ec4j.linters.TextLinter") //
+                .assertNoLogText("[TRACE] Processing file 'bad.xml' using linter org.ec4j.linters.TextLinter") //
         ;
     }
 
@@ -237,15 +239,15 @@ public class EditorConfigMojosTest {
         mavenExec //
                 .execute("clean", "verify") //
                 .assertErrorFreeLog()
-                .assertLogText("[TRACE] Processing file 'good-1.adoc' using linter org.ec4j.maven.linters.TextLinter") //
+                .assertLogText("[TRACE] Processing file 'good-1.adoc' using linter org.ec4j.linters.TextLinter") //
                 .assertNoLogText(
-                        "[TRACE] Processing file 'module-1/good-1.adoc' using linter org.ec4j.maven.linters.TextLinter") //
-                .assertLogText("[TRACE] Processing file 'good.xml' using linter org.ec4j.maven.linters.TextLinter") //
+                        "[TRACE] Processing file 'module-1/good-1.adoc' using linter org.ec4j.linters.TextLinter") //
+                .assertLogText("[TRACE] Processing file 'good.xml' using linter org.ec4j.linters.TextLinter") //
                 .assertNoLogText(
-                        "[TRACE] Processing file 'module-2/good.xml' using linter org.ec4j.maven.linters.TextLinter") //
+                        "[TRACE] Processing file 'module-2/good.xml' using linter org.ec4j.linters.TextLinter") //
                 .assertNoLogText(
-                        "[TRACE] Processing file 'module-2/bad.xml' using linter org.ec4j.maven.linters.TextLinter") //
-                .assertNoLogText("[TRACE] Processing file 'bad.xml' using linter org.ec4j.maven.linters.TextLinter") //
+                        "[TRACE] Processing file 'module-2/bad.xml' using linter org.ec4j.linters.TextLinter") //
+                .assertNoLogText("[TRACE] Processing file 'bad.xml' using linter org.ec4j.linters.TextLinter") //
         ;
     }
 

@@ -22,9 +22,9 @@ import java.nio.file.Path;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.ec4j.maven.lint.api.Resource;
-import org.ec4j.maven.lint.api.ViolationCollector;
-import org.ec4j.maven.lint.api.ViolationHandler;
+import org.ec4j.lint.api.Resource;
+import org.ec4j.lint.api.ViolationCollector;
+import org.ec4j.lint.api.ViolationHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

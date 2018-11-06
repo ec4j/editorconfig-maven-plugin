@@ -39,12 +39,12 @@ import org.ec4j.core.Resource.Resources;
 import org.ec4j.core.ResourceProperties;
 import org.ec4j.core.ResourcePropertiesService;
 import org.ec4j.core.model.PropertyType;
-import org.ec4j.maven.lint.api.Constants;
-import org.ec4j.maven.lint.api.FormatException;
-import org.ec4j.maven.lint.api.Linter;
-import org.ec4j.maven.lint.api.LinterRegistry;
-import org.ec4j.maven.lint.api.Resource;
-import org.ec4j.maven.lint.api.ViolationHandler;
+import org.ec4j.lint.api.Constants;
+import org.ec4j.lint.api.FormatException;
+import org.ec4j.lint.api.Linter;
+import org.ec4j.lint.api.LinterRegistry;
+import org.ec4j.lint.api.Resource;
+import org.ec4j.lint.api.ViolationHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
