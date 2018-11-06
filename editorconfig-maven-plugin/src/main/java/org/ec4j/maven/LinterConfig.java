@@ -16,8 +16,8 @@
  */
 package org.ec4j.maven;
 
-import org.ec4j.maven.lint.api.Linter;
-import org.ec4j.maven.linters.TextLinter;
+import org.ec4j.lint.api.Linter;
+import org.ec4j.linters.TextLinter;
 
 /**
  * A configuration of a {@link Linter}.
