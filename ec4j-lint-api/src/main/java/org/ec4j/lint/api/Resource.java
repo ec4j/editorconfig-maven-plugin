@@ -33,6 +33,138 @@ import java.util.regex.Pattern;
  */
 public class Resource {
 
+    /**
+     * A utility for line Number %lt;-&gt; file offset transformations.
+     * @since 0.0.9
+     */
+    static class LineIndex {
+
+        /**
+         * A {@link LineIndex} builder.
+         */
+        static class Builder {
+            private static final int[] EMPTY = new int[0];
+            private int length = 0;
+            private int[] lineStartOffsets = EMPTY;
+
+            /**
+             * @return a new {@link LineIndex}
+             */
+            public LineIndex build() {
+                int[] lines = new int[length];
+                System.arraycopy(lineStartOffsets, 0, lines, 0, length);
+                lineStartOffsets = EMPTY;
+                return new LineIndex(lines);
+            }
+
+            /**
+             * Add a new line starting at the given offset.
+             *
+             * @param offset a zero based offset
+             * @return this {@link Builder}
+             */
+            public Builder lineStartOffset(int offset) {
+                if (length >= lineStartOffsets.length) {
+                    final int[] newArr = new int[lineStartOffsets.length + 16];
+                    System.arraycopy(lineStartOffsets, 0, newArr, 0, lineStartOffsets.length);
+                    lineStartOffsets = newArr;
+                }
+                lineStartOffsets[length++] = offset;
+                return this;
+            }
+        }
+
+        /**
+         * @return a new {@link Builder}
+         */
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        /**
+         * @param text the {@link CharSequence} to index
+         * @return a new {@link LineIndex} for the given {@code text}
+         */
+        public static LineIndex of(CharSequence text) {
+            final Builder b = new Builder();
+            final int len = text.length();
+            Matcher m = EOL_MATCHER.matcher(text);
+            while (m.find()) {
+                int end = m.end();
+                if (end < len) {
+                    switch (text.charAt(end)) {
+                    case '\n':
+                        b.lineStartOffset(end + 1);
+                        break;
+                    case '\r':
+                        end++;
+                        if (end < len && text.charAt(end) == '\n') {
+                            b.lineStartOffset(end + 1);
+                            break;
+                        } else {
+                            b.lineStartOffset(end);
+                            break;
+                        }
+                    }
+                }
+            }
+            return b.build();
+        }
+
+        /**
+         * First line start offset is always zero. The first element in {@link #lineStartOffsets} thus contains the
+         * start offset of the second line.
+         */
+        final int[] lineStartOffsets;
+
+        LineIndex(int[] lineStartOffsets) {
+            this.lineStartOffsets = lineStartOffsets;
+        }
+
+        /**
+         * @param lineNumber first line number is {@code 1}
+         * @return the zero based offset of the given line
+         */
+        public int findLineStart(int lineNumber) {
+            if (lineNumber == 1) {
+                return 0;
+            } else if (lineNumber < 1 && lineNumber - 2 >= lineStartOffsets.length) {
+                throw new ArrayIndexOutOfBoundsException(String.format("Cannot access line %d, %s has only %d entries",
+                        lineNumber, LineIndex.class.getName(), lineStartOffsets.length + 1));
+            } else {
+                return lineStartOffsets[lineNumber - 2];
+            }
+        }
+
+        /**
+         * @param offset the zero based index in {@link #text} to find the {@link Location} for
+         * @return the {@link Location} at the given {@code offset}
+         */
+        public Location findLocation(int offset) {
+            if (offset == 0) {
+                return Location.initial();
+            }
+            final int len = lineStartOffsets.length;
+            if (len == 0) {
+                return new Location(1, offset + 1);
+            }
+            for (int i = 0; i < len; i++) {
+                if (lineStartOffsets[i] == offset) {
+                    return new Location(i + 2, 1);
+                } else if (lineStartOffsets[i] > offset) {
+                    if (i == 0) {
+                        return new Location(1, offset + 1);
+                    } else {
+                        final int column = offset - lineStartOffsets[i - 1] + 1;
+                        return new Location(i + 1, column);
+                    }
+                }
+            }
+            final int column = offset - lineStartOffsets[len - 1] + 1;
+            return new Location(len + 1, column);
+        }
+    }
+
     private static final Pattern EOL_MATCHER = Pattern.compile("$", Pattern.MULTILINE);
 
     private final Path absPath;
@@ -41,6 +173,8 @@ public class Resource {
      * The hash code at load time. Can be used to decide if this {@link Resource} was changed since it was loaded.
      */
     private int hashCodeLoaded;
+
+    private LineIndex lineIndex;
 
     private final Path relPath;
 
@@ -109,6 +243,17 @@ public class Resource {
     public void delete(int start, int end) {
         ensureReadSilent();
         text.delete(start, end);
+        invalidateIndex();
+    }
+
+    /**
+     * Creates {@link #lineIndex} if ncessary.
+     */
+    private void ensureIndexAvailable() {
+        if (this.lineIndex == null) {
+            ensureReadSilent();
+            this.lineIndex = LineIndex.of(text);
+        }
     }
 
     /**
@@ -123,7 +268,7 @@ public class Resource {
                 r = Files.newBufferedReader(absPath, encoding);
                 int hash = 0;
                 StringBuilder sb = new StringBuilder(256);
-                char[] cbuf = new char[1024];
+                char[] cbuf = new char[8192];
                 int len;
                 while ((len = r.read(cbuf)) >= 0) {
                     sb.append(cbuf, 0, len);
@@ -132,6 +277,7 @@ public class Resource {
                     }
                 }
                 this.text = sb;
+                invalidateIndex();
                 this.hashCodeLoaded = hash;
             } catch (MalformedInputException e) {
                 throw new FormatException("Could not read " + absPath
@@ -181,38 +327,47 @@ public class Resource {
      * @return the zero based character offset of the first character of the given line
      */
     public int findLineStart(int lineNumber) {
+        ensureIndexAvailable();
+        return lineIndex.findLineStart(lineNumber);
+    }
+
+    /**
+     * @param offset the zero based index in {@link #text} to find the {@link Location} for
+     * @return the {@link Location} at the given {@code offset}
+     */
+    public Location findLocation(int offset) {
         ensureReadSilent();
-        if (lineNumber == 1) {
-            return 0;
-        } else {
-            int currentLine = 2;
-            Matcher m = EOL_MATCHER.matcher(text);
-            while (m.find()) {
-                if (currentLine == lineNumber) {
-                    int end = m.end();
-                    final int len = text.length();
-                    if (end < len) {
-                        switch (text.charAt(end)) {
-                        case '\n':
-                            return end + 1;
-                        case '\r':
-                            end++;
-                            if (end < len && text.charAt(end) == '\n') {
-                                return end + 1;
-                            } else {
-                                return end;
-                            }
-                        }
-                    }
-                    return end;
-                }
-                if (currentLine > lineNumber) {
-                    throw new IndexOutOfBoundsException("No such line " + lineNumber);
-                }
-                currentLine++;
-            }
-            throw new IndexOutOfBoundsException("No such line " + lineNumber);
+        if (offset == 0) {
+            return Location.initial();
         }
+        int line = 1;
+        int column = 1;
+        for (int i = 0; i < text.length() && i <= offset; i++) {
+            if (i == offset) {
+                return new Location(line, column);
+            }
+            char ch = text.charAt(i);
+            switch (ch) {
+            case '\r':
+                if (i + 1 < text.length() && text.charAt(i + 1) == '\n') {
+                    i++;
+                    if (i == offset) {
+                        return new Location(line, column + 1);
+                    }
+                }
+                line++;
+                column = 1;
+                break;
+            case '\n':
+                line++;
+                column = 1;
+                break;
+            default:
+                column++;
+                break;
+            }
+        }
+        return new Location(line, column);
     }
 
     /**
@@ -266,6 +421,14 @@ public class Resource {
     public void insert(int offset, CharSequence string) {
         ensureReadSilent();
         text.insert(offset, string);
+        invalidateIndex();
+    }
+
+    /**
+     * Sets {@link #lineIndex} to {@code null}
+     */
+    private void invalidateIndex() {
+        this.lineIndex = null;
     }
 
     /**
@@ -295,6 +458,7 @@ public class Resource {
     public void replace(int start, int end, String replacement) {
         ensureReadSilent();
         text.replace(start, end, replacement);
+        invalidateIndex();
     }
 
     /**

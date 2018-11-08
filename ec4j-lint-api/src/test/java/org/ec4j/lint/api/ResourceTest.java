@@ -94,6 +94,25 @@ public class ResourceTest {
     }
 
     @Test
+    public void toLocation() {
+        assertLocation("", 0, 1, 1);
+        assertLocation(" ", 0, 1, 1);
+        assertLocation("  ", 1, 1, 2);
+        assertLocation(" ", 1, 1, 2);
+        assertLocation("\n", 0, 1, 1);
+        assertLocation("\r\n", 0, 1, 1);
+        assertLocation("\r\n", 1, 1, 2);
+        assertLocation("\r\n", 2, 2, 1);
+        assertLocation("\r\n ", 2, 2, 1);
+    }
+
+    private static void assertLocation(String source, int offset, int expectedLine, int expectedColumn) {
+        final Location actual = new Resource(Paths.get("foo"), Paths.get("foo"), StandardCharsets.UTF_8, source)
+                .findLocation(offset);
+        Assert.assertEquals(new Location(expectedLine, expectedColumn), actual);
+    }
+
+    @Test
     public void findLineStartCr() {
         String text = doc.getText().replace('\n', '\r');
         doc.text.replace(0, doc.text.length(), text);
