@@ -16,25 +16,19 @@
  */
 package org.ec4j.lint.api;
 
-/**
- * An edit operation on a file.
- *
- * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
- */
-public interface Edit {
+import org.junit.Assert;
+import org.junit.Test;
 
-    /**
-     * Perform this {@link Edit} operation on the given {@link Resource} starting at the given {@code offset}.
-     *
-     * @param resource
-     *            the {@link Resource} to edit
-     * @param offset
-     *            a zero based character index in the given {@code resource} where the edit operation should start
-     */
-    void perform(Resource resource, int offset);
+public class LintUtilsTest {
 
-    /**
-     * @return a human readable message that describes this {@link Edit} operation
-     */
-    String getMessage();
+    @Test
+    public void escape() {
+        Assert.assertNull(LintUtils.escape(null));
+        Assert.assertEquals("", LintUtils.escape(""));
+        Assert.assertEquals("   ", LintUtils.escape("   "));
+        Assert.assertEquals("\\n", LintUtils.escape("\n"));
+        Assert.assertEquals("\\r\\n", LintUtils.escape("\r\n"));
+        Assert.assertEquals(" \\t ", LintUtils.escape(" \t "));
+        Assert.assertEquals(" \\\\ ", LintUtils.escape(" \\ "));
+    }
 }

@@ -106,7 +106,7 @@ public class Insert implements Edit {
 
     /** {@inheritDoc} */
     @Override
-    public void perform(EditableResource document, int offset) {
+    public void perform(Resource document, int offset) {
         document.insert(offset, insertion);
     }
 

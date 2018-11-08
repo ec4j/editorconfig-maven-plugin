@@ -67,7 +67,17 @@ public class Replace implements Edit {
      * @return a new {@link Replace} operation
      */
     public static Replace ofReplaced(String replaced, String replacement) {
-        return new Replace(replaced.length(), replacement, "Replace '" + replaced + "' with '" + replacement + "'");
+        return new Replace(replaced.length(), replacement, "Replace '" + LintUtils.escape(replaced) + "' with '" + LintUtils.escape(replacement) + "'");
+    }
+
+    public static Replace ofReplaced(char[] replaced, char[] replacement) {
+        final StringBuilder msg = new StringBuilder(24);
+        msg.append("Replace '");
+        LintUtils.escape(msg, replaced);
+        msg.append("' with '");
+        LintUtils.escape(msg, replacement);
+        msg.append("'");
+        return new Replace(replaced.length, new String(replacement), msg.toString());
     }
 
     private final String message;
@@ -125,7 +135,7 @@ public class Replace implements Edit {
 
     /** {@inheritDoc} */
     @Override
-    public void perform(EditableResource document, int offset) {
+    public void perform(Resource document, int offset) {
         document.replace(offset, offset + replacedLength, replacement);
     }
 }

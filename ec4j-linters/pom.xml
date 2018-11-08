@@ -30,6 +30,13 @@
   <name>ec4j linters</name>
   <description>ec4j linter implementations</description>
 
+  <properties>
+    <checkstyle.excludes>
+      target/**, src/test/resources/java/**
+    </checkstyle.excludes>
+
+  </properties>
+
   <dependencies>
 
     <dependency>
@@ -40,6 +47,12 @@
     <dependency>
       <groupId>org.ec4j.maven</groupId>
       <artifactId>ec4j-lint-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jdt</groupId>
+      <artifactId>org.eclipse.jdt.core</artifactId>
+      <version>3.15.0</version>
     </dependency>
 
     <dependency>

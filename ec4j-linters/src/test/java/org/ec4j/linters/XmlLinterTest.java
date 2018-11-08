@@ -23,10 +23,10 @@ import org.ec4j.core.model.Property;
 import org.ec4j.core.model.PropertyType;
 import org.ec4j.core.model.PropertyType.IndentStyleValue;
 import org.ec4j.lint.api.Delete;
-import org.ec4j.lint.api.EditableResource;
 import org.ec4j.lint.api.Linter;
 import org.ec4j.lint.api.Location;
 import org.ec4j.lint.api.Replace;
+import org.ec4j.lint.api.Resource;
 import org.ec4j.lint.api.Violation;
 import org.junit.Test;
 
@@ -40,7 +40,7 @@ public class XmlLinterTest {
                 "                <child2 />\n" + //
                 "            </child1>\n" + //
                 "        </root>\n";
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("4").build()) //
@@ -60,7 +60,7 @@ public class XmlLinterTest {
                 "                <child2 />\n" + //
                 "            </child1>\n" + //
                 "        </root>\n";
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("4").build()) //
@@ -80,7 +80,7 @@ public class XmlLinterTest {
                 "                <child2 />\n" + //
                 "            </child1>\n" + //
                 "        </root>\n";
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("4").build()) //
@@ -100,7 +100,7 @@ public class XmlLinterTest {
                 "                <child2 />\n" + //
                 "            </child1>\n" + //
                 "        </root>\n";
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("4").build()) //
@@ -128,7 +128,7 @@ public class XmlLinterTest {
                 "    <text-1>text in text-1</text-1>\n" + //
                 "  </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("2").build()) //
@@ -157,7 +157,7 @@ public class XmlLinterTest {
                 "    <text-1>text in text-1</text-1>\n" + //
                 "  </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("2").build()) //
@@ -184,7 +184,7 @@ public class XmlLinterTest {
                 "    <text-1>text in text-1</text-1>\n" + //
                 "  </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("2").build()) //
@@ -211,7 +211,7 @@ public class XmlLinterTest {
                 "    <text-1>text in text-1</text-1>\n" + //
                 "  </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("2").build()) //
@@ -239,7 +239,7 @@ public class XmlLinterTest {
                 "        <text-1>text in text-1</text-1>\n" + //
                 "    </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("4").build()) //
@@ -267,7 +267,7 @@ public class XmlLinterTest {
                 "        <text-1>text in text-1</text-1>\n" + //
                 "    </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("4").build()) //
@@ -295,7 +295,7 @@ public class XmlLinterTest {
                 "  <text-1>text in text-1</text-1>\n" + //
                 " </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("1").build()) //
@@ -323,7 +323,7 @@ public class XmlLinterTest {
                 "    <text-1/>\n" + //
                 "  </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("2").build()) //
@@ -350,7 +350,7 @@ public class XmlLinterTest {
                 "    <text-1/>\n" + //
                 "  </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("2").build()) //
@@ -377,7 +377,7 @@ public class XmlLinterTest {
                 "    <text-1/>\n" + //
                 "  </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("2").build()) //
@@ -405,7 +405,7 @@ public class XmlLinterTest {
                 "        <text-1/>\n" + //
                 "    </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("4").build()) //
@@ -433,7 +433,7 @@ public class XmlLinterTest {
                 "        <text-1/>\n" + //
                 "    </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("4").build()) //
@@ -457,7 +457,7 @@ public class XmlLinterTest {
                 "<root>\n" + //
                 " <text-1/>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("1").build()) //
@@ -485,7 +485,7 @@ public class XmlLinterTest {
                 "    <text-1>text in text-1</text-1>\n" + //
                 "  </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("2").build()) //
@@ -512,7 +512,7 @@ public class XmlLinterTest {
                 "    <text-1>text in text-1</text-1>\n" + //
                 "  </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("2").build()) //
@@ -539,7 +539,7 @@ public class XmlLinterTest {
                 "    <text-1>text in text-1</text-1>\n" + //
                 "  </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("2").build()) //
@@ -567,7 +567,7 @@ public class XmlLinterTest {
                 "    <text-1>text</text-1>\n" + //
                 "  </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("2").build()) //
@@ -594,7 +594,7 @@ public class XmlLinterTest {
                 "    <text-1>text</text-1>\n" + //
                 "  </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("2").build()) //
@@ -621,7 +621,7 @@ public class XmlLinterTest {
                 "    <text-1>text</text-1>\n" + //
                 "  </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("2").build()) //
@@ -649,7 +649,7 @@ public class XmlLinterTest {
                 "        <text-1>text</text-1>\n" + //
                 "    </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("4").build()) //
@@ -677,7 +677,7 @@ public class XmlLinterTest {
                 "        <text-1>text</text-1>\n" + //
                 "    </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("4").build()) //
@@ -701,7 +701,7 @@ public class XmlLinterTest {
                 "<root>\n" + //
                 " <text-1>text</text-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("1").build()) //
@@ -729,7 +729,7 @@ public class XmlLinterTest {
                 "        <text-1>text in text-1</text-1>\n" + //
                 "    </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("4").build()) //
@@ -757,7 +757,7 @@ public class XmlLinterTest {
                 "        <text-1>text in text-1</text-1>\n" + //
                 "    </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("4").build()) //
@@ -785,7 +785,7 @@ public class XmlLinterTest {
                 "  <text-1>text in text-1</text-1>\n" + //
                 " </parent-1>\n" + //
                 "</root>"; //
-        EditableResource doc = LinterTestUtils.createDocument(text, ".xml");
+        Resource doc = LinterTestUtils.createDocument(text, ".xml");
 
         final ResourceProperties props = ResourceProperties.builder() //
                 .property(new Property.Builder(null).type(PropertyType.indent_size).value("1").build()) //

@@ -16,15 +16,10 @@
  */
 package org.ec4j.maven;
 
-import java.nio.charset.Charset;
-import java.nio.file.Path;
-
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.ec4j.lint.api.EditableResource;
 import org.ec4j.lint.api.FormattingHandler;
-import org.ec4j.lint.api.Resource;
 import org.ec4j.lint.api.ViolationHandler;
 import org.slf4j.LoggerFactory;
 
@@ -62,10 +57,5 @@ public class FormatMojo extends AbstractEditorconfigMojo {
                 new Slf4jLintLogger(LoggerFactory.getLogger(FormattingHandler.class)));
     }
 
-    /** {@inheritDoc} */
-    @Override
-    protected Resource createResource(Path absFile, Path relFile, Charset encoding) {
-        return new EditableResource(absFile, relFile, encoding);
-    }
 
 }
