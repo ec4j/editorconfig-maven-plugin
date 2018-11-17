@@ -65,13 +65,13 @@
     </dependency>
 
     <dependency>
-      <groupId>org.ec4j.maven</groupId>
-      <artifactId>ec4j-lint-api</artifactId>
+      <groupId>org.ec4j.linters</groupId>
+      <artifactId>editorconfig-lint-api</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>org.ec4j.maven</groupId>
-      <artifactId>ec4j-linters</artifactId>
+      <groupId>org.ec4j.linters</groupId>
+      <artifactId>editorconfig-linters</artifactId>
     </dependency>
 
     <dependency>

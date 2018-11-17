@@ -76,8 +76,6 @@
 
   <modules>
     <module>editorconfig-maven-plugin</module>
-    <module>ec4j-lint-api</module>
-    <module>ec4j-linters</module>
   </modules>
 
   <properties>
@@ -85,12 +83,12 @@
     <!-- Dependency versions in alphabectic order -->
     <version.io.takari.maven.plugins>2.9.2</version.io.takari.maven.plugins>
     <version.junit>4.12</version.junit>
-    <version.org.antlr>4.7</version.org.antlr>
     <version.org.apache.maven>3.3.9</version.org.apache.maven>
     <version.org.apache.maven.maven-project>3.0-alpha-2</version.org.apache.maven.maven-project>
     <version.org.apache.maven.plugin-tools>3.5</version.org.apache.maven.plugin-tools>
     <version.org.codehaus.plexus.plexus-utils>3.0.17</version.org.codehaus.plexus.plexus-utils>
-    <version.org.ec4j.core>0.0.2</version.org.ec4j.core>
+    <version.org.ec4j.core>0.0.3</version.org.ec4j.core>
+    <version.org.ec4j.linters>0.0.9</version.org.ec4j.linters>
     <version.org.slf4j>1.7.5</version.org.slf4j>
 
     <!-- Plugins and their dependencies -->
@@ -167,6 +165,14 @@
     <dependencies>
 
       <dependency>
+        <groupId>org.ec4j.linters</groupId>
+        <artifactId>editorconfig-linters-bom</artifactId>
+        <version>${version.org.ec4j.linters}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
         <groupId>io.takari.maven.plugins</groupId>
         <artifactId>takari-plugin-testing</artifactId>
         <version>${version.io.takari.maven.plugins}</version>
@@ -183,12 +189,6 @@
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>${version.junit}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.antlr</groupId>
-        <artifactId>antlr4-runtime</artifactId>
-        <version>${version.org.antlr}</version>
       </dependency>
 
       <dependency>
@@ -219,24 +219,6 @@
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-utils</artifactId>
         <version>${version.org.codehaus.plexus.plexus-utils}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.ec4j.core</groupId>
-        <artifactId>ec4j-core</artifactId>
-        <version>${version.org.ec4j.core}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.ec4j.maven</groupId>
-        <artifactId>ec4j-lint-api</artifactId>
-        <version>0.0.9-SNAPSHOT</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.ec4j.maven</groupId>
-        <artifactId>ec4j-linters</artifactId>
-        <version>0.0.9-SNAPSHOT</version>
       </dependency>
 
       <dependency>
@@ -337,19 +319,6 @@ limitations under the License.</inlineHeader>
         </plugin>
 
         <plugin>
-          <groupId>org.antlr</groupId>
-          <artifactId>antlr4-maven-plugin</artifactId>
-          <version>${version.org.antlr}</version>
-          <executions>
-            <execution>
-              <goals>
-                <goal>antlr4</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-
-        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-antrun-plugin</artifactId>
           <version>${version.maven-antrun-plugin}</version>
@@ -395,6 +364,11 @@ limitations under the License.</inlineHeader>
                 </exclusion>
               </exclusions>
             </dependency>
+            <dependency>
+              <groupId>org.ec4j.core</groupId>
+              <artifactId>ec4j-core-build</artifactId>
+              <version>${version.org.ec4j.core}</version>
+            </dependency>
           </dependencies>
           <executions>
             <execution>
@@ -404,7 +378,7 @@ limitations under the License.</inlineHeader>
                 <goal>checkstyle</goal>
               </goals>
               <configuration>
-                <configLocation>src/build/xml/checkstyle.xml</configLocation>
+                <configLocation>org/ec4j/core/build/checkstyle.xml</configLocation>
                 <consoleOutput>${checkstyle.consoleOutput}</consoleOutput>
                 <failsOnError>${checkstyle.failOnError}</failsOnError>
                 <excludes>${checkstyle.excludes}</excludes>
