@@ -66,6 +66,16 @@ public class Insert implements Edit {
         return new Insert(new String(insertion), "Insert " + count + " " + ofWhat);
     }
 
+    /**
+     * An insertion of a text.
+     *
+     * @param insertedText
+     * @return a new {@link Insert} operation
+     */
+    public static Insert text(String insertedText) {
+        return new Insert(insertedText, "Insert '" + LintUtils.escape(insertedText) + "'");
+    }
+
     private final CharSequence insertion;
     private final String message;
 
@@ -106,12 +116,6 @@ public class Insert implements Edit {
 
     /** {@inheritDoc} */
     @Override
-    public void perform(Resource document, int offset) {
-        document.insert(offset, insertion);
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public String getMessage() {
         return message;
     }
@@ -124,6 +128,12 @@ public class Insert implements Edit {
         result = prime * result + ((insertion == null) ? 0 : insertion.hashCode());
         result = prime * result + ((message == null) ? 0 : message.hashCode());
         return result;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void perform(Resource document, int offset) {
+        document.insert(offset, insertion);
     }
 
 }
