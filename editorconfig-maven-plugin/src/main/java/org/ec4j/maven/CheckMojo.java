@@ -16,13 +16,9 @@
  */
 package org.ec4j.maven;
 
-import java.nio.charset.Charset;
-import java.nio.file.Path;
-
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.ec4j.lint.api.Resource;
 import org.ec4j.lint.api.ViolationCollector;
 import org.ec4j.lint.api.ViolationHandler;
 import org.slf4j.Logger;
@@ -56,16 +52,6 @@ public class CheckMojo extends AbstractEditorconfigMojo {
     protected ViolationHandler createHandler() {
         return new ViolationCollector(failOnFormatViolation, "mvn editorconfig:format",
                 new Slf4jLintLogger(LoggerFactory.getLogger(ViolationCollector.class)));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected Resource createResource(Path absFile, Path relFile, Charset encoding) {
-        if (log.isTraceEnabled()) {
-            log.trace("Creating a {} for path '{}' with encoding '{}'", Resource.class.getSimpleName(), relFile,
-                    encoding);
-        }
-        return new Resource(absFile, relFile, encoding);
     }
 
 }

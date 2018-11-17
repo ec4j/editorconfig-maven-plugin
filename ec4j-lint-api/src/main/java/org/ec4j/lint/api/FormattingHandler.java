@@ -35,7 +35,7 @@ public class FormattingHandler implements ViolationHandler {
     private final boolean backup;
     private final String backupSuffix;
 
-    private EditableResource currentFile;
+    private Resource currentFile;
     private int editedFileCount = 0;
     private final Logger log;
     private int processedFileCount = 0;
@@ -145,7 +145,7 @@ public class FormattingHandler implements ViolationHandler {
     /** {@inheritDoc} */
     @Override
     public void startFile(Resource file) {
-        this.currentFile = (EditableResource) file;
+        this.currentFile = (Resource) file;
     }
 
     /** {@inheritDoc} */

@@ -43,6 +43,10 @@ public class Violation {
         this.violatedProperties = Collections.unmodifiableList(Arrays.asList(violatedProperties));
     }
 
+    public Violation(Resource resource, Location location, Edit fix, Linter linter, String violatedKey0) {
+        this(resource, location, fix, linter, new String[] { violatedKey0 });
+    }
+
     public Violation(Resource resource, Location location, Edit fix, Linter linter, String violatedKey0,
             String violatedValue0) {
         this(resource, location, fix, linter, new String[] { violatedKey0, violatedValue0 });

@@ -28,12 +28,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class EditableResourceTest {
+public class ResourceTest {
 
-    private EditableResource doc;
+    private Resource doc;
 
     private final Path DOCUMENT_PATH = Paths.get("target/test-classes/"
-            + EditableResourceTest.class.getPackage().getName().replace('.', File.separatorChar) + "/document.txt");
+            + ResourceTest.class.getPackage().getName().replace('.', File.separatorChar) + "/document.txt");
 
     private final String FIXED_TEXT = "Lorem ipsum dolor sit amet,\n" + //
             "consectetur adipiscing elit.\n" + //
@@ -69,7 +69,7 @@ public class EditableResourceTest {
     @Test
     public void asString() {
 
-        Assert.assertEquals(INITIAL_TEXT, doc.asString());
+        Assert.assertEquals(INITIAL_TEXT, doc.getText());
         Assert.assertFalse(doc.changed());
 
     }
@@ -82,20 +82,39 @@ public class EditableResourceTest {
     @Test
     public void delete() {
 
-        Assert.assertEquals(INITIAL_TEXT, doc.asString());
+        Assert.assertEquals(INITIAL_TEXT, doc.getText());
         Assert.assertFalse(doc.changed());
 
         int offset = doc.findLineStart(2);
         doc.delete(offset, offset + 2);
 
-        Assert.assertEquals(TEXT_AFTER_DELETION, doc.asString());
+        Assert.assertEquals(TEXT_AFTER_DELETION, doc.getText());
         Assert.assertTrue(doc.changed());
 
     }
 
     @Test
+    public void toLocation() {
+        assertLocation("", 0, 1, 1);
+        assertLocation(" ", 0, 1, 1);
+        assertLocation("  ", 1, 1, 2);
+        assertLocation(" ", 1, 1, 2);
+        assertLocation("\n", 0, 1, 1);
+        assertLocation("\r\n", 0, 1, 1);
+        assertLocation("\r\n", 1, 1, 2);
+        assertLocation("\r\n", 2, 2, 1);
+        assertLocation("\r\n ", 2, 2, 1);
+    }
+
+    private static void assertLocation(String source, int offset, int expectedLine, int expectedColumn) {
+        final Location actual = new Resource(Paths.get("foo"), Paths.get("foo"), StandardCharsets.UTF_8, source)
+                .findLocation(offset);
+        Assert.assertEquals(new Location(expectedLine, expectedColumn), actual);
+    }
+
+    @Test
     public void findLineStartCr() {
-        String text = doc.asString().replace('\n', '\r');
+        String text = doc.getText().replace('\n', '\r');
         doc.text.replace(0, doc.text.length(), text);
         Assert.assertEquals(0, doc.findLineStart(1));
         Assert.assertEquals(22, doc.findLineStart(2));
@@ -104,7 +123,7 @@ public class EditableResourceTest {
 
     @Test
     public void findLineStartCrLf() {
-        String text = doc.asString().replace("\n", "\r\n");
+        String text = doc.getText().replace("\n", "\r\n");
         doc.text.replace(0, doc.text.length(), text);
         Assert.assertEquals(0, doc.findLineStart(1));
         Assert.assertEquals(23, doc.findLineStart(2));
@@ -121,14 +140,14 @@ public class EditableResourceTest {
     @Test
     public void fix() {
 
-        Assert.assertEquals(INITIAL_TEXT, doc.asString());
+        Assert.assertEquals(INITIAL_TEXT, doc.getText());
         Assert.assertFalse(doc.changed());
 
         new Insert("Lorem ", "").perform(doc, 0);
         int offset = doc.findLineStart(2);
         new Delete(2).perform(doc, offset);
 
-        Assert.assertEquals(FIXED_TEXT, doc.asString());
+        Assert.assertEquals(FIXED_TEXT, doc.getText());
         Assert.assertTrue(doc.changed());
 
     }
@@ -136,30 +155,30 @@ public class EditableResourceTest {
     @Test
     public void insertReplace() {
 
-        Assert.assertEquals(INITIAL_TEXT, doc.asString());
+        Assert.assertEquals(INITIAL_TEXT, doc.getText());
         Assert.assertFalse(doc.changed());
 
         int offset = doc.findLineStart(1);
         doc.insert(offset, "Lorem ");
 
-        Assert.assertEquals(TEXT_AFTER_INSERTION, doc.asString());
+        Assert.assertEquals(TEXT_AFTER_INSERTION, doc.getText());
         Assert.assertTrue(doc.changed());
 
         offset = doc.findLineStart(5);
         doc.insert(offset, "Pellentesque...");
-        Assert.assertEquals(TEXT_AFTER_TERMINAL_INSERTION, doc.asString());
+        Assert.assertEquals(TEXT_AFTER_TERMINAL_INSERTION, doc.getText());
         Assert.assertTrue(doc.changed());
 
         /* Undo the last insertion through replace */
         offset = doc.findLineStart(5);
         doc.replace(offset, offset + "Pellentesque...".length(), "");
-        Assert.assertEquals(TEXT_AFTER_INSERTION, doc.asString());
+        Assert.assertEquals(TEXT_AFTER_INSERTION, doc.getText());
         Assert.assertTrue(doc.changed());
 
     }
 
-    private EditableResource load() {
-        return new EditableResource(DOCUMENT_PATH, DOCUMENT_PATH, StandardCharsets.UTF_8);
+    private Resource load() {
+        return new Resource(DOCUMENT_PATH, DOCUMENT_PATH, StandardCharsets.UTF_8);
     }
 
     @Test
@@ -173,7 +192,7 @@ public class EditableResourceTest {
             while ((len = r.read(cbuf, 0, cbuf.length)) >= 0) {
                 sb.append(cbuf, 0, len);
             }
-            Assert.assertEquals(doc.asString(), sb.toString());
+            Assert.assertEquals(doc.getText(), sb.toString());
         } finally {
             if (r != null) {
                 r.close();
@@ -184,19 +203,19 @@ public class EditableResourceTest {
     @Test
     public void store() throws IOException {
 
-        Assert.assertEquals(INITIAL_TEXT, doc.asString());
+        Assert.assertEquals(INITIAL_TEXT, doc.getText());
         Assert.assertFalse(doc.changed());
 
         int offset = doc.findLineStart(2);
         doc.delete(offset, offset + 2);
 
-        Assert.assertEquals(TEXT_AFTER_DELETION, doc.asString());
+        Assert.assertEquals(TEXT_AFTER_DELETION, doc.getText());
         Assert.assertTrue(doc.changed());
 
         doc.store();
 
-        EditableResource reloadedDoc = load();
-        Assert.assertEquals(TEXT_AFTER_DELETION, reloadedDoc.asString());
+        Resource reloadedDoc = load();
+        Assert.assertEquals(TEXT_AFTER_DELETION, reloadedDoc.getText());
         Assert.assertFalse(reloadedDoc.changed());
 
     }

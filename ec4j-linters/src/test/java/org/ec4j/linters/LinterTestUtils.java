@@ -19,16 +19,18 @@ package org.ec4j.linters;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import org.ec4j.core.ResourceProperties;
-import org.ec4j.lint.api.EditableResource;
 import org.ec4j.lint.api.FormattingHandler;
 import org.ec4j.lint.api.Linter;
 import org.ec4j.lint.api.Logger;
+import org.ec4j.lint.api.Logger.LogLevel;
 import org.ec4j.lint.api.Resource;
 import org.ec4j.lint.api.Violation;
 import org.ec4j.lint.api.ViolationCollector;
@@ -36,10 +38,10 @@ import org.junit.Assert;
 
 public class LinterTestUtils {
 
-    public static void assertParse(Linter linter, EditableResource doc, String expectedText, ResourceProperties props,
+    public static String assertParse(Linter linter, Resource doc, String expectedText, ResourceProperties props,
             Violation... expected) throws IOException {
-
-        ViolationCollector collector = new ViolationCollector(false, "mvn editorconfig:format", Logger.NO_OP);
+        final StringBuilder log = new StringBuilder();
+        ViolationCollector collector = new ViolationCollector(false, "mvn editorconfig:format", new Logger.AppendableLogger(LogLevel.TRACE, log));
         collector.startFiles();
         collector.startFile(doc);
         linter.process(doc, props, collector);
@@ -65,13 +67,24 @@ public class LinterTestUtils {
         formatter.endFile();
         formatter.endFiles();
 
-        Assert.assertEquals(expectedText, doc.asString());
+        Assert.assertEquals(expectedText, doc.getText());
+
+        return log.toString();
 
     }
 
-    public static EditableResource createDocument(String text, String fileExtension) throws IOException {
-        Path file = File.createTempFile(XmlLinterTest.class.getSimpleName(), fileExtension).toPath();
-        EditableResource doc = new EditableResource(file, file, StandardCharsets.UTF_8, text);
+    public static Resource createDocument(String text, String fileExtension) throws IOException {
+        Path file = File.createTempFile(LinterTestUtils.class.getSimpleName(), fileExtension).toPath();
+        Resource doc = new Resource(file, file, StandardCharsets.UTF_8, text);
+        return doc;
+    }
+
+    public static Resource createDocument(Path path) throws IOException {
+        final Path testDir = Paths.get("target/test-trees/"+ ((int)(Math.random() * 1000000)));
+        Files.createDirectories(testDir);
+        final Path testFile = testDir.resolve(path.getFileName());
+        Files.copy(path, testFile);
+        final Resource doc = new Resource(testFile, testFile.getFileName(), StandardCharsets.UTF_8, new String(Files.readAllBytes(path)));
         return doc;
     }
 

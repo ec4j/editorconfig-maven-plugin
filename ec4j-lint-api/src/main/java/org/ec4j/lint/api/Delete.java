@@ -47,7 +47,7 @@ public class Delete implements Edit {
 
     /** {@inheritDoc} */
     @Override
-    public void perform(EditableResource document, int offset) {
+    public void perform(Resource document, int offset) {
         document.delete(offset, offset + length);
     }
 

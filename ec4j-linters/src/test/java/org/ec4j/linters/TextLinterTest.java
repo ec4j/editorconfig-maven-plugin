@@ -23,11 +23,11 @@ import org.ec4j.core.model.Property;
 import org.ec4j.core.model.PropertyType;
 import org.ec4j.core.model.PropertyType.EndOfLineValue;
 import org.ec4j.lint.api.Delete;
-import org.ec4j.lint.api.EditableResource;
 import org.ec4j.lint.api.Insert;
 import org.ec4j.lint.api.Linter;
 import org.ec4j.lint.api.Location;
 import org.ec4j.lint.api.Replace;
+import org.ec4j.lint.api.Resource;
 import org.ec4j.lint.api.Violation;
 import org.junit.Test;
 
@@ -52,7 +52,7 @@ public class TextLinterTest {
                 "line 4\r" + //
                 "line 5\r" + //
                 "line 6 ";
-        EditableResource doc = LinterTestUtils.createDocument(text, ".txt");
+        Resource doc = LinterTestUtils.createDocument(text, ".txt");
 
         LinterTestUtils.assertParse(linter, doc, expectedText, props, //
                 new Violation(doc, new Location(1, 7),
@@ -79,7 +79,7 @@ public class TextLinterTest {
                 "line 4\r\n" + //
                 "line 5\r\n" + //
                 "line 6 ";
-        EditableResource doc = LinterTestUtils.createDocument(text, ".txt");
+        Resource doc = LinterTestUtils.createDocument(text, ".txt");
 
         LinterTestUtils.assertParse(linter, doc, expectedText, props, //
                 new Violation(doc, new Location(1, 7), Insert.endOfLine(PropertyType.EndOfLineValue.cr), linter,
@@ -106,7 +106,7 @@ public class TextLinterTest {
                 "line 4\n" + //
                 "line 5\n" + //
                 "line 6 ";
-        EditableResource doc = LinterTestUtils.createDocument(text, ".txt");
+        Resource doc = LinterTestUtils.createDocument(text, ".txt");
 
         LinterTestUtils.assertParse(linter, doc, expectedText, props, //
                 new Violation(doc, new Location(4, 7), new Delete(1), linter, PropertyType.end_of_line.getName(), "lf"), //
@@ -127,7 +127,7 @@ public class TextLinterTest {
         String expectedText = "line 1\n" + //
                 "line 2\n" //
         ;
-        EditableResource doc = LinterTestUtils.createDocument(text, ".txt");
+        Resource doc = LinterTestUtils.createDocument(text, ".txt");
 
         LinterTestUtils.assertParse(linter, doc, expectedText, props, //
                 new Violation(doc, new Location(2, 7), Insert.endOfLine(EndOfLineValue.lf), linter,
@@ -142,7 +142,7 @@ public class TextLinterTest {
                 .build();
         String text = "";
         String expectedText = "\n";
-        EditableResource doc = LinterTestUtils.createDocument(text, ".txt");
+        Resource doc = LinterTestUtils.createDocument(text, ".txt");
 
         LinterTestUtils.assertParse(linter, doc, expectedText, props, //
                 new Violation(doc, new Location(1, 1), Insert.endOfLine(EndOfLineValue.lf), linter,
@@ -166,7 +166,7 @@ public class TextLinterTest {
                 "line 4\r\n" + //
                 "line 5\r" + //
                 "line 6";
-        EditableResource doc = LinterTestUtils.createDocument(text, ".txt");
+        Resource doc = LinterTestUtils.createDocument(text, ".txt");
 
         LinterTestUtils.assertParse(linter, doc, expectedText, props, //
                 new Violation(doc, new Location(2, 7), new Delete(1), linter,

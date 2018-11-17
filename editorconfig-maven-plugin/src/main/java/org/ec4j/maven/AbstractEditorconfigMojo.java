@@ -186,14 +186,6 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
     protected abstract ViolationHandler createHandler();
 
     /**
-     * @param absFile  the {@link Path} to create a {@link Resource} for. Must be absolute.
-     * @param relFile  the {@link Path} to create a {@link Resource} for. Must be relative to {@link #basedirPath}.
-     * @param encoding
-     * @return
-     */
-    protected abstract Resource createResource(Path absFile, Path relFile, Charset encoding);
-
-    /**
      * Called by Maven for executing the Mojo.
      *
      * @throws MojoExecutionException Running the Mojo failed.
@@ -237,7 +229,10 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
                     propertyMatched = true;
                     final Charset useEncoding = Charset
                             .forName(editorConfigProperties.getValue(PropertyType.charset, encoding, true));
-                    final Resource resource = createResource(absFile, file, useEncoding);
+                    if (log.isTraceEnabled()) {
+                        log.trace("Creating a {} for path '{}' with encoding '{}'", Resource.class.getSimpleName(), file, useEncoding);
+                    }
+                    final Resource resource = new Resource(absFile, file, useEncoding);
                     final List<Linter> filteredLinters = linterRegistry.filter(file);
                     ViolationHandler.ReturnState state = ViolationHandler.ReturnState.RECHECK;
                     while (state != ViolationHandler.ReturnState.FINISHED) {

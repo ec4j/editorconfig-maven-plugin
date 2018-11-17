@@ -16,6 +16,7 @@
  */
 package org.ec4j.lint.api;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,6 +88,26 @@ public interface Logger {
         @Override
         public void warn(String string, Object... args) {
             log(LogLevel.WARN, string, args);
+        }
+
+    }
+
+    class AppendableLogger extends AbstractLogger {
+
+        private final Appendable out;
+
+        public AppendableLogger(LogLevel level, Appendable out) {
+            super(level);
+            this.out = out;
+        }
+
+        @Override
+        public void log(LogLevel level, String string, Object... args) {
+            try {
+                out.append(Slf4jFormatter.format(string, args)).append('\n');
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
     }
