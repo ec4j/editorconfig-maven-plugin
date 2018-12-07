@@ -24,27 +24,33 @@ import org.ec4j.lint.api.Logger;
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
 public class Slf4jLintLogger extends Logger.AbstractLogger {
-    static LogLevel toEc4jLogLevel(org.slf4j.Logger log) {
-        if (log.isTraceEnabled()) {
-            return LogLevel.TRACE;
-        } else if (log.isDebugEnabled()) {
-            return LogLevel.DEBUG;
-        } else if (log.isInfoEnabled()) {
-            return LogLevel.INFO;
-        } else if (log.isWarnEnabled()) {
-            return LogLevel.WARN;
-        } else if (log.isErrorEnabled()) {
-            return LogLevel.ERROR;
-        } else {
-            throw new IllegalStateException("Could not find " + LogLevel.class.getName() + " for "
-                    + org.slf4j.Logger.class.getName() + " [" + log + "]");
-        }
+    static LogLevelSupplier toEc4jLogLevelSupplier(final org.slf4j.Logger log) {
+        return new LogLevelSupplier() {
+
+            @Override
+            public LogLevel getLogLevel() {
+                if (log.isTraceEnabled()) {
+                    return LogLevel.TRACE;
+                } else if (log.isDebugEnabled()) {
+                    return LogLevel.DEBUG;
+                } else if (log.isInfoEnabled()) {
+                    return LogLevel.INFO;
+                } else if (log.isWarnEnabled()) {
+                    return LogLevel.WARN;
+                } else if (log.isErrorEnabled()) {
+                    return LogLevel.ERROR;
+                } else {
+                    return LogLevel.NONE;
+                }
+            }
+
+        };
     }
 
     private final org.slf4j.Logger delegate;
 
     public Slf4jLintLogger(org.slf4j.Logger delegate) {
-        super(toEc4jLogLevel(delegate));
+        super(toEc4jLogLevelSupplier(delegate));
         this.delegate = delegate;
     }
 
