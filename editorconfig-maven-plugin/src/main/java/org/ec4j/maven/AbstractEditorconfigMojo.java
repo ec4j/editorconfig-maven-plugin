@@ -35,6 +35,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.ec4j.core.Cache.Caches;
+import org.ec4j.core.Resource.Charsets;
 import org.ec4j.core.Resource.Resources;
 import org.ec4j.core.ResourceProperties;
 import org.ec4j.core.ResourcePropertiesService;
@@ -204,7 +205,7 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
                     "Using current platform's default encoding {} to read .editorconfig files. You do not want this. Set either 'project.build.sourceEncoding' or 'editorconfig.encoding' property.",
                     charset);
         } else {
-            this.charset = Charset.forName(this.encoding);
+            this.charset = Charsets.forName(this.encoding);
         }
         this.basedirPath = basedir.toPath();
 
@@ -227,7 +228,7 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
                         .queryProperties(Resources.ofPath(absFile, charset));
                 if (!editorConfigProperties.getProperties().isEmpty()) {
                     propertyMatched = true;
-                    final Charset useEncoding = Charset
+                    final Charset useEncoding = Charsets
                             .forName(editorConfigProperties.getValue(PropertyType.charset, encoding, true));
                     if (log.isTraceEnabled()) {
                         log.trace("Creating a {} for path '{}' with encoding '{}'", Resource.class.getSimpleName(), file, useEncoding);
