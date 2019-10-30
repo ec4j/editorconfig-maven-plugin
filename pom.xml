@@ -127,7 +127,7 @@
     <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
 
     <!-- Checkstyle and maven-checkstyle-plugin -->
-    <version.com.puppycrawl.tools.checkstyle>6.13</version.com.puppycrawl.tools.checkstyle>
+    <version.com.puppycrawl.tools.checkstyle>8.18</version.com.puppycrawl.tools.checkstyle>
     <checkstyle.consoleOutput>true</checkstyle.consoleOutput>
     <checkstyle.failOnError>true</checkstyle.failOnError>
     <checkstyle.includes>
