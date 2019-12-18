@@ -42,7 +42,7 @@ To make the build fail if any of your source files does not comply with `.editor
       <!-- See http://ec4j.github.io/editorconfig-maven-plugin/ for full configuration reference -->
       <excludes>
         <!-- Note that maven submodule directories and many non-source file patterns are excluded by default -->
-        <!-- - see https://github.com/ec4j/editorconfig-maven-plugin/blob/master/ec4j-lint-api/src/main/java/org/ec4j/maven/lint/api/Constants.java#L37 -->
+        <!-- - see https://github.com/ec4j/editorconfig-linters/blob/master/editorconfig-lint-api/src/main/java/org/ec4j/lint/api/Constants.java#L37
         <!-- You can exclude further files from processing: -->
         <exclude>src/main/**/*.whatever</exclude>
       </excludes>
@@ -69,24 +69,24 @@ See http://ec4j.github.io/editorconfig-maven-plugin/check-mojo.html[editorconfig
 == How it works
 
 `editorconfig-maven-plugin` is designed around the Linter interface.
-https://github.com/ec4j/editorconfig-maven-plugin/blob/master/ec4j-lint-api/src/main/java/org/ec4j/maven/lint/api/Linter.java[Linter]
+https://github.com/ec4j/editorconfig-linters/blob/master/editorconfig-lint-api/src/main/java/org/ec4j/lint/api/Linter.java[Linter]
 is a processor specialized for some particular file format (such as YAML or XML) for which it can detect whether some
 particular `.editorconfig` properties are satisfied and eventually propose a
-https://github.com/ec4j/editorconfig-maven-plugin/blob/master/ec4j-lint-api/src/main/java/org/ec4j/maven/lint/api/Edit.java[fix] that can
+https://github.com/ec4j/editorconfig-linters/blob/master/editorconfig-lint-api/src/main/java/org/ec4j/lint/api/Edit.java[fix] that can
 be applied automatically.
 
 .Linters available in `editorconfig-maven-plugin`
 |===
 |Class name |Default includes|Default excludes |Supported `.editorconfig` properties
 
-|https://github.com/ec4j/editorconfig-maven-plugin/blob/master/ec4j-linters/src/main/java/org/ec4j/maven/linters/TextLinter.java[TextLinter]
+|https://github.com/ec4j/editorconfig-linters/blob/master/editorconfig-linters/src/main/java/org/ec4j/linters/TextLinter.java[TextLinter]
 |`pass:[**/*]`
 |
 |`https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#end_of_line[end_of_line]`,
 `https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#trim_trailing_whitespace[trim_trailing_whitespace]`,
 `https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#insert_final_newline[insert_final_newline]`
 
-|https://github.com/ec4j/editorconfig-maven-plugin/blob/master/ec4j-linters/src/main/java/org/ec4j/maven/linters/XmlLinter.java[XmlLinter]
+|https://github.com/ec4j/editorconfig-linters/blob/master/editorconfig-linters/src/main/java/org/ec4j/linters/XmlLinter.java[XmlLinter]
 |`pass:[**/*.xml]`, `pass:[**/*.xsl]`
 |
 |`https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#indent_style[indent_style]`,
