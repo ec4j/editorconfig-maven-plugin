@@ -15,3 +15,6 @@ install: true
 
 script:
 - ./mvnw clean verify
+
+# Fix 'Expected feature release number in range of 9 to 14' error on xenial and bionic
+dist: trusty
