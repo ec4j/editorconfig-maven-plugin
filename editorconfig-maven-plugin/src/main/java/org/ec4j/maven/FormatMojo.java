@@ -57,5 +57,4 @@ public class FormatMojo extends AbstractEditorconfigMojo {
                 new Slf4jLintLogger(LoggerFactory.getLogger(FormattingHandler.class)));
     }
 
-
 }

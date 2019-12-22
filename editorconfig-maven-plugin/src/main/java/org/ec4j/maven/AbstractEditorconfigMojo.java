@@ -190,7 +190,7 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
      * Called by Maven for executing the Mojo.
      *
      * @throws MojoExecutionException Running the Mojo failed.
-     * @throws MojoFailureException   A configuration error was detected.
+     * @throws MojoFailureException A configuration error was detected.
      */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -231,7 +231,8 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
                     final Charset useEncoding = Charsets
                             .forName(editorConfigProperties.getValue(PropertyType.charset, encoding, true));
                     if (log.isTraceEnabled()) {
-                        log.trace("Creating a {} for path '{}' with encoding '{}'", Resource.class.getSimpleName(), file, useEncoding);
+                        log.trace("Creating a {} for path '{}' with encoding '{}'", Resource.class.getSimpleName(), file,
+                                useEncoding);
                     }
                     final Resource resource = new Resource(absFile, file, useEncoding);
                     final List<Linter> filteredLinters = linterRegistry.filter(file);
