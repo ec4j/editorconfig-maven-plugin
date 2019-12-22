@@ -264,6 +264,7 @@ limitations under the License.</inlineHeader>
               <exclude>**/*.adoc</exclude>
               <exclude>**/README.*</exclude>
               <exclude>**/.gitkeep</exclude>
+              <exclude>.gitattributes/</exclude>
               <exclude>.mvn/wrapper/</exclude>
               <exclude>LICENSE</exclude>
               <exclude>mvnw</exclude>
