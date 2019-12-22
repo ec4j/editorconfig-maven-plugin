@@ -2,10 +2,11 @@ language: java
 # Enable container-based infrastructure
 # see https://docs.travis-ci.com/user/reference/overview/
 sudo: false
+# Fix 'Expected feature release number in range of 9 to 14' error on xenial and bionic
+dist: trusty
 
 jdk:
-  - oraclejdk8
-  - openjdk7
+  - openjdk8
 
 notifications:
   email: false
@@ -16,5 +17,3 @@ install: true
 script:
 - ./mvnw clean verify
 
-# Fix 'Expected feature release number in range of 9 to 14' error on xenial and bionic
-dist: trusty

@@ -97,7 +97,7 @@
     <version.com.github.github.site-maven-plugin>0.12</version.com.github.github.site-maven-plugin>
     <version.com.mycila.license-maven-plugin>3.0</version.com.mycila.license-maven-plugin>
     <!-- 1.11.12 is the last takari lifecycle version supporting Java 7 -->
-    <version.io.takari.maven.plugins.takari-lifecycle-plugin>1.11.12</version.io.takari.maven.plugins.takari-lifecycle-plugin>
+    <version.io.takari.maven.plugins.takari-lifecycle-plugin>1.13.9</version.io.takari.maven.plugins.takari-lifecycle-plugin>
     <version.impsort-maven-plugin>1.3.2</version.impsort-maven-plugin>
     <version.maven-antrun-plugin>1.8</version.maven-antrun-plugin>
     <version.maven-clean-plugin>2.6.1</version.maven-clean-plugin>
@@ -115,7 +115,7 @@
     <version.maven-scm-plugin>1.9.4</version.maven-scm-plugin>
     <version.maven-site-plugin>3.6</version.maven-site-plugin>
     <version.maven-source-plugin>2.4</version.maven-source-plugin>
-    <version.maven-surefire-plugin>2.20.1</version.maven-surefire-plugin>
+    <version.maven-surefire-plugin>2.22.2</version.maven-surefire-plugin>
     <version.nexus-staging-maven-plugin>1.6.7</version.nexus-staging-maven-plugin>
     <version.org.codehaus.buildnumber-maven-plugin>1.4</version.org.codehaus.buildnumber-maven-plugin>
 
@@ -123,8 +123,8 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
     <!-- maven-compiler-plugin -->
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
 
     <!-- license-maven-plugin -->

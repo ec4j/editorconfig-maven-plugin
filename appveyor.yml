@@ -17,13 +17,13 @@
 
 
 environment:
-  JAVA_HOME: C:\Program Files\Java\jdk1.7.0
+  JAVA_HOME: C:\Program Files\Java\jdk1.8.0
 
 install:
   - cmd: SET PATH=C:\Users\appveyor\.m2\apache-maven-3.5.2-bin\28qa8v9e2mq69covern8vmdkj0\apache-maven-3.5.2\bin;%JAVA_HOME%\bin;%PATH%
   
 build_script:
-  - .\mvnw.cmd clean verify -Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2
+  - .\mvnw.cmd clean verify
 
 # on_failure:
 #   - type editorconfig-maven-plugin\target\test-projects\EditorConfigMojosTest_encoding[3.5.0]_encoding\log.txt
