@@ -98,7 +98,6 @@
     <!-- 1.11.12 is the last takari lifecycle version supporting Java 7 -->
     <version.io.takari.maven.plugins.takari-lifecycle-plugin>1.11.12</version.io.takari.maven.plugins.takari-lifecycle-plugin>
     <version.maven-antrun-plugin>1.8</version.maven-antrun-plugin>
-    <version.maven-checkstyle-plugin>2.17</version.maven-checkstyle-plugin>
     <version.maven-clean-plugin>2.6.1</version.maven-clean-plugin>
     <version.maven-compiler-plugin>3.3</version.maven-compiler-plugin>
     <version.maven-deploy-plugin>2.8.2</version.maven-deploy-plugin>
@@ -125,17 +124,6 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
     <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
-
-    <!-- Checkstyle and maven-checkstyle-plugin -->
-    <version.com.puppycrawl.tools.checkstyle>6.13</version.com.puppycrawl.tools.checkstyle>
-    <checkstyle.consoleOutput>true</checkstyle.consoleOutput>
-    <checkstyle.failOnError>true</checkstyle.failOnError>
-    <checkstyle.includes>
-      src/**/*.java
-    </checkstyle.includes>
-    <checkstyle.excludes>
-      target/**
-    </checkstyle.excludes>
 
     <!-- license-maven-plugin -->
     <license.failIfMissing>true</license.failIfMissing>
@@ -344,48 +332,6 @@ limitations under the License.</inlineHeader>
                     <attribute name="Built-On" value="${timestamp}" />
                   </manifest>
                 </target>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>${version.maven-checkstyle-plugin}</version>
-          <dependencies>
-            <dependency>
-              <groupId>com.puppycrawl.tools</groupId>
-              <artifactId>checkstyle</artifactId>
-              <version>${version.com.puppycrawl.tools.checkstyle}</version>
-              <exclusions>
-                <exclusion>
-                  <groupId>com.sun</groupId>
-                  <artifactId>tools</artifactId>
-                </exclusion>
-              </exclusions>
-            </dependency>
-            <dependency>
-              <groupId>org.ec4j.core</groupId>
-              <artifactId>ec4j-core-build</artifactId>
-              <version>${version.org.ec4j.core}</version>
-            </dependency>
-          </dependencies>
-          <executions>
-            <execution>
-              <id>checkstyle</id>
-              <phase>verify</phase>
-              <goals>
-                <goal>checkstyle</goal>
-              </goals>
-              <configuration>
-                <configLocation>org/ec4j/core/build/checkstyle.xml</configLocation>
-                <consoleOutput>${checkstyle.consoleOutput}</consoleOutput>
-                <failsOnError>${checkstyle.failOnError}</failsOnError>
-                <excludes>${checkstyle.excludes}</excludes>
-                <includes>${checkstyle.includes}</includes>
-                <sourceDirectory>${basedir}</sourceDirectory>
-                <useFile />
               </configuration>
             </execution>
           </executions>
@@ -616,11 +562,6 @@ limitations under the License.</inlineHeader>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
       </plugin>
 
       <plugin>
