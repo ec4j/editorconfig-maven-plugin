@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
  * @since 0.0.1
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
-@Mojo(defaultPhase = LifecyclePhase.NONE, name = "format", threadSafe = false)
+@Mojo(defaultPhase = LifecyclePhase.NONE, name = "format", threadSafe = true)
 public class FormatMojo extends AbstractEditorconfigMojo {
 
     /**

@@ -36,7 +36,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(MavenJUnitTestRunner.class)
-@MavenVersions({ "3.5.0" })
+@MavenVersions({ "3.6.3" })
 public class EditorConfigMojosTest {
     private static final Path basedir = Paths.get(System.getProperty("basedir", "."));
     @Rule
@@ -212,6 +212,27 @@ public class EditorConfigMojosTest {
 
         MavenExecution mavenExec = verifier.forProject(projDir) //
                 .withCliOption("-B") // batch
+        ;
+
+        mavenExec //
+                .execute("clean", "verify") //
+                .assertErrorFreeLog()
+                .assertLogText("[TRACE] Processing file 'good-1.adoc' using linter org.ec4j.linters.TextLinter") //
+                .assertNoLogText(
+                        "[TRACE] Processing file 'module-1/good-1.adoc' using linter org.ec4j.linters.TextLinter") //
+                .assertNoLogText(
+                        "[TRACE] Processing file 'module-2/bad.xml' using linter org.ec4j.linters.TextLinter") //
+                .assertNoLogText("[TRACE] Processing file 'bad.xml' using linter org.ec4j.linters.TextLinter") //
+        ;
+    }
+
+    @Test
+    public void submodulesParallel() throws Exception {
+        File projDir = resources.getBasedir("submodules");
+
+        MavenExecution mavenExec = verifier.forProject(projDir) //
+                .withCliOption("-B") // batch
+                .withCliOption("-T").withCliOption("2") // 2 threads
         ;
 
         mavenExec //
