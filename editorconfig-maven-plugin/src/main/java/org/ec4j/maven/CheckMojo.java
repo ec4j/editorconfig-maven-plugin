@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  * @since 0.0.1
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
-@Mojo(defaultPhase = LifecyclePhase.VERIFY, name = "check")
+@Mojo(defaultPhase = LifecyclePhase.VERIFY, name = "check", threadSafe = true)
 public class CheckMojo extends AbstractEditorconfigMojo {
 
     private static final Logger log = LoggerFactory.getLogger(CheckMojo.class);
