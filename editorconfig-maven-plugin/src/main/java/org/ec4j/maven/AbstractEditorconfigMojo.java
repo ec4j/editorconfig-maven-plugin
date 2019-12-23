@@ -22,6 +22,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -273,7 +274,7 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
     private String[] scanIncludedFiles() {
         final DirectoryScanner scanner = new DirectoryScanner();
         scanner.setBasedir(basedir);
-        scanner.setIncludes(includes);
+        scanner.setIncludes(appendSanitized(includes, new LinkedHashSet<String>()));
 
         Set<String> excls = new LinkedHashSet<>();
         if (excludeNonSourceFiles) {
@@ -281,6 +282,7 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
         }
         if (excludeSubmodules && project != null) {
             {
+                @SuppressWarnings("unchecked")
                 final List<String> modules = project.getModules();
                 if (modules != null) {
                     for (String module : modules) {
@@ -302,15 +304,26 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
             }
 
         }
-        if (excludes != null && excludes.length > 0) {
-            for (String include : excludes) {
-                excls.add(include);
-            }
-        }
-        scanner.setExcludes(excls.toArray(new String[0]));
+        scanner.setExcludes(appendSanitized(excludes, excls));
 
         scanner.scan();
         return scanner.getIncludedFiles();
+    }
+
+    static String[] appendSanitized(String[] input, Collection<String> result) {
+        if (input == null || input.length == 0) {
+            return new String[0];
+        }
+
+        for (String item : input) {
+            if (item != null) {
+                item = item.trim();
+                if (!item.isEmpty()) {
+                    result.add(item);
+                }
+            }
+        }
+        return result.toArray(new String[result.size()]);
     }
 
 }
