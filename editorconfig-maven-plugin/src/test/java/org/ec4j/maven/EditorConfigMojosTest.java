@@ -23,11 +23,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import io.takari.maven.testing.TestResources;
 import io.takari.maven.testing.executor.MavenExecution;
 import io.takari.maven.testing.executor.MavenExecutionResult;
@@ -35,6 +30,10 @@ import io.takari.maven.testing.executor.MavenRuntime;
 import io.takari.maven.testing.executor.MavenRuntime.MavenRuntimeBuilder;
 import io.takari.maven.testing.executor.MavenVersions;
 import io.takari.maven.testing.executor.junit.MavenJUnitTestRunner;
+import org.junit.Assert;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 @RunWith(MavenJUnitTestRunner.class)
 @MavenVersions({ "3.5.0" })
@@ -48,9 +47,9 @@ public class EditorConfigMojosTest {
         final String logOpt = "-Dorg.slf4j.simpleLogger.log." + CheckMojo.class.getPackage().getName() + "=trace";
         final String[] opts;
         if (System.getProperty("java.version").startsWith("1.7.")) {
-            opts = new String[] {logOpt, "-Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2"};
+            opts = new String[] { logOpt, "-Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2" };
         } else {
-            opts = new String[] {logOpt};
+            opts = new String[] { logOpt };
         }
 
         this.verifier = runtimeBuilder //

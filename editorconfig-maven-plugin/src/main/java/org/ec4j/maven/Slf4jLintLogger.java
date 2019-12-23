@@ -57,23 +57,23 @@ public class Slf4jLintLogger extends Logger.AbstractLogger {
     @Override
     public void log(LogLevel level, String string, Object... args) {
         switch (level) {
-        case TRACE:
-            delegate.trace(string, args);
-            break;
-        case DEBUG:
-            delegate.debug(string, args);
-            break;
-        case INFO:
-            delegate.info(string, args);
-            break;
-        case WARN:
-            delegate.warn(string, args);
-            break;
-        case ERROR:
-            delegate.error(string, args);
-            break;
-        default:
-            throw new IllegalStateException("Unexpected " + LogLevel.class.getName() + " [" + level + "]");
+            case TRACE:
+                delegate.trace(string, args);
+                break;
+            case DEBUG:
+                delegate.debug(string, args);
+                break;
+            case INFO:
+                delegate.info(string, args);
+                break;
+            case WARN:
+                delegate.warn(string, args);
+                break;
+            case ERROR:
+                delegate.error(string, args);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected " + LogLevel.class.getName() + " [" + level + "]");
         }
     }
 
