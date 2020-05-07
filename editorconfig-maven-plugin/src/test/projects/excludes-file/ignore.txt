@@ -1,0 +1,4 @@
+# This is a comment
+# The next line is empty
+
+README.adoc

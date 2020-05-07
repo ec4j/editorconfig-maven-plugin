@@ -266,6 +266,7 @@ limitations under the License.</inlineHeader>
               <exclude>src/test/resources/**/*.bad</exclude>
               <exclude>src/test/projects/defaults*/**/*.txt</exclude>
               <exclude>src/test/projects/encoding/**/*.properties</exclude>
+              <exclude>src/test/projects/excludes-file/**/*.txt</exclude>
             </excludes>
           </configuration>
           <executions>

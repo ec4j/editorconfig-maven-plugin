@@ -271,4 +271,21 @@ public class EditorConfigMojosTest {
         ;
     }
 
+    @Test
+    public void excludesFile() throws Exception {
+
+        File projDir = resources.getBasedir("excludes-file");
+
+        MavenExecution mavenExec = verifier.forProject(projDir) //
+                .withCliOption("-X") // debug
+                .withCliOption("-B") // batch
+        ;
+
+        mavenExec //
+                .execute("clean", "editorconfig:check") //
+                .assertErrorFreeLog() //
+                .assertLogText("[DEBUG] Using excludesFile") //
+                .assertLogText("ignore.txt'") //
+        ;
+    }
 }
