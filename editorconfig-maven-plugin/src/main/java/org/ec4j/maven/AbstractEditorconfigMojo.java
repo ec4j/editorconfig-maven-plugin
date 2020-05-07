@@ -16,9 +16,11 @@
  */
 package org.ec4j.maven;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -128,6 +130,15 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
      */
     @Parameter(property = "editorconfig.failOnNoMatchingProperties", defaultValue = "true")
     protected boolean failOnNoMatchingProperties;
+
+    /**
+     * File containing exclude patterns to add to any existing exclude patterns. Empty lines and lines starting with #
+     * are ignored.
+     *
+     * @since 0.0.12
+     */
+    @Parameter(property = "editorconfig.excludesFile")
+    protected File excludesFile;
 
     /**
      * File patterns to include into the set of files to process. The patterns are relative to the current project's
@@ -280,6 +291,23 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
         if (excludeNonSourceFiles) {
             excls.addAll(Constants.DEFAULT_EXCLUDES);
         }
+
+        if (excludesFile != null) {
+            log.debug("Using excludesFile '{}'", excludesFile);
+            try {
+                try (BufferedReader reader = Files.newBufferedReader(excludesFile.toPath(), charset)) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        if (!line.isEmpty() && !line.startsWith("#")) {
+                            excls.add(line);
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Error reading excludesFile '" + excludesFile + "'", e);
+            }
+        }
+
         if (excludeSubmodules && project != null) {
             {
                 @SuppressWarnings("unchecked")
