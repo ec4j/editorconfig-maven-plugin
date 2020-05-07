@@ -312,7 +312,7 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
 
     static String[] appendSanitized(String[] input, Collection<String> result) {
         if (input == null || input.length == 0) {
-            return new String[0];
+            return result.toArray(new String[0]);
         }
 
         for (String item : input) {
@@ -323,7 +323,7 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
                 }
             }
         }
-        return result.toArray(new String[result.size()]);
+        return result.toArray(new String[0]);
     }
 
 }
