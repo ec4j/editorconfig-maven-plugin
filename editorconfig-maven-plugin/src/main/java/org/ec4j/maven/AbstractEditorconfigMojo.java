@@ -135,7 +135,7 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
      * File containing exclude patterns to add to any existing exclude patterns. Empty lines and lines starting with #
      * are ignored.
      *
-     * @since 0.0.12
+     * @since 0.1.0
      */
     @Parameter(property = "editorconfig.excludesFile")
     protected File excludesFile;
