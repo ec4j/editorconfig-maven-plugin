@@ -21,7 +21,7 @@
 
   <groupId>org.ec4j.maven</groupId>
   <artifactId>editorconfig-maven-plugin-parent</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>EditorConfig Maven Plugin Parent</name>
@@ -53,7 +53,7 @@
     <connection>scm:git:git@github.com:ec4j/editorconfig-maven-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:ec4j/editorconfig-maven-plugin.git</developerConnection>
     <url>https://github.com/ec4j/editorconfig-maven-plugin</url>
-    <tag>0.1.0</tag>
+    <tag>head</tag>
   </scm>
   <issueManagement>
     <system>GitHub Issues</system>
