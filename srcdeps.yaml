@@ -37,7 +37,6 @@ repositories:
     - io.takari.maven.plugins:takari-plugin-testing*
     - io.takari.maven.plugins:takari-plugin-integration-testing
     urls:
-    - git:file:///home/ppalaga/orgs/takari/takari-plugin-testing-project/.git
     - git:https://github.com/takari/takari-plugin-testing-project.git
   org.apache.maven.plugin-tools:
     includes:
