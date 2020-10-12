@@ -82,7 +82,7 @@
 
     <!-- Dependency versions in alphabectic order -->
     <version.io.takari.maven.plugins>2.9.2</version.io.takari.maven.plugins>
-    <version.junit>4.12</version.junit>
+    <version.junit>4.13.1</version.junit>
     <version.org.apache.maven>3.3.9</version.org.apache.maven>
     <version.org.apache.maven.maven-project>3.0-alpha-2</version.org.apache.maven.maven-project>
     <version.org.apache.maven.plugin-tools>3.5</version.org.apache.maven.plugin-tools>
