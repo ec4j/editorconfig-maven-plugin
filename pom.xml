@@ -423,10 +423,6 @@ limitations under the License.</inlineHeader>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>${version.maven-javadoc-plugin}</version>
-          <configuration>
-                  <!-- disable accidental use, must use takari-lifecycle -->
-            <skip>true</skip>
-          </configuration>
         </plugin>
 
         <plugin>
@@ -625,6 +621,17 @@ limitations under the License.</inlineHeader>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <executions>
+          <execution>
+              <id>default</id>
+              <phase/>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
       </plugin>
 
@@ -667,6 +674,25 @@ limitations under the License.</inlineHeader>
                 </goals>
               </execution>
             </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <source>8</source>
+              <additionalOptions>-Xdoclint:none</additionalOptions>
+              <detectOfflineLinks>false</detectOfflineLinks>
+              <detectJavaApiLink>false</detectJavaApiLink>
+            </configuration>
           </plugin>
 
         </plugins>
