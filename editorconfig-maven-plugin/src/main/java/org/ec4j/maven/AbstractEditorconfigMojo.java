@@ -75,7 +75,7 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
      *
      * @since 0.0.1
      */
-    @Parameter(defaultValue = "${project.basedir}", required = true, readonly = true)
+    @Parameter(defaultValue = "${project.basedir}", required = false, readonly = true)
     private File basedir;
 
     /** The result of {@code basedir.toPath()} */
@@ -218,6 +218,9 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
                     charset);
         } else {
             this.charset = Charsets.forName(this.encoding);
+        }
+        if (basedir == null) {
+            basedir = new File(".").getAbsoluteFile();
         }
         this.basedirPath = basedir.toPath();
 
