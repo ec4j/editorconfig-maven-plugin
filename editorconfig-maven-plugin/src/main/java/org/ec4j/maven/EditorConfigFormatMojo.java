@@ -19,39 +19,42 @@ package org.ec4j.maven;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.ec4j.lint.api.ViolationCollector;
+import org.ec4j.lint.api.FormattingHandler;
 import org.ec4j.lint.api.ViolationHandler;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Checks whether files are formatted according to rules defined in {@code .editorconfig} files. If fomat violations are
- * detected, either causes the build to fail (if {@link #failOnFormatViolation} is {@code true}) or just produces a
- * warning.
+ * Formats a set of files so that they comply with rules defined in {@code .editorconfig} files.
  *
  * @since 0.0.1
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
-@Mojo(defaultPhase = LifecyclePhase.VERIFY, name = "check", threadSafe = true)
-public class CheckMojo extends AbstractEditorconfigMojo {
-
-    private static final Logger log = LoggerFactory.getLogger(CheckMojo.class);
+@Mojo(defaultPhase = LifecyclePhase.NONE, name = "format", threadSafe = true)
+public class EditorConfigFormatMojo extends AbstractEditorConfigMojo {
 
     /**
-     * Tells the mojo what to do in case formatting violations are found. if {@code true}, all violations will be
-     * reported on the console as ERRORs and the build will fail. if {@code false}, all violations will be reported on
-     * the console as WARNs and the build will proceed further.
+     * If {@code true}, a backup file will be created for every file that needs to be formatted just before the
+     * formatted version is stored. If {@code false}, no backup is done and the files are formatted in place. See also
+     * {@link #backupSuffix}.
      *
      * @since 0.0.1
      */
-    @Parameter(property = "editorconfig.failOnFormatViolation", defaultValue = "true")
-    private boolean failOnFormatViolation;
+    @Parameter(property = "editorconfig.backup", defaultValue = "false")
+    private boolean backup;
+
+    /**
+     * A suffix to append to a file name to create its backup. See also {@link #backup}.
+     *
+     * @since 0.0.1
+     */
+    @Parameter(property = "editorconfig.backupSuffix", defaultValue = ".bak")
+    private String backupSuffix;
 
     /** {@inheritDoc} */
     @Override
     protected ViolationHandler createHandler() {
-        return new ViolationCollector(failOnFormatViolation, "mvn editorconfig:format",
-                new Slf4jLintLogger(LoggerFactory.getLogger(ViolationCollector.class)));
+        return new FormattingHandler(backup, backupSuffix,
+                new Slf4jLintLogger(LoggerFactory.getLogger(FormattingHandler.class)));
     }
 
 }
