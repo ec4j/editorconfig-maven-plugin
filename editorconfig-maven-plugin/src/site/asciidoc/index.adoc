@@ -30,7 +30,7 @@ To make the build fail if any of your source files does not comply with `.editor
     <configuration>
       <excludes>
         <!-- Note that maven submodule directories and many non-source file patterns are excluded by default -->
-        <!-- - see https://github.com/ec4j/editorconfig-maven-plugin/blob/master/ec4j-lint-api/src/main/java/org/ec4j/maven/lint/api/Constants.java#L37
+        <!-- see https://github.com/ec4j/editorconfig-maven-plugin/blob/master/ec4j-lint-api/src/main/java/org/ec4j/maven/lint/api/Constants.java#L37 -->
         <!-- You can exclude further files from processing: -->
         <exclude>src/main/**/*.whatever</exclude>
       </excludes>
