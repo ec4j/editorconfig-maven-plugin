@@ -53,13 +53,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A base for {@link CheckMojo} and {@link FormatMojo}.
+ * A base for {@link EditorConfigCheckMojo} and {@link EditorConfigFormatMojo}.
  *
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
-public abstract class AbstractEditorconfigMojo extends AbstractMojo {
+public abstract class AbstractEditorConfigMojo extends AbstractMojo {
 
-    private static final Logger log = LoggerFactory.getLogger(AbstractEditorconfigMojo.class);
+    private static final Logger log = LoggerFactory.getLogger(AbstractEditorConfigMojo.class);
 
     /**
      * If set to {@code true}, the class path will be scanned for implementations of {@link Linter} and all
@@ -168,12 +168,11 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
     @Parameter(property = "editorconfig.skip", defaultValue = "false")
     private boolean skip;
 
-    public AbstractEditorconfigMojo() {
+    public AbstractEditorConfigMojo() {
         super();
     }
 
-    protected LinterRegistry buildLinterRegistry() {
-
+    private LinterRegistry buildLinterRegistry() {
         final LinterRegistry.Builder linterRegistryBuilder = LinterRegistry.builder()
                 .log(new Slf4jLintLogger(LoggerFactory.getLogger(LinterRegistry.class)));
 
@@ -191,9 +190,7 @@ public abstract class AbstractEditorconfigMojo extends AbstractMojo {
                 }
             }
         }
-
         return linterRegistryBuilder.build();
-
     }
 
     protected abstract ViolationHandler createHandler();

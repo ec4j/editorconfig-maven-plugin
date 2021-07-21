@@ -38,13 +38,16 @@ import org.junit.runner.RunWith;
 @RunWith(MavenJUnitTestRunner.class)
 @MavenVersions({ "3.6.3" })
 public class EditorConfigMojosTest {
+
     private static final Path basedir = Paths.get(System.getProperty("basedir", "."));
+
     @Rule
     public final TestResources resources = new TestResources();
-    public final MavenRuntime verifier;
+
+    private final MavenRuntime verifier;
 
     public EditorConfigMojosTest(MavenRuntimeBuilder runtimeBuilder) throws Exception {
-        final String logOpt = "-Dorg.slf4j.simpleLogger.log." + CheckMojo.class.getPackage().getName() + "=trace";
+        final String logOpt = "-Dorg.slf4j.simpleLogger.log." + EditorConfigCheckMojo.class.getPackage().getName() + "=trace";
         final String[] opts;
         if (System.getProperty("java.version").startsWith("1.7.")) {
             opts = new String[] { logOpt, "-Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2" };
@@ -57,17 +60,8 @@ public class EditorConfigMojosTest {
                 .build();
     }
 
-    private void assertFilesEqual(Path actualBaseDir, Path expectedBaseDir, String relPath) throws IOException {
-        final String contentActual = new String(Files.readAllBytes(actualBaseDir.resolve(relPath)),
-                StandardCharsets.UTF_8);
-        final String contentExpected = new String(Files.readAllBytes(expectedBaseDir.resolve(relPath)),
-                StandardCharsets.UTF_8);
-        Assert.assertEquals(relPath, contentExpected, contentActual);
-    }
-
     @Test
     public void check() throws Exception {
-
         File projDir = resources.getBasedir("defaults");
 
         MavenExecution mavenExec = verifier.forProject(projDir) //
@@ -119,7 +113,6 @@ public class EditorConfigMojosTest {
 
     @Test
     public void encoding() throws Exception {
-
         File projDir = resources.getBasedir("encoding");
 
         MavenExecution mavenExec = verifier.forProject(projDir) //
@@ -149,7 +142,6 @@ public class EditorConfigMojosTest {
 
     @Test
     public void format() throws Exception {
-
         File projDir = resources.getBasedir("defaults");
 
         MavenExecution mavenExec = verifier.forProject(projDir) //
@@ -273,7 +265,6 @@ public class EditorConfigMojosTest {
 
     @Test
     public void excludesFile() throws Exception {
-
         File projDir = resources.getBasedir("excludes-file");
 
         MavenExecution mavenExec = verifier.forProject(projDir) //
@@ -287,5 +278,13 @@ public class EditorConfigMojosTest {
                 .assertLogText("[DEBUG] Using excludesFile") //
                 .assertLogText("ignore.txt'") //
         ;
+    }
+
+    private void assertFilesEqual(Path actualBaseDir, Path expectedBaseDir, String relPath) throws IOException {
+        final String contentActual = new String(Files.readAllBytes(actualBaseDir.resolve(relPath)),
+                StandardCharsets.UTF_8);
+        final String contentExpected = new String(Files.readAllBytes(expectedBaseDir.resolve(relPath)),
+                StandardCharsets.UTF_8);
+        Assert.assertEquals(relPath, contentExpected, contentActual);
     }
 }
