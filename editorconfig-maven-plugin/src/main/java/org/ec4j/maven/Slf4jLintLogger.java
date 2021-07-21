@@ -25,25 +25,20 @@ import org.ec4j.lint.api.Logger;
  */
 public class Slf4jLintLogger extends Logger.AbstractLogger {
     static LogLevelSupplier toEc4jLogLevelSupplier(final org.slf4j.Logger log) {
-        return new LogLevelSupplier() {
-
-            @Override
-            public LogLevel getLogLevel() {
-                if (log.isTraceEnabled()) {
-                    return LogLevel.TRACE;
-                } else if (log.isDebugEnabled()) {
-                    return LogLevel.DEBUG;
-                } else if (log.isInfoEnabled()) {
-                    return LogLevel.INFO;
-                } else if (log.isWarnEnabled()) {
-                    return LogLevel.WARN;
-                } else if (log.isErrorEnabled()) {
-                    return LogLevel.ERROR;
-                } else {
-                    return LogLevel.NONE;
-                }
+        return () -> {
+            if (log.isTraceEnabled()) {
+                return LogLevel.TRACE;
+            } else if (log.isDebugEnabled()) {
+                return LogLevel.DEBUG;
+            } else if (log.isInfoEnabled()) {
+                return LogLevel.INFO;
+            } else if (log.isWarnEnabled()) {
+                return LogLevel.WARN;
+            } else if (log.isErrorEnabled()) {
+                return LogLevel.ERROR;
+            } else {
+                return LogLevel.NONE;
             }
-
         };
     }
 
