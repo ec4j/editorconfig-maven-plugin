@@ -96,7 +96,6 @@
     <version.formatter-maven-plugin>2.11.0</version.formatter-maven-plugin>
     <version.com.github.github.site-maven-plugin>0.12</version.com.github.github.site-maven-plugin>
     <version.com.mycila.license-maven-plugin>3.0</version.com.mycila.license-maven-plugin>
-    <!-- 1.11.12 is the last takari lifecycle version supporting Java 7 -->
     <version.io.takari.maven.plugins.takari-lifecycle-plugin>1.13.9</version.io.takari.maven.plugins.takari-lifecycle-plugin>
     <version.impsort-maven-plugin>1.3.2</version.impsort-maven-plugin>
     <version.maven-antrun-plugin>1.8</version.maven-antrun-plugin>

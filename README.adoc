@@ -19,7 +19,7 @@ https://github.com/ec4j/editorconfig-maven-plugin/issues[report] them :)
 
 == Basic usage
 
-`editorconfig-maven-plugin` requires Java 7+ and Maven 3.3.1+.
+`editorconfig-maven-plugin` requires Java 8+ and Maven 3.3.1+.
 
 To make the build fail if any of your source files does not comply with `.editorconfig` rules, add the following to your project:
 
@@ -101,7 +101,7 @@ duplicate work.
 
 Prerequisites:
 
-* Java 7+
+* Java 8+
 * Optionally Maven 3.5.0+, unless you want to use `./mvnw` or `mvnw.bat` delivered by the project
 
 The most common build with unit tests:
