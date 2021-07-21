@@ -24,6 +24,28 @@ import org.ec4j.lint.api.Logger;
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
 public class Slf4jLintLogger extends Logger.AbstractLogger {
+    static LogLevelSupplier toEc4jLogLevelSupplier(final org.slf4j.Logger log) {
+        return new LogLevelSupplier() {
+
+            @Override
+            public LogLevel getLogLevel() {
+                if (log.isTraceEnabled()) {
+                    return LogLevel.TRACE;
+                } else if (log.isDebugEnabled()) {
+                    return LogLevel.DEBUG;
+                } else if (log.isInfoEnabled()) {
+                    return LogLevel.INFO;
+                } else if (log.isWarnEnabled()) {
+                    return LogLevel.WARN;
+                } else if (log.isErrorEnabled()) {
+                    return LogLevel.ERROR;
+                } else {
+                    return LogLevel.NONE;
+                }
+            }
+
+        };
+    }
 
     private final org.slf4j.Logger delegate;
 
@@ -32,38 +54,27 @@ public class Slf4jLintLogger extends Logger.AbstractLogger {
         this.delegate = delegate;
     }
 
-    private static LogLevelSupplier toEc4jLogLevelSupplier(final org.slf4j.Logger log) {
-        return () -> {
-            if (log.isTraceEnabled()) {
-                return LogLevel.TRACE;
-            } else if (log.isDebugEnabled()) {
-                return LogLevel.DEBUG;
-            } else if (log.isInfoEnabled()) {
-                return LogLevel.INFO;
-            } else if (log.isWarnEnabled()) {
-                return LogLevel.WARN;
-            } else if (log.isErrorEnabled()) {
-                return LogLevel.ERROR;
-            } else {
-                return LogLevel.NONE;
-            }
-        };
-    }
-
     @Override
     public void log(LogLevel level, String string, Object... args) {
-        if (level == LogLevel.TRACE) {
-            delegate.trace(string, args);
-        } else if (level == LogLevel.DEBUG) {
-            delegate.debug(string, args);
-        } else if (level == LogLevel.INFO) {
-            delegate.info(string, args);
-        } else if (level == LogLevel.WARN) {
-            delegate.warn(string, args);
-        } else if (level == LogLevel.ERROR) {
-            delegate.error(string, args);
-        } else {
-            throw new IllegalStateException("Unexpected " + LogLevel.class.getName() + " [" + level + "]");
+        switch (level) {
+            case TRACE:
+                delegate.trace(string, args);
+                break;
+            case DEBUG:
+                delegate.debug(string, args);
+                break;
+            case INFO:
+                delegate.info(string, args);
+                break;
+            case WARN:
+                delegate.warn(string, args);
+                break;
+            case ERROR:
+                delegate.error(string, args);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected " + LogLevel.class.getName() + " [" + level + "]");
         }
     }
+
 }
