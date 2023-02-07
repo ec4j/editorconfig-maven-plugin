@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.ec4j.maven</groupId>
     <artifactId>editorconfig-maven-plugin-parent</artifactId>
-    <version>0.1.2-SNAPSHOT</version>
+    <version>0.2.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>editorconfig-maven-plugin</artifactId>
@@ -30,6 +30,10 @@
   <name>EditorConfig Maven Plugin</name>
   <description>A Maven plugin for checking whether project files comply with format rules defined in .editorconfig
       files and eventually also for fixing the violations</description>
+
+  <prerequisites>
+    <maven>3.9.0</maven>
+  </prerequisites>
 
   <dependencies>
 
@@ -78,6 +82,11 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
     </dependency>
 
     <dependency>

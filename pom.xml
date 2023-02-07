@@ -21,7 +21,7 @@
 
   <groupId>org.ec4j.maven</groupId>
   <artifactId>editorconfig-maven-plugin-parent</artifactId>
-  <version>0.1.2-SNAPSHOT</version>
+  <version>0.2.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>EditorConfig Maven Plugin Parent</name>
@@ -44,10 +44,6 @@
       <timezone>Europe/Prague</timezone>
     </developer>
   </developers>
-
-  <prerequisites>
-    <maven>3.3.1</maven>
-  </prerequisites>
 
   <scm>
     <connection>scm:git:git@github.com:ec4j/editorconfig-maven-plugin.git</connection>
@@ -81,42 +77,42 @@
   <properties>
 
     <!-- Dependency versions in alphabectic order -->
-    <version.io.takari.maven.plugins>2.9.2</version.io.takari.maven.plugins>
-    <version.junit>4.12</version.junit>
-    <version.org.apache.maven>3.3.9</version.org.apache.maven>
+    <version.io.takari.maven.plugins>3.0.1</version.io.takari.maven.plugins>
+    <version.junit>4.13.2</version.junit>
+    <version.org.apache.maven>3.9.0</version.org.apache.maven>
     <version.org.apache.maven.maven-project>3.0-alpha-2</version.org.apache.maven.maven-project>
-    <version.org.apache.maven.plugin-tools>3.5</version.org.apache.maven.plugin-tools>
-    <version.org.codehaus.plexus.plexus-utils>3.0.17</version.org.codehaus.plexus.plexus-utils>
-    <version.org.ec4j.core>0.2.1</version.org.ec4j.core>
+    <version.org.apache.maven.plugin-tools>3.7.1</version.org.apache.maven.plugin-tools>
+    <version.org.codehaus.plexus.plexus-utils>3.5.0</version.org.codehaus.plexus.plexus-utils>
+    <version.org.ec4j.core>0.3.0</version.org.ec4j.core>
     <version.org.ec4j.linters>0.2.1</version.org.ec4j.linters>
-    <version.org.slf4j>1.7.5</version.org.slf4j>
+    <version.org.slf4j>2.0.6</version.org.slf4j>
 
     <!-- Plugins and their dependencies -->
-    <version.asciidoctor-maven-plugin>1.5.6</version.asciidoctor-maven-plugin>
-    <version.formatter-maven-plugin>2.11.0</version.formatter-maven-plugin>
+    <version.asciidoctor-maven-plugin>2.2.2</version.asciidoctor-maven-plugin>
+    <version.formatter-maven-plugin>2.22.0</version.formatter-maven-plugin>
     <version.com.github.github.site-maven-plugin>0.12</version.com.github.github.site-maven-plugin>
-    <version.com.mycila.license-maven-plugin>3.0</version.com.mycila.license-maven-plugin>
-    <version.io.takari.maven.plugins.takari-lifecycle-plugin>1.13.9</version.io.takari.maven.plugins.takari-lifecycle-plugin>
-    <version.impsort-maven-plugin>1.3.2</version.impsort-maven-plugin>
-    <version.maven-antrun-plugin>1.8</version.maven-antrun-plugin>
-    <version.maven-clean-plugin>2.6.1</version.maven-clean-plugin>
-    <version.maven-compiler-plugin>3.3</version.maven-compiler-plugin>
-    <version.maven-deploy-plugin>2.8.2</version.maven-deploy-plugin>
-    <version.maven-enforcer-plugin>1.4.1</version.maven-enforcer-plugin>
-    <version.maven-gpg-plugin>1.6</version.maven-gpg-plugin>
-    <version.maven-install-plugin>2.5.2</version.maven-install-plugin>
-    <version.maven-jar-plugin>2.6</version.maven-jar-plugin>
-    <version.maven-javadoc-plugin>2.10.3</version.maven-javadoc-plugin>
-    <version.maven-plugin-plugin>3.5.2</version.maven-plugin-plugin>
-    <version.maven-project-info-reports-plugin>2.9</version.maven-project-info-reports-plugin>
-    <version.maven-release-plugin>2.5.3</version.maven-release-plugin>
-    <version.maven-resources-plugin>2.7</version.maven-resources-plugin>
-    <version.maven-scm-plugin>1.9.4</version.maven-scm-plugin>
-    <version.maven-site-plugin>3.6</version.maven-site-plugin>
-    <version.maven-source-plugin>2.4</version.maven-source-plugin>
-    <version.maven-surefire-plugin>2.22.2</version.maven-surefire-plugin>
-    <version.nexus-staging-maven-plugin>1.6.7</version.nexus-staging-maven-plugin>
-    <version.org.codehaus.buildnumber-maven-plugin>1.4</version.org.codehaus.buildnumber-maven-plugin>
+    <version.com.mycila.license-maven-plugin>4.2.rc3</version.com.mycila.license-maven-plugin>
+    <version.io.takari.maven.plugins.takari-lifecycle-plugin>2.1.0</version.io.takari.maven.plugins.takari-lifecycle-plugin>
+    <version.impsort-maven-plugin>1.8.0</version.impsort-maven-plugin>
+    <version.maven-antrun-plugin>3.1.0</version.maven-antrun-plugin>
+    <version.maven-clean-plugin>3.2.0</version.maven-clean-plugin>
+    <version.maven-compiler-plugin>3.10.1</version.maven-compiler-plugin>
+    <version.maven-deploy-plugin>3.0.0</version.maven-deploy-plugin>
+    <version.maven-enforcer-plugin>3.2.1</version.maven-enforcer-plugin>
+    <version.maven-gpg-plugin>3.0.1</version.maven-gpg-plugin>
+    <version.maven-install-plugin>3.1.0</version.maven-install-plugin>
+    <version.maven-jar-plugin>3.3.0</version.maven-jar-plugin>
+    <version.maven-javadoc-plugin>3.4.1</version.maven-javadoc-plugin>
+    <version.maven-plugin-plugin>3.7.1</version.maven-plugin-plugin>
+    <version.maven-project-info-reports-plugin>3.4.2</version.maven-project-info-reports-plugin>
+    <version.maven-release-plugin>3.0.0-M7</version.maven-release-plugin>
+    <version.maven-resources-plugin>3.3.0</version.maven-resources-plugin>
+    <version.maven-scm-plugin>2.0.0-M3</version.maven-scm-plugin>
+    <version.maven-site-plugin>4.0.0-M4</version.maven-site-plugin>
+    <version.maven-source-plugin>3.2.1</version.maven-source-plugin>
+    <version.maven-surefire-plugin>3.0.0-M8</version.maven-surefire-plugin>
+    <version.nexus-staging-maven-plugin>1.6.13</version.nexus-staging-maven-plugin>
+    <version.org.codehaus.buildnumber-maven-plugin>3.0.0</version.org.codehaus.buildnumber-maven-plugin>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -235,7 +231,9 @@
           <artifactId>license-maven-plugin</artifactId>
           <version>${version.com.mycila.license-maven-plugin}</version>
           <configuration>
-            <inlineHeader>Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+            <licenseSets>
+              <licenseSet>
+                <inlineHeader>Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
 project contributors as indicated by the @author tags.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -249,24 +247,26 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.</inlineHeader>
-            <excludes>
-              <exclude>**/*.adoc</exclude>
-              <exclude>**/README.*</exclude>
-              <exclude>**/.gitkeep</exclude>
-              <exclude>.gitattributes/</exclude>
-              <exclude>.mvn/wrapper/</exclude>
-              <exclude>LICENSE</exclude>
-              <exclude>mvnw</exclude>
-              <exclude>mvnw.cmd</exclude>
-              <exclude>src/main/antlr4/org/ec4j/linters/xml/XmlLexer.g4</exclude><!-- BSD License -->
-              <exclude>src/main/antlr4/org/ec4j/linters/xml/XmlParser.g4</exclude><!-- BSD License -->
-              <exclude>src/test/resources/**/*.txt</exclude>
-              <exclude>src/test/resources/**/*.good</exclude>
-              <exclude>src/test/resources/**/*.bad</exclude>
-              <exclude>src/test/projects/defaults*/**/*.txt</exclude>
-              <exclude>src/test/projects/encoding/**/*.properties</exclude>
-              <exclude>src/test/projects/excludes-file/**/*.txt</exclude>
-            </excludes>
+                <excludes>
+                  <exclude>**/*.adoc</exclude>
+                  <exclude>**/README.*</exclude>
+                  <exclude>**/.gitkeep</exclude>
+                  <exclude>.gitattributes/</exclude>
+                  <exclude>.mvn/wrapper/</exclude>
+                  <exclude>LICENSE</exclude>
+                  <exclude>mvnw</exclude>
+                  <exclude>mvnw.cmd</exclude>
+                  <exclude>src/main/antlr4/org/ec4j/linters/xml/XmlLexer.g4</exclude><!-- BSD License -->
+                  <exclude>src/main/antlr4/org/ec4j/linters/xml/XmlParser.g4</exclude><!-- BSD License -->
+                  <exclude>src/test/resources/**/*.txt</exclude>
+                  <exclude>src/test/resources/**/*.good</exclude>
+                  <exclude>src/test/resources/**/*.bad</exclude>
+                  <exclude>src/test/projects/defaults*/**/*.txt</exclude>
+                  <exclude>src/test/projects/encoding/**/*.properties</exclude>
+                  <exclude>src/test/projects/excludes-file/**/*.txt</exclude>
+                </excludes>
+              </licenseSet>
+            </licenseSets>
           </configuration>
           <executions>
             <execution>
@@ -524,7 +524,7 @@ limitations under the License.</inlineHeader>
           <version>${version.org.codehaus.buildnumber-maven-plugin}</version>
           <configuration>
             <locale>en_US</locale>
-            <timestampFormat>{0,date,yyyy-MM-dd'T'HH:mm:ssX}</timestampFormat>
+            <timestampFormat>yyyy-MM-dd'T'HH:mm:ssX</timestampFormat>
           </configuration>
           <executions>
             <execution>
@@ -546,7 +546,6 @@ limitations under the License.</inlineHeader>
               <serverId>ossrh</serverId>
           </configuration>
         </plugin>
-
       </plugins>
     </pluginManagement>
 
@@ -606,11 +605,14 @@ limitations under the License.</inlineHeader>
             <phase>process-sources</phase>
           </execution>
         </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.antlr</groupId>
-        <artifactId>antlr4-maven-plugin</artifactId>
+        <!-- required for maven 3.9.0 -->
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-utils</artifactId>
+            <version>${version.org.codehaus.plexus.plexus-utils}</version>
+          </dependency>
+        </dependencies>
       </plugin>
 
       <plugin>

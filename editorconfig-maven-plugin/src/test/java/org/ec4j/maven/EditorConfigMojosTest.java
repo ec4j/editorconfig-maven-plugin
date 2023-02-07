@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 EditorConfig Maven Plugin
  * project contributors as indicated by the @author tags.
  *
@@ -36,7 +36,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(MavenJUnitTestRunner.class)
-@MavenVersions({ "3.6.3" })
+@MavenVersions({ "3.9.0" })
 public class EditorConfigMojosTest {
 
     private static final Path basedir = Paths.get(System.getProperty("basedir", "."));
@@ -48,12 +48,7 @@ public class EditorConfigMojosTest {
 
     public EditorConfigMojosTest(MavenRuntimeBuilder runtimeBuilder) throws Exception {
         final String logOpt = "-Dorg.slf4j.simpleLogger.log." + EditorConfigCheckMojo.class.getPackage().getName() + "=trace";
-        final String[] opts;
-        if (System.getProperty("java.version").startsWith("1.7.")) {
-            opts = new String[] { logOpt, "-Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2" };
-        } else {
-            opts = new String[] { logOpt };
-        }
+        final String[] opts = new String[] { logOpt };
 
         this.verifier = runtimeBuilder //
                 .withCliOptions(opts) //
@@ -120,7 +115,7 @@ public class EditorConfigMojosTest {
                 .withCliOption("-B") // batch
         ;
 
-        MavenExecutionResult result = mavenExec //
+        mavenExec //
                 .execute("clean", "editorconfig:check") //
                 .assertErrorFreeLog() //
                 .assertLogText("[TRACE] Processing file '.editorconfig' using linter org.ec4j.linters.TextLinter") //
