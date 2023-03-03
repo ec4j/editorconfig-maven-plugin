@@ -36,7 +36,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.util.DirectoryScanner;
+import org.apache.maven.shared.utils.io.DirectoryScanner;
 import org.ec4j.core.Cache.Caches;
 import org.ec4j.core.Resource.Charsets;
 import org.ec4j.core.Resource.Resources;

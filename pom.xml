@@ -45,10 +45,6 @@
     </developer>
   </developers>
 
-  <prerequisites>
-    <maven>3.3.1</maven>
-  </prerequisites>
-
   <scm>
     <connection>scm:git:git@github.com:ec4j/editorconfig-maven-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:ec4j/editorconfig-maven-plugin.git</developerConnection>
@@ -87,7 +83,6 @@
     <maven.version.maven-project>3.0-alpha-2</maven.version.maven-project>
     <maven.version.plugin-tools>3.8.1</maven.version.plugin-tools>
     <maven-shared-utils.version>3.3.4</maven-shared-utils.version>
-    <plexus-utils.version>3.0.17</plexus-utils.version>
     <ec4j-core.version>0.2.1</ec4j-core.version>
     <ec4j-linters.version>0.2.1</ec4j-linters.version>
     <slf4j.version>1.7.5</slf4j.version>
@@ -204,11 +199,10 @@
         <artifactId>maven-plugin-annotations</artifactId>
         <version>${maven.version.plugin-tools}</version>
       </dependency>
-
       <dependency>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-utils</artifactId>
-        <version>${plexus-utils.version}</version>
+        <groupId>org.apache.maven.shared</groupId>
+        <artifactId>maven-shared-utils</artifactId>
+        <version>${maven-shared-utils.version}</version>
       </dependency>
 
       <dependency>
