@@ -89,7 +89,7 @@
 
     <!-- Plugins and their dependencies -->
     <asciidoctor-maven-plugin.version>1.5.6</asciidoctor-maven-plugin.version>
-    <formatter-maven-plugin.version>2.11.0</formatter-maven-plugin.version>
+    <formatter-maven-plugin.version>2.22.0</formatter-maven-plugin.version>
     <site-maven-plugin.version>0.12</site-maven-plugin.version>
     <license-maven-plugin.version>3.0</license-maven-plugin.version>
     <takari-lifecycle-plugin.version>1.13.9</takari-lifecycle-plugin.version>
@@ -558,32 +558,6 @@ limitations under the License.</inlineHeader>
         <extensions>true</extensions>
       </plugin>
 
-
-      <plugin>
-        <groupId>net.revelc.code.formatter</groupId>
-        <artifactId>formatter-maven-plugin</artifactId>
-        <configuration>
-          <configFile>eclipse-format.xml</configFile>
-          <skip>${format.skip}</skip>
-        </configuration>
-        <executions>
-          <execution>
-            <id>format-java</id>
-            <goals>
-              <goal>format</goal>
-            </goals>
-            <phase>process-sources</phase>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>org.ec4j.core</groupId>
-            <artifactId>ec4j-core-build</artifactId>
-            <version>${ec4j-core.version}</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-
       <plugin>
         <groupId>org.antlr</groupId>
         <artifactId>antlr4-maven-plugin</artifactId>
@@ -629,6 +603,30 @@ limitations under the License.</inlineHeader>
       <id>java-11+</id>
       <build>
         <plugins>
+          <plugin>
+            <groupId>net.revelc.code.formatter</groupId>
+            <artifactId>formatter-maven-plugin</artifactId>
+            <configuration>
+              <configFile>eclipse-format.xml</configFile>
+              <skip>${format.skip}</skip>
+            </configuration>
+            <executions>
+              <execution>
+                <id>format-java</id>
+                <goals>
+                  <goal>format</goal>
+                </goals>
+                <phase>process-sources</phase>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>org.ec4j.core</groupId>
+                <artifactId>ec4j-core-build</artifactId>
+                <version>${ec4j-core.version}</version>
+              </dependency>
+            </dependencies>
+          </plugin>
            <plugin><!-- impsort-maven-plugin does not work on JDKs older than 11 -->
             <groupId>net.revelc.code</groupId>
             <artifactId>impsort-maven-plugin</artifactId>
