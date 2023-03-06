@@ -94,7 +94,7 @@
     <license-maven-plugin.version>4.1</license-maven-plugin.version>
     <takari-lifecycle-plugin.version>1.13.9</takari-lifecycle-plugin.version>
     <impsort-maven-plugin.version>1.8.0</impsort-maven-plugin.version>
-    <maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
+    <maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
     <maven-clean-plugin.version>2.6.1</maven-clean-plugin.version>
     <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
     <maven-deploy-plugin.version>3.1.0</maven-deploy-plugin.version>
