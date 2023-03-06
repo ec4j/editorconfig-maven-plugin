@@ -133,7 +133,7 @@
     <autoReleaseAfterClose>true</autoReleaseAfterClose>
 
     <!-- Repository Deployment URLs -->
-    <oss.nexus.base.url>https://oss.sonatype.org</oss.nexus.base.url>
+    <oss.nexus.base.url>https://s01.oss.sonatype.org</oss.nexus.base.url>
     <releases.repo.url>${oss.nexus.base.url}/service/local/staging/deploy/maven2/</releases.repo.url>
     <snapshots.repo.url>${oss.nexus.base.url}/content/repositories/snapshots/</snapshots.repo.url>
 
