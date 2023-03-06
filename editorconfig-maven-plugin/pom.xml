@@ -111,10 +111,10 @@
         <reportSets>
           <reportSet>
             <reports>
-              <report>project-team</report>
-              <report>cim</report>
-              <report>issue-tracking</report>
-              <report>license</report>
+              <report>team</report>
+              <report>ci-management</report>
+              <report>issue-management</report>
+              <report>licenses</report>
               <report>scm</report>
             </reports>
           </reportSet>
