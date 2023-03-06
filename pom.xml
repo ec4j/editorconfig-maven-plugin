@@ -83,7 +83,7 @@
     <maven.version.maven-project>3.0-alpha-2</maven.version.maven-project>
     <maven.version.plugin-tools>3.8.1</maven.version.plugin-tools>
     <maven-shared-utils.version>3.3.4</maven-shared-utils.version>
-    <ec4j-core.version>0.2.1</ec4j-core.version>
+    <ec4j-core.version>0.3.0</ec4j-core.version>
     <ec4j-linters.version>0.2.1</ec4j-linters.version>
     <slf4j.version>1.7.5</slf4j.version>
 
