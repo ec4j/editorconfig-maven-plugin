@@ -109,7 +109,7 @@
     <maven-resources-plugin.version>3.3.0</maven-resources-plugin.version>
     <maven-scm-plugin.version>1.13.0</maven-scm-plugin.version>
     <maven-site-plugin.version>3.12.1</maven-site-plugin.version>
-    <maven-source-plugin.version>2.4</maven-source-plugin.version>
+    <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
     <version.org.codehaus.buildnumber-maven-plugin>1.4</version.org.codehaus.buildnumber-maven-plugin>
