@@ -92,7 +92,7 @@
     <formatter-maven-plugin.version>2.22.0</formatter-maven-plugin.version>
     <site-maven-plugin.version>0.12</site-maven-plugin.version>
     <license-maven-plugin.version>3.0</license-maven-plugin.version>
-    <takari-lifecycle-plugin.version>1.13.9</takari-lifecycle-plugin.version>
+    <takari-lifecycle-plugin.version>2.1.1</takari-lifecycle-plugin.version>
     <impsort-maven-plugin.version>1.8.0</impsort-maven-plugin.version>
     <maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
     <maven-clean-plugin.version>2.6.1</maven-clean-plugin.version>
