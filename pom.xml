@@ -112,7 +112,7 @@
     <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
     <maven-surefire-plugin.version>3.0.0-M9</maven-surefire-plugin.version>
     <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
-    <version.org.codehaus.buildnumber-maven-plugin>1.4</version.org.codehaus.buildnumber-maven-plugin>
+    <buildnumber-maven-plugin.version>3.0.0</buildnumber-maven-plugin.version>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -520,7 +520,7 @@ limitations under the License.</inlineHeader>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>buildnumber-maven-plugin</artifactId>
-          <version>${version.org.codehaus.buildnumber-maven-plugin}</version>
+          <version>${buildnumber-maven-plugin.version}</version>
           <configuration>
             <locale>en_US</locale>
             <timestampFormat>{0,date,yyyy-MM-dd'T'HH:mm:ssX}</timestampFormat>
