@@ -85,7 +85,7 @@
     <maven-shared-utils.version>3.3.4</maven-shared-utils.version>
     <ec4j-core.version>0.2.1</ec4j-core.version>
     <ec4j-linters.version>0.2.1</ec4j-linters.version>
-    <slf4j.version>1.7.5</slf4j.version>
+    <slf4j.version>2.0.6</slf4j.version>
 
     <!-- Plugins and their dependencies -->
     <asciidoctor-maven-plugin.version>2.2.2</asciidoctor-maven-plugin.version>
