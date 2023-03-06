@@ -91,7 +91,7 @@
     <asciidoctor-maven-plugin.version>1.5.6</asciidoctor-maven-plugin.version>
     <formatter-maven-plugin.version>2.22.0</formatter-maven-plugin.version>
     <site-maven-plugin.version>0.12</site-maven-plugin.version>
-    <license-maven-plugin.version>3.0</license-maven-plugin.version>
+    <license-maven-plugin.version>4.1</license-maven-plugin.version>
     <takari-lifecycle-plugin.version>1.13.9</takari-lifecycle-plugin.version>
     <impsort-maven-plugin.version>1.8.0</impsort-maven-plugin.version>
     <maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
@@ -230,7 +230,9 @@
           <artifactId>license-maven-plugin</artifactId>
           <version>${license-maven-plugin.version}</version>
           <configuration>
-            <inlineHeader>Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+            <licenseSets>
+                <licenseSet>
+                  <inlineHeader>Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
 project contributors as indicated by the @author tags.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -244,24 +246,26 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.</inlineHeader>
-            <excludes>
-              <exclude>**/*.adoc</exclude>
-              <exclude>**/README.*</exclude>
-              <exclude>**/.gitkeep</exclude>
-              <exclude>.gitattributes/</exclude>
-              <exclude>.mvn/wrapper/</exclude>
-              <exclude>LICENSE</exclude>
-              <exclude>mvnw</exclude>
-              <exclude>mvnw.cmd</exclude>
-              <exclude>src/main/antlr4/org/ec4j/linters/xml/XmlLexer.g4</exclude><!-- BSD License -->
-              <exclude>src/main/antlr4/org/ec4j/linters/xml/XmlParser.g4</exclude><!-- BSD License -->
-              <exclude>src/test/resources/**/*.txt</exclude>
-              <exclude>src/test/resources/**/*.good</exclude>
-              <exclude>src/test/resources/**/*.bad</exclude>
-              <exclude>src/test/projects/defaults*/**/*.txt</exclude>
-              <exclude>src/test/projects/encoding/**/*.properties</exclude>
-              <exclude>src/test/projects/excludes-file/**/*.txt</exclude>
-            </excludes>
+                  <excludes>
+                    <exclude>**/*.adoc</exclude>
+                    <exclude>**/README.*</exclude>
+                    <exclude>**/.gitkeep</exclude>
+                    <exclude>.gitattributes/</exclude>
+                    <exclude>.mvn/wrapper/</exclude>
+                    <exclude>LICENSE</exclude>
+                    <exclude>mvnw</exclude>
+                    <exclude>mvnw.cmd</exclude>
+                    <exclude>src/main/antlr4/org/ec4j/linters/xml/XmlLexer.g4</exclude><!-- BSD License -->
+                    <exclude>src/main/antlr4/org/ec4j/linters/xml/XmlParser.g4</exclude><!-- BSD License -->
+                    <exclude>src/test/resources/**/*.txt</exclude>
+                    <exclude>src/test/resources/**/*.good</exclude>
+                    <exclude>src/test/resources/**/*.bad</exclude>
+                    <exclude>src/test/projects/defaults*/**/*.txt</exclude>
+                    <exclude>src/test/projects/encoding/**/*.properties</exclude>
+                    <exclude>src/test/projects/excludes-file/**/*.txt</exclude>
+                  </excludes>
+                </licenseSet>
+            </licenseSets>
           </configuration>
           <executions>
             <execution>
