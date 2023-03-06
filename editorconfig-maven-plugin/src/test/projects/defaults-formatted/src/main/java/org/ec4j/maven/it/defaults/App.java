@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 EditorConfig Maven Plugin
  * project contributors as indicated by the @author tags.
  *
