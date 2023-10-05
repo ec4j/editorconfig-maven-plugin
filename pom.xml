@@ -79,7 +79,7 @@
     <!-- Dependency versions in alphabectic order -->
     <takari-plugin-testing.version>2.9.2</takari-plugin-testing.version>
     <junit.version>4.13.2</junit.version>
-    <maven.version>3.9.4</maven.version>
+    <maven.version>3.9.5</maven.version>
     <maven.version.maven-project>3.0-alpha-2</maven.version.maven-project>
     <maven.version.plugin-tools>3.10.1</maven.version.plugin-tools>
     <maven-shared-utils.version>3.4.2</maven-shared-utils.version>
