@@ -104,6 +104,7 @@
     <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
     <maven-javadoc-plugin.version>3.6.2</maven-javadoc-plugin.version>
     <maven-plugin-plugin.version>3.11.0</maven-plugin-plugin.version>
+    <maven-plugin-report-plugin.version>3.10.2</maven-plugin-report-plugin.version>
     <maven-project-info-reports-plugin.version>3.4.5</maven-project-info-reports-plugin.version>
     <maven-release-plugin.version>3.0.1</maven-release-plugin.version>
     <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
@@ -430,6 +431,11 @@ limitations under the License.</inlineHeader>
           <configuration>
             <goalPrefix>editorconfig</goalPrefix>
           </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-plugin-report-plugin</artifactId>
+          <version>${maven-plugin-report-plugin.version}</version>
         </plugin>
 
         <plugin>
