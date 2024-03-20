@@ -28,7 +28,7 @@ To make the build fail if any of your source files does not comply with `.editor
   <plugin>
     <groupId>org.ec4j.maven</groupId>
     <artifactId>editorconfig-maven-plugin</artifactId>
-    <version><!-- check the latest on http://central.maven.org/maven2/org/ec4j/maven/editorconfig-maven-plugin/ --></version>
+    <version><!-- check the latest on http://search.maven.org/maven2/org/ec4j/maven/editorconfig-maven-plugin/ --></version>
     <executions>
       <execution>
         <id>check</id>
