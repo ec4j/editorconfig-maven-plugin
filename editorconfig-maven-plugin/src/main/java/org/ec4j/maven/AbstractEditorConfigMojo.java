@@ -75,7 +75,7 @@ public abstract class AbstractEditorConfigMojo extends AbstractMojo {
      *
      * @since 0.0.1
      */
-    @Parameter(defaultValue = "${project.basedir}", required = true, readonly = true)
+    @Parameter(defaultValue = "${project.basedir}", required = false, readonly = true)
     private File basedir;
 
     /** The result of {@code basedir.toPath()} */
@@ -215,6 +215,10 @@ public abstract class AbstractEditorConfigMojo extends AbstractMojo {
                     charset);
         } else {
             this.charset = Charsets.forName(this.encoding);
+        }
+        if (basedir == null) {
+            log.info("Using current directory as basedir.");
+            basedir = new File(".").getAbsoluteFile();
         }
         this.basedirPath = basedir.toPath();
 

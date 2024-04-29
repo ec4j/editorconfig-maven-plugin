@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * @since 0.0.1
  * @author <a href="https://github.com/ppalaga">Peter Palaga</a>
  */
-@Mojo(defaultPhase = LifecyclePhase.VERIFY, name = "check", threadSafe = true)
+@Mojo(requiresProject = false, defaultPhase = LifecyclePhase.VERIFY, name = "check", threadSafe = true)
 public class EditorConfigCheckMojo extends AbstractEditorConfigMojo {
 
     /**
