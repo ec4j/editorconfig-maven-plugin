@@ -204,7 +204,7 @@ public abstract class AbstractEditorConfigMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (skip) {
-            log.debug("Skipping execution, as demanded by user.");
+            log.info("Skipping execution, as demanded by user.");
             return;
         }
 
