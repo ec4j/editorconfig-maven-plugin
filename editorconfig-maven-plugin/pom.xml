@@ -131,28 +131,69 @@
   <profiles>
 
     <profile>
-      <id>release</id>
+      <id>site</id>
 
       <build>
         <plugins>
 
-          <plugin>
-            <groupId>com.github.github</groupId>
-            <artifactId>site-maven-plugin</artifactId>
-            <configuration>
-              <message>Creating site for ${project.artifactId} ${project.version}</message>
-              <server>github</server>
-            </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>site</goal>
-                </goals>
-                <phase>site</phase>
-              </execution>
-            </executions>
-          </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-site-plugin</artifactId>
+              <version>${maven-site-plugin.version}</version>
+              <executions>
+                <execution>
+                  <id>default-site</id>
+                  <phase>site</phase>
+                  <goals>
+                    <goal>site</goal>
+                  </goals>
+                </execution>
+              </executions>
+              <configuration>
+                <asciidoc>
+                  <attributes>
+                    <icons>font</icons>
+                    <source-highlighter>coderay</source-highlighter>
+                    <coderay-css>style</coderay-css>
+                    <toclevels>2</toclevels>
+                    <project-version>${project.version}</project-version>
+                    <project-prerequisites-maven>${project.prerequisites.maven}</project-prerequisites-maven>
+                    <maven-compiler-target>${maven.compiler.target}</maven-compiler-target>
+                  </attributes>
+                </asciidoc>
+              </configuration>
+              <dependencies>
+                <dependency>
+                  <groupId>org.asciidoctor</groupId>
+                  <artifactId>asciidoctor-maven-plugin</artifactId>
+                  <version>${asciidoctor-maven-plugin.version}</version>
+                </dependency>
+              </dependencies>
+            </plugin>
 
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-antrun-plugin</artifactId>
+              <version>${maven-antrun-plugin.version}</version>
+              <executions>
+                <execution>
+                  <phase>site</phase>
+                  <goals>
+                    <goal>run</goal>
+                  </goals>
+                  <configuration>
+                    <target>
+                      <delete dir="${project.basedir}/../site" />
+                      <move todir="${project.basedir}/..">
+                        <fileset dir="${project.basedir}/target">
+                          <include name="site/**" />
+                        </fileset>
+                      </move>
+                    </target>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
         </plugins>
       </build>
 
