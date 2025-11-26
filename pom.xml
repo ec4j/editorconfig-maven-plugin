@@ -248,6 +248,7 @@ limitations under the License.</inlineHeader>
                     <exclude>**/.gitkeep</exclude>
                     <exclude>.gitattributes/</exclude>
                     <exclude>.mvn/wrapper/</exclude>
+                    <exclude>.sdkmanrc/</exclude>
                     <exclude>LICENSE</exclude>
                     <exclude>mvnw</exclude>
                     <exclude>mvnw.cmd</exclude>
