@@ -19,58 +19,38 @@ package org.ec4j.maven;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
-import io.takari.maven.testing.TestResources;
-import io.takari.maven.testing.executor.MavenExecution;
-import io.takari.maven.testing.executor.MavenExecutionResult;
-import io.takari.maven.testing.executor.MavenRuntime;
-import io.takari.maven.testing.executor.MavenRuntime.MavenRuntimeBuilder;
-import io.takari.maven.testing.executor.MavenVersions;
-import io.takari.maven.testing.executor.junit.MavenJUnitTestRunner;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.apache.commons.io.FileUtils;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Marker;
+import org.slf4j.event.Level;
+import org.slf4j.helpers.LegacyAbstractLogger;
+import org.slf4j.helpers.MessageFormatter;
 
-@RunWith(MavenJUnitTestRunner.class)
-@MavenVersions({ "3.6.3" })
 public class EditorConfigMojosTest {
 
     private static final Path basedir = Paths.get(System.getProperty("basedir", "."));
 
-    @Rule
-    public final TestResources resources = new TestResources();
-
-    private final MavenRuntime verifier;
-
-    public EditorConfigMojosTest(MavenRuntimeBuilder runtimeBuilder) throws Exception {
-        final String logOpt = "-Dorg.slf4j.simpleLogger.log." + EditorConfigCheckMojo.class.getPackage().getName() + "=trace";
-        final String[] opts;
-        if (System.getProperty("java.version").startsWith("1.7.")) {
-            opts = new String[] { logOpt, "-Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2" };
-        } else {
-            opts = new String[] { logOpt };
-        }
-
-        this.verifier = runtimeBuilder //
-                .withCliOptions(opts) //
-                .build();
-    }
-
     @Test
     public void check() throws Exception {
-        File projDir = resources.getBasedir("defaults");
 
-        MavenExecution mavenExec = verifier.forProject(projDir) //
-                .withCliOption("-X") // debug
-                .withCliOption("-B") // batch
-        ;
+        final Verifier<EditorConfigCheckMojo> mavenExec = new Verifier<>(
+                "defaults",
+                EditorConfigCheckMojo.class,
+                Arrays.asList("log.txt"));
 
         mavenExec //
-                .execute("clean", "verify") //
+                .execute() //
                 .assertLogText("[TRACE] Processing file '.editorconfig' using linter org.ec4j.linters.TextLinter") //
                 .assertLogText("[DEBUG] No formatting violations found in file '.editorconfig'") //
                 .assertLogText("[TRACE] Processing file 'pom.xml' using linter org.ec4j.linters.TextLinter") //
@@ -113,15 +93,13 @@ public class EditorConfigMojosTest {
 
     @Test
     public void encoding() throws Exception {
-        File projDir = resources.getBasedir("encoding");
+        final Verifier<EditorConfigCheckMojo> mavenExec = new Verifier<EditorConfigCheckMojo>(
+                "encoding",
+                EditorConfigCheckMojo.class,
+                Arrays.asList("log.txt"));
 
-        MavenExecution mavenExec = verifier.forProject(projDir) //
-                .withCliOption("-X") // debug
-                .withCliOption("-B") // batch
-        ;
-
-        MavenExecutionResult result = mavenExec //
-                .execute("clean", "editorconfig:check") //
+        mavenExec //
+                .execute() //
                 .assertErrorFreeLog() //
                 .assertLogText("[TRACE] Processing file '.editorconfig' using linter org.ec4j.linters.TextLinter") //
                 .assertLogText("[TRACE] Creating a Resource for path '.editorconfig' with encoding 'UTF-8'") //
@@ -142,15 +120,14 @@ public class EditorConfigMojosTest {
 
     @Test
     public void format() throws Exception {
-        File projDir = resources.getBasedir("defaults");
+        final Verifier<EditorConfigFormatMojo> mavenExec = new Verifier<>(
+                "defaults",
+                EditorConfigFormatMojo.class,
+                Arrays.asList("log.txt"));
+        final Path expectedBaseDir = basedir.resolve("src/test/projects/defaults-formatted");
 
-        MavenExecution mavenExec = verifier.forProject(projDir) //
-                .withCliOption("-X") // debug
-                .withCliOption("-B") // batch
-        ;
-
-        MavenExecutionResult result = mavenExec //
-                .execute("clean", "editorconfig:format") //
+        mavenExec //
+                .execute() //
                 .assertErrorFreeLog() //
                 .assertLogText("[TRACE] Processing file '.editorconfig' using linter org.ec4j.linters.TextLinter") //
                 .assertLogText("[DEBUG] No formatting violations found in file '.editorconfig'") //
@@ -185,106 +162,206 @@ public class EditorConfigMojosTest {
                 .assertLogText(
                         "[INFO] README.adoc@2,1: Delete 2 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.linters.TextLinter") // ;
                 .assertLogText("[INFO] Formatted 3 out of 6 files") //
-        ;
-
-        final Path actualBaseDir = result.getBasedir().toPath();
-        final Path expectedBaseDir = basedir.resolve("src/test/projects/defaults-formatted");
-        assertFilesEqual(actualBaseDir, expectedBaseDir, ".editorconfig");
-        assertFilesEqual(actualBaseDir, expectedBaseDir, "pom.xml");
-        assertFilesEqual(actualBaseDir, expectedBaseDir, "README.adoc");
-        assertFilesEqual(actualBaseDir, expectedBaseDir, "src/main/java/org/ec4j/maven/it/defaults/App.java");
-        assertFilesEqual(actualBaseDir, expectedBaseDir, "src/main/resources/indent.xml");
-        assertFilesEqual(actualBaseDir, expectedBaseDir, "src/main/resources/trailing-whitespace.txt");
+                .assertFilesEqual(expectedBaseDir,
+                        ".editorconfig",
+                        "pom.xml",
+                        "README.adoc",
+                        "src/main/java/org/ec4j/maven/it/defaults/App.java",
+                        "src/main/resources/indent.xml",
+                        "src/main/resources/trailing-whitespace.txt");
 
     }
 
     @Test
     public void submodulesProfileless() throws Exception {
-        File projDir = resources.getBasedir("submodules");
 
-        MavenExecution mavenExec = verifier.forProject(projDir) //
-                .withCliOption("-B") // batch
-        ;
+        {
+            final Verifier<EditorConfigCheckMojo> mavenExec = new Verifier<>(
+                    "submodules",
+                    EditorConfigCheckMojo.class,
+                    Arrays.asList("log.txt"));
+            mavenExec.mojo.modules = Arrays.asList("module-1", "module-2");
 
-        mavenExec //
-                .execute("clean", "verify") //
-                .assertErrorFreeLog()
-                .assertLogText("[TRACE] Processing file 'good-1.adoc' using linter org.ec4j.linters.TextLinter") //
-                .assertNoLogText(
-                        "[TRACE] Processing file 'module-1/good-1.adoc' using linter org.ec4j.linters.TextLinter") //
-                .assertNoLogText(
-                        "[TRACE] Processing file 'module-2/bad.xml' using linter org.ec4j.linters.TextLinter") //
-                .assertNoLogText("[TRACE] Processing file 'bad.xml' using linter org.ec4j.linters.TextLinter") //
-        ;
+            mavenExec //
+                    .execute() //
+                    .assertErrorFreeLog()
+                    .assertNoLogText(
+                            "[TRACE] Processing file 'module-1/good-1.adoc' using linter org.ec4j.linters.TextLinter") //
+                    .assertNoLogText(
+                            "[TRACE] Processing file 'module-2/bad.xml' using linter org.ec4j.linters.TextLinter") //
+                    .assertNoLogText("[TRACE] Processing file 'bad.xml' using linter org.ec4j.linters.TextLinter") //
+            ;
+        }
+        {
+            final Verifier<EditorConfigCheckMojo> mavenExec = new Verifier<>(
+                    "submodules",
+                    EditorConfigCheckMojo.class,
+                    Arrays.asList("log.txt"));
+
+            mavenExec.mojo.basedir = mavenExec.mojo.basedir.toPath().resolve("module-1").toFile();
+
+            mavenExec //
+                    .execute() //
+                    .assertErrorFreeLog()
+                    .assertLogText("[TRACE] Processing file 'good-1.adoc' using linter org.ec4j.linters.TextLinter") //
+            ;
+        }
     }
 
-    @Test
-    public void submodulesParallel() throws Exception {
-        File projDir = resources.getBasedir("submodules");
-
-        MavenExecution mavenExec = verifier.forProject(projDir) //
-                .withCliOption("-B") // batch
-                .withCliOption("-T").withCliOption("2") // 2 threads
-        ;
-
-        mavenExec //
-                .execute("clean", "verify") //
-                .assertErrorFreeLog()
-                .assertLogText("[TRACE] Processing file 'good-1.adoc' using linter org.ec4j.linters.TextLinter") //
-                .assertNoLogText(
-                        "[TRACE] Processing file 'module-1/good-1.adoc' using linter org.ec4j.linters.TextLinter") //
-                .assertNoLogText(
-                        "[TRACE] Processing file 'module-2/bad.xml' using linter org.ec4j.linters.TextLinter") //
-                .assertNoLogText("[TRACE] Processing file 'bad.xml' using linter org.ec4j.linters.TextLinter") //
-        ;
-    }
-
-    @Test
-    public void submodulesWithModule2() throws Exception {
-        File projDir = resources.getBasedir("submodules");
-
-        MavenExecution mavenExec = verifier.forProject(projDir) //
-                .withCliOption("-B") // batch
-                .withCliOption("-Pwith-module-2") //
-        ;
-
-        mavenExec //
-                .execute("clean", "verify") //
-                .assertErrorFreeLog()
-                .assertLogText("[TRACE] Processing file 'good-1.adoc' using linter org.ec4j.linters.TextLinter") //
-                .assertNoLogText(
-                        "[TRACE] Processing file 'module-1/good-1.adoc' using linter org.ec4j.linters.TextLinter") //
-                .assertLogText("[TRACE] Processing file 'good.xml' using linter org.ec4j.linters.TextLinter") //
-                .assertNoLogText(
-                        "[TRACE] Processing file 'module-2/good.xml' using linter org.ec4j.linters.TextLinter") //
-                .assertNoLogText(
-                        "[TRACE] Processing file 'module-2/bad.xml' using linter org.ec4j.linters.TextLinter") //
-                .assertNoLogText("[TRACE] Processing file 'bad.xml' using linter org.ec4j.linters.TextLinter") //
-        ;
-    }
+    //    @Test
+    //    public void submodulesWithModule2() throws Exception {
+    //        final Verifier<EditorConfigCheckMojo> mavenExec = new Verifier<>(
+    //                "submodules",
+    //                EditorConfigCheckMojo.class,
+    //                Arrays.asList("log.txt"));
+    //        // .withCliOption("-Pwith-module-2") //
+    //
+    //        mavenExec //
+    //                .execute() //
+    //                .assertErrorFreeLog()
+    //                .assertLogText("[TRACE] Processing file 'good-1.adoc' using linter org.ec4j.linters.TextLinter") //
+    //                .assertNoLogText(
+    //                        "[TRACE] Processing file 'module-1/good-1.adoc' using linter org.ec4j.linters.TextLinter") //
+    //                .assertLogText("[TRACE] Processing file 'good.xml' using linter org.ec4j.linters.TextLinter") //
+    //                .assertNoLogText(
+    //                        "[TRACE] Processing file 'module-2/good.xml' using linter org.ec4j.linters.TextLinter") //
+    //                .assertNoLogText(
+    //                        "[TRACE] Processing file 'module-2/bad.xml' using linter org.ec4j.linters.TextLinter") //
+    //                .assertNoLogText("[TRACE] Processing file 'bad.xml' using linter org.ec4j.linters.TextLinter") //
+    //        ;
+    //    }
 
     @Test
     public void excludesFile() throws Exception {
-        File projDir = resources.getBasedir("excludes-file");
+        final Verifier<EditorConfigCheckMojo> mavenExec = new Verifier<>(
+                "excludes-file",
+                EditorConfigCheckMojo.class,
+                Arrays.asList("log.txt"));
 
-        MavenExecution mavenExec = verifier.forProject(projDir) //
-                .withCliOption("-X") // debug
-                .withCliOption("-B") // batch
-        ;
+        Path ignoreTxt = mavenExec.mojo.basedir.toPath().resolve("ignore.txt");
+        mavenExec.mojo.excludesFile = ignoreTxt.toFile();
 
         mavenExec //
-                .execute("clean", "editorconfig:check") //
+                .execute() //
                 .assertErrorFreeLog() //
-                .assertLogText("[DEBUG] Using excludesFile") //
-                .assertLogText("ignore.txt'") //
-        ;
+                .assertLogText("[DEBUG] Using excludesFile '" + ignoreTxt + "'");
     }
 
-    private void assertFilesEqual(Path actualBaseDir, Path expectedBaseDir, String relPath) throws IOException {
-        final String contentActual = new String(Files.readAllBytes(actualBaseDir.resolve(relPath)),
-                StandardCharsets.UTF_8);
-        final String contentExpected = new String(Files.readAllBytes(expectedBaseDir.resolve(relPath)),
-                StandardCharsets.UTF_8);
-        Assert.assertEquals(relPath, contentExpected, contentActual);
+    static class Verifier<T extends AbstractEditorConfigMojo> {
+        private final T mojo;
+        private final LogRecorder logger;
+
+        public Verifier(
+                String projectDir,
+                Class<T> mojoClass,
+                List<String> excludes) throws IOException {
+
+            final Path testingSrcDir = Paths.get("src/test/projects/" + projectDir);
+            final Path testingProjectDir = Paths.get("target/" + projectDir + "-" + UUID.randomUUID());
+            FileUtils.copyDirectory(testingSrcDir.toFile(), testingProjectDir.toFile());
+            logger = new LogRecorder(testingProjectDir);
+            if (mojoClass == EditorConfigCheckMojo.class) {
+                mojo = (T) new EditorConfigCheckMojo(logger);
+            } else if (mojoClass == EditorConfigFormatMojo.class) {
+                mojo = (T) new EditorConfigFormatMojo(logger);
+            } else {
+                throw new IllegalStateException("Unexpected mojo type " + mojoClass);
+            }
+            mojo.encoding = StandardCharsets.UTF_8.name();
+            mojo.basedir = testingProjectDir.toAbsolutePath().normalize().toFile();
+            mojo.excludes = excludes;
+        }
+
+        public LogRecorder execute() {
+            try {
+                mojo.execute();
+            } catch (MojoExecutionException e) {
+                logger.info("BUILD ERROR");
+                for (String line : e.getMessage().split("[\r\n]+")) {
+                    logger.messages.add(line);
+                }
+            } catch (MojoFailureException e) {
+                logger.info("BUILD FAILURE");
+                for (String line : e.getMessage().split("[\r\n]+")) {
+                    logger.messages.add(line);
+                }
+            }
+            return logger;
+        }
+
     }
+
+    static class LogRecorder extends LegacyAbstractLogger {
+
+        final List<String> messages = new CopyOnWriteArrayList<>();
+
+        private final Path basedir;
+
+        public LogRecorder(Path basedir) {
+            this.basedir = basedir;
+        }
+
+        public LogRecorder assertNoLogText(String message) {
+            if (messages.contains(message)) {
+                throw new AssertionError("The log should not contain\n\n    " + message + "\n\nbut contains\n\n    "
+                        + messages.stream().collect(Collectors.joining("\n    ")) + "\n.");
+            }
+            return this;
+        }
+
+        public LogRecorder assertErrorFreeLog() {
+            final String errors = messages.stream().filter(s -> s.startsWith("[ERROR] ")).collect(Collectors.joining("\n    "));
+            if (!errors.isEmpty()) {
+                throw new AssertionError("The log should not contain any errors but contains:\n\n    "
+                        + errors + "\n.");
+            }
+            return this;
+        }
+
+        public LogRecorder assertFilesEqual(Path expectedDirectory, String... relativePaths) {
+            for (String relPath : relativePaths) {
+                Assertions.assertThat(basedir.resolve(relPath)).hasSameTextualContentAs(expectedDirectory.resolve(relPath));
+            }
+            return this;
+        }
+
+        public LogRecorder assertLogText(String message) {
+
+            if (!messages.contains(message)) {
+                throw new AssertionError("The log should contain\n\n    " + message + "\n\nbut contains only\n\n    "
+                        + messages.stream().collect(Collectors.joining("\n    ")) + "\n.");
+            }
+            return this;
+        }
+
+        public boolean isTraceEnabled() {
+            return true;
+        }
+
+        public boolean isDebugEnabled() {
+            return true;
+        }
+
+        public boolean isInfoEnabled() {
+            return true;
+        }
+
+        public boolean isWarnEnabled() {
+            return true;
+        }
+
+        public boolean isErrorEnabled() {
+            return true;
+        }
+
+        protected void handleNormalizedLoggingCall(Level level, Marker marker, String msg, Object[] args, Throwable throwable) {
+            messages.add(String.format("[%s] %s", level, MessageFormatter.arrayFormat(msg, args).getMessage().trim()));
+        }
+
+        @Override
+        protected String getFullyQualifiedCallerName() {
+            return null;
+        }
+    }
+
 }

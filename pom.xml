@@ -16,204 +16,206 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.ec4j.maven</groupId>
-  <artifactId>editorconfig-maven-plugin-parent</artifactId>
-  <version>0.1.6-SNAPSHOT</version>
-  <packaging>pom</packaging>
+    <groupId>org.ec4j.maven</groupId>
+    <artifactId>editorconfig-maven-plugin-parent</artifactId>
+    <version>0.1.6-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-  <name>EditorConfig Maven Plugin Parent</name>
-  <description>See editorconfig-maven-plugin</description>
+    <name>EditorConfig Maven Plugin Parent</name>
+    <description>See editorconfig-maven-plugin</description>
 
-  <url>https://github.com/ec4j/editorconfig-maven-plugin</url>
-  <inceptionYear>2017</inceptionYear>
-  <licenses>
-    <license>
-      <name>Apache License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
-  <developers>
-    <developer>
-      <id>ppalaga</id>
-      <name>Peter Palaga</name>
-      <timezone>Europe/Prague</timezone>
-    </developer>
-  </developers>
-
-  <scm>
-    <connection>scm:git:git@github.com:ec4j/editorconfig-maven-plugin.git</connection>
-    <developerConnection>scm:git:git@github.com:ec4j/editorconfig-maven-plugin.git</developerConnection>
     <url>https://github.com/ec4j/editorconfig-maven-plugin</url>
-    <tag>head</tag>
-  </scm>
-  <issueManagement>
-    <system>GitHub Issues</system>
-    <url>https://github.com/ec4j/editorconfig-maven-plugin/issues</url>
-  </issueManagement>
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>${snapshots.repo.url}</url>
-    </snapshotRepository>
-    <repository>
-      <id>ossrh</id>
-      <url>${releases.repo.url}</url>
-    </repository>
-  </distributionManagement>
+    <inceptionYear>2017</inceptionYear>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
-  <modules>
-    <module>editorconfig-maven-plugin</module>
-  </modules>
+    <developers>
+        <developer>
+            <id>ppalaga</id>
+            <name>Peter Palaga</name>
+            <timezone>Europe/Prague</timezone>
+        </developer>
+    </developers>
 
-  <properties>
+    <scm>
+        <connection>scm:git:git@github.com:ec4j/editorconfig-maven-plugin.git</connection>
+        <developerConnection>
+            scm:git:git@github.com:ec4j/editorconfig-maven-plugin.git</developerConnection>
+        <url>https://github.com/ec4j/editorconfig-maven-plugin</url>
+        <tag>head</tag>
+    </scm>
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/ec4j/editorconfig-maven-plugin/issues</url>
+    </issueManagement>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>${snapshots.repo.url}</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>${releases.repo.url}</url>
+        </repository>
+    </distributionManagement>
 
-    <!-- Dependency versions in alphabectic order -->
-    <takari-plugin-testing.version>2.9.2</takari-plugin-testing.version>
-    <junit.version>4.13.2</junit.version>
-    <maven.version>3.9.11</maven.version>
-    <maven.version.maven-project>3.0-alpha-2</maven.version.maven-project>
-    <maven.version.plugin-tools>3.10.2</maven.version.plugin-tools>
-    <maven-shared-utils.version>3.4.2</maven-shared-utils.version>
-    <ec4j-core.version>0.3.0</ec4j-core.version>
-    <ec4j-linters.version>0.2.1</ec4j-linters.version>
-    <slf4j.version>2.0.11</slf4j.version>
+    <modules>
+        <module>editorconfig-maven-plugin</module>
+    </modules>
 
-    <!-- Plugins and their dependencies -->
-    <asciidoctor-maven-plugin.version>2.2.5</asciidoctor-maven-plugin.version>
-    <central-publishing-maven-plugin.version>0.7.0</central-publishing-maven-plugin.version>
-    <formatter-maven-plugin.version>2.23.0</formatter-maven-plugin.version>
-    <license-maven-plugin.version>4.3</license-maven-plugin.version>
-    <takari-lifecycle-plugin.version>1.13.9</takari-lifecycle-plugin.version>
-    <impsort-maven-plugin.version>1.9.0</impsort-maven-plugin.version>
-    <maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
-    <maven-clean-plugin.version>3.3.2</maven-clean-plugin.version>
-    <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-    <maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
-    <maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
-    <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
-    <maven-install-plugin.version>3.1.1</maven-install-plugin.version>
-    <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
-    <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
-    <maven-plugin-plugin.version>3.11.0</maven-plugin-plugin.version>
-    <maven-plugin-report-plugin.version>3.10.2</maven-plugin-report-plugin.version>
-    <maven-project-info-reports-plugin.version>3.4.5</maven-project-info-reports-plugin.version>
-    <maven-release-plugin.version>3.0.1</maven-release-plugin.version>
-    <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
-    <maven-scm-plugin.version>2.0.1</maven-scm-plugin.version>
-    <maven-site-plugin.version>3.12.1</maven-site-plugin.version>
-    <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
-    <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
+    <properties>
 
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- Dependency versions in alphabectic order -->
+        <assertj.version>3.27.6</assertj.version>
+        <junit.version>6.0.1</junit.version>
+        <maven.version>3.9.11</maven.version>
+        <maven-project.version>3.0-alpha-2</maven-project.version>
+        <maven.plugin-tools.version>3.15.2</maven.plugin-tools.version>
+        <maven-shared-utils.version>3.4.2</maven-shared-utils.version>
+        <ec4j-core.version>0.3.0</ec4j-core.version>
+        <ec4j-linters.version>0.2.1</ec4j-linters.version>
+        <slf4j.version>2.0.17</slf4j.version>
 
-    <!-- maven-compiler-plugin -->
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
+        <!-- Plugins and their dependencies -->
+        <asciidoctor-maven-plugin.version>2.2.5</asciidoctor-maven-plugin.version>
+        <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
+        <formatter-maven-plugin.version>2.29.0</formatter-maven-plugin.version>
+        <license-maven-plugin.version>4.3</license-maven-plugin.version>
+        <impsort-maven-plugin.version>1.12.0</impsort-maven-plugin.version>
+        <maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
+        <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
+        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+        <maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
+        <maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
+        <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
+        <maven-install-plugin.version>3.1.4</maven-install-plugin.version>
+        <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
+        <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
+        <maven-plugin-plugin.version>3.15.2</maven-plugin-plugin.version>
+        <maven-plugin-report-plugin.version>3.10.2</maven-plugin-report-plugin.version>
+        <maven-project-info-reports-plugin.version>3.9.0</maven-project-info-reports-plugin.version>
+        <maven-release-plugin.version>3.2.0</maven-release-plugin.version>
+        <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+        <maven-scm-plugin.version>2.2.1</maven-scm-plugin.version>
+        <maven-site-plugin.version>3.21.0</maven-site-plugin.version>
+        <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
+        <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
 
-    <!-- license-maven-plugin -->
-    <license.failIfMissing>true</license.failIfMissing>
-    <license.failIfUnknown>true</license.failIfUnknown>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <!-- -Xdoclint:none disables javadoc validation -->
-    <javadoc.doclint>-Xdoclint:none</javadoc.doclint>
+        <!-- maven-compiler-plugin -->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
 
-    <!-- nexus-staging-maven-plugin -->
-    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        <!-- license-maven-plugin -->
+        <license.failIfMissing>true</license.failIfMissing>
+        <license.failIfUnknown>true</license.failIfUnknown>
 
-    <!-- maven-surefire-plugin -->
-    <surefire.useFile>false</surefire.useFile>
-    <trimStackTrace>false</trimStackTrace>
+        <!-- -Xdoclint:none disables javadoc validation -->
+        <javadoc.doclint>-Xdoclint:none</javadoc.doclint>
 
-  </properties>
+        <!-- nexus-staging-maven-plugin -->
+        <autoReleaseAfterClose>true</autoReleaseAfterClose>
 
-  <dependencyManagement>
-    <dependencies>
+        <!-- maven-surefire-plugin -->
+        <surefire.useFile>false</surefire.useFile>
+        <trimStackTrace>false</trimStackTrace>
 
-      <dependency>
-        <groupId>org.ec4j.linters</groupId>
-        <artifactId>editorconfig-linters-bom</artifactId>
-        <version>${ec4j-linters.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
+    </properties>
 
-      <dependency>
-        <groupId>io.takari.maven.plugins</groupId>
-        <artifactId>takari-plugin-testing</artifactId>
-        <version>${takari-plugin-testing.version}</version>
-      </dependency>
+    <dependencyManagement>
+        <dependencies>
 
-      <dependency>
-        <groupId>io.takari.maven.plugins</groupId>
-        <artifactId>takari-plugin-integration-testing</artifactId>
-        <version>${takari-plugin-testing.version}</version>
-        <type>pom</type>
-      </dependency>
+            <dependency>
+                <groupId>org.ec4j.linters</groupId>
+                <artifactId>editorconfig-linters-bom</artifactId>
+                <version>${ec4j-linters.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>${junit.version}</version>
-      </dependency>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
 
-      <dependency>
-        <groupId>org.apache.maven</groupId>
-        <artifactId>maven-plugin-api</artifactId>
-        <version>${maven.version}</version>
-      </dependency>
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-plugin-api</artifactId>
+                <version>${maven.version}</version>
+            </dependency>
 
-      <dependency>
-        <groupId>org.apache.maven</groupId>
-        <artifactId>maven-model</artifactId>
-        <version>${maven.version}</version>
-      </dependency>
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-model</artifactId>
+                <version>${maven.version}</version>
+            </dependency>
 
-      <dependency>
-        <groupId>org.apache.maven</groupId>
-        <artifactId>maven-project</artifactId>
-        <version>${maven.version.maven-project}</version>
-      </dependency>
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-project</artifactId>
+                <version>${maven-project.version}</version>
+            </dependency>
 
-      <dependency>
-        <groupId>org.apache.maven.plugin-tools</groupId>
-        <artifactId>maven-plugin-annotations</artifactId>
-        <version>${maven.version.plugin-tools}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.maven.shared</groupId>
-        <artifactId>maven-shared-utils</artifactId>
-        <version>${maven-shared-utils.version}</version>
-      </dependency>
+            <dependency>
+                <groupId>org.apache.maven.plugin-tools</groupId>
+                <artifactId>maven-plugin-annotations</artifactId>
+                <version>${maven.plugin-tools.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven.shared</groupId>
+                <artifactId>maven-shared-utils</artifactId>
+                <version>${maven-shared-utils.version}</version>
+            </dependency>
 
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-        <version>${slf4j.version}</version>
-      </dependency>
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>${assertj.version}</version>
+            </dependency>
 
-    </dependencies>
-  </dependencyManagement>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j-version}</version>
+            </dependency>
 
-  <build>
-    <pluginManagement>
-      <plugins>
-        <!-- Ordering: alphabetical by groupId and artifactId -->
+        </dependencies>
+    </dependencyManagement>
 
-        <plugin>
-          <groupId>com.mycila</groupId>
-          <artifactId>license-maven-plugin</artifactId>
-          <version>${license-maven-plugin.version}</version>
-          <configuration>
-            <licenseSets>
-                <licenseSet>
-                  <inlineHeader>Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
+    <build>
+        <pluginManagement>
+            <plugins>
+                <!-- Ordering: alphabetical by groupId and artifactId -->
+
+                <plugin>
+                    <groupId>com.mycila</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <version>${license-maven-plugin.version}</version>
+                    <configuration>
+                        <licenseSets>
+                            <licenseSet>
+                                <inlineHeader>Copyright (c) ${project.inceptionYear} EditorConfig Maven Plugin
 project contributors as indicated by the @author tags.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -227,378 +229,349 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.</inlineHeader>
-                  <excludes>
-                    <exclude>**/*.adoc</exclude>
-                    <exclude>**/README.*</exclude>
-                    <exclude>**/.gitkeep</exclude>
-                    <exclude>.gitattributes/</exclude>
-                    <exclude>.mvn/wrapper/</exclude>
-                    <exclude>.sdkmanrc/</exclude>
-                    <exclude>LICENSE</exclude>
-                    <exclude>mvnw</exclude>
-                    <exclude>mvnw.cmd</exclude>
-                    <exclude>site/**</exclude>
-                    <exclude>src/main/antlr4/org/ec4j/linters/xml/XmlLexer.g4</exclude><!-- BSD License -->
-                    <exclude>src/main/antlr4/org/ec4j/linters/xml/XmlParser.g4</exclude><!-- BSD License -->
-                    <exclude>src/test/resources/**/*.txt</exclude>
-                    <exclude>src/test/resources/**/*.good</exclude>
-                    <exclude>src/test/resources/**/*.bad</exclude>
-                    <exclude>src/test/projects/defaults*/**/*.txt</exclude>
-                    <exclude>src/test/projects/encoding/**/*.properties</exclude>
-                    <exclude>src/test/projects/excludes-file/**/*.txt</exclude>
-                  </excludes>
-                </licenseSet>
-            </licenseSets>
-          </configuration>
-          <executions>
-            <execution>
-              <goals>
-                <goal>check</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
+                                <excludes>
+                                    <exclude>**/*.adoc</exclude>
+                                    <exclude>**/README.*</exclude>
+                                    <exclude>**/.gitkeep</exclude>
+                                    <exclude>.gitattributes/</exclude>
+                                    <exclude>.mvn/wrapper/</exclude>
+                                    <exclude>.sdkmanrc/</exclude>
+                                    <exclude>LICENSE</exclude>
+                                    <exclude>mvnw</exclude>
+                                    <exclude>mvnw.cmd</exclude>
+                                    <exclude>site/**</exclude>
+                                    <exclude>src/test/resources/**/*.txt</exclude>
+                                    <exclude>src/test/resources/**/*.good</exclude>
+                                    <exclude>src/test/resources/**/*.bad</exclude>
+                                    <exclude>
+                                        src/test/projects/defaults*/**/*.txt</exclude>
+                                    <exclude>
+                                        src/test/projects/encoding/**/*.properties</exclude>
+                                    <exclude>
+                                        src/test/projects/excludes-file/**/*.txt</exclude>
+                                </excludes>
+                            </licenseSet>
+                        </licenseSets>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
 
-        <plugin>
-          <groupId>io.takari.maven.plugins</groupId>
-          <artifactId>takari-lifecycle-plugin</artifactId>
-          <version>${takari-lifecycle-plugin.version}</version>
-          <configuration>
-            <!-- compile/testCompile -->
-            <source>${maven.compiler.source}</source>
-            <compilerId>jdt</compilerId>
-<!--             <accessRulesViolation>ignore</accessRulesViolation>
-            <transitiveDependencyReference>error</transitiveDependencyReference>
-            <privatePackageReference>error</privatePackageReference> -->
-            <proc>none</proc>
+                <plugin>
+                    <groupId>net.revelc.code.formatter</groupId>
+                    <artifactId>formatter-maven-plugin</artifactId>
+                    <version>${formatter-maven-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>net.revelc.code</groupId>
+                    <artifactId>impsort-maven-plugin</artifactId>
+                    <version>${impsort-maven-plugin.version}</version>
+                </plugin>
 
-            <sourceJar>true</sourceJar>
-          </configuration>
-          <executions>
-            <execution>
-              <!-- We turn takari-lifecycle-plugin's deploy off because we use nexus-staging-maven-plugin's deploy
-                   that can auto-close and release the staging repo -->
-              <id>default-deploy</id>
-              <phase>none</phase>
-              <goals>
-                <goal>deploy</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>${maven-antrun-plugin.version}</version>
+                </plugin>
 
-        <plugin>
-          <groupId>net.revelc.code.formatter</groupId>
-          <artifactId>formatter-maven-plugin</artifactId>
-          <version>${formatter-maven-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>net.revelc.code</groupId>
-          <artifactId>impsort-maven-plugin</artifactId>
-         <version>${impsort-maven-plugin.version}</version>
-        </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${maven-clean-plugin.version}</version>
+                </plugin>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>${maven-clean-plugin.version}</version>
-        </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                </plugin>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>${maven-compiler-plugin.version}</version>
-          <configuration>
-            <!-- disable accidental use, must use takari-lifecycle -->
-            <skip>true</skip>
-            <skipMain>true</skipMain>
-          </configuration>
-        </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${maven-deploy-plugin.version}</version>
+                </plugin>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>${maven-deploy-plugin.version}</version>
-          <configuration>
-            <!-- disable accidental use, must use takari-lifecycle -->
-            <skip>true</skip>
-          </configuration>
-        </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>${maven-enforcer-plugin.version}</version>
+                </plugin>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-enforcer-plugin</artifactId>
-          <version>${maven-enforcer-plugin.version}</version>
-        </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>${maven-gpg-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>sign-artifacts</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-gpg-plugin</artifactId>
-          <version>${maven-gpg-plugin.version}</version>
-          <executions>
-            <execution>
-              <id>sign-artifacts</id>
-              <phase>verify</phase>
-              <goals>
-                <goal>sign</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>${maven-install-plugin.version}</version>
+                </plugin>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>${maven-install-plugin.version}</version>
-          <configuration>
-            <!-- disable accidental use, must use takari-lifecycle -->
-            <skip>true</skip>
-          </configuration>
-        </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven-jar-plugin.version}</version>
+                </plugin>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>${maven-jar-plugin.version}</version>
-          <configuration>
-            <!-- disable accidental use, must use takari-lifecycle -->
-            <skip>true</skip>
-          </configuration>
-        </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${maven-javadoc-plugin.version}</version>
+                </plugin>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>${maven-javadoc-plugin.version}</version>
-        </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-plugin-plugin</artifactId>
+                    <version>${maven-plugin-plugin.version}</version>
+                    <configuration>
+                        <goalPrefix>editorconfig</goalPrefix>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-plugin-report-plugin</artifactId>
+                    <version>${maven-plugin-report-plugin.version}</version>
+                </plugin>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-plugin-plugin</artifactId>
-          <version>${maven-plugin-plugin.version}</version>
-          <configuration>
-            <goalPrefix>editorconfig</goalPrefix>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-plugin-report-plugin</artifactId>
-          <version>${maven-plugin-report-plugin.version}</version>
-        </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>${maven-project-info-reports-plugin.version}</version>
+                </plugin>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>${maven-project-info-reports-plugin.version}</version>
-        </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>${maven-release-plugin.version}</version>
+                    <configuration>
+                        <tagNameFormat>@{project.version}</tagNameFormat>
+                        <preparationGoals>package</preparationGoals>
+                        <goals>deploy site</goals>
+                        <releaseProfiles>release</releaseProfiles>
+                        <autoVersionSubmodules>true</autoVersionSubmodules>
+                    </configuration>
+                </plugin>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-release-plugin</artifactId>
-          <version>${maven-release-plugin.version}</version>
-          <configuration>
-            <tagNameFormat>@{project.version}</tagNameFormat>
-            <preparationGoals>package</preparationGoals>
-            <goals>deploy site</goals>
-            <releaseProfiles>release</releaseProfiles>
-            <autoVersionSubmodules>true</autoVersionSubmodules>
-          </configuration>
-        </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven-resources-plugin.version}</version>
+                </plugin>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>${maven-resources-plugin.version}</version>
-          <configuration>
-            <!-- disable accidental use, must use takari-lifecycle -->
-            <skip>true</skip>
-          </configuration>
-        </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-scm-plugin</artifactId>
+                    <version>${maven-scm-plugin.version}</version>
+                </plugin>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-scm-plugin</artifactId>
-          <version>${maven-scm-plugin.version}</version>
-        </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${maven-site-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>default-site</id>
+                            <phase>none</phase>
+                        </execution>
+                    </executions>
+                </plugin>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>${maven-site-plugin.version}</version>
-          <executions>
-            <execution>
-              <id>default-site</id>
-              <phase>none</phase>
-            </execution>
-          </executions>
-        </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${maven-source-plugin.version}</version>
+                </plugin>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-source-plugin</artifactId>
-          <version>${maven-source-plugin.version}</version>
-          <configuration>
-            <!-- disable accidental use, must use takari-lifecycle -->
-            <skipSource>true</skipSource>
-          </configuration>
-        </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                    <configuration>
+                        <systemPropertyVariables>
+                            <basedir>${project.build.directory}</basedir>
+                            <project.version>${project.version}</project.version>
+                            <project.build.sourceEncoding>
+                                ${project.build.sourceEncoding}</project.build.sourceEncoding>
+                            <org.slf4j.simpleLogger.showDateTime>true</org.slf4j.simpleLogger.showDateTime>
+                        </systemPropertyVariables>
+                    </configuration>
+                </plugin>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>${maven-surefire-plugin.version}</version>
-          <configuration>
-            <systemPropertyVariables>
-              <basedir>${project.build.directory}</basedir>
-              <project.version>${project.version}</project.version>
-              <project.build.sourceEncoding>${project.build.sourceEncoding}</project.build.sourceEncoding>
-              <org.slf4j.simpleLogger.showDateTime>true</org.slf4j.simpleLogger.showDateTime>
-            </systemPropertyVariables>
-          </configuration>
-        </plugin>
+                <plugin>
+                    <groupId>org.sonatype.central</groupId>
+                    <artifactId>central-publishing-maven-plugin</artifactId>
+                    <version>${central-publishing-maven-plugin.version}</version>
+                    <configuration>
+                        <publishingServerId>central</publishingServerId>
+                        <autoPublish>true</autoPublish>
+                        <waitUntil>published</waitUntil>
+                        <waitMaxTime>7200</waitMaxTime>
+                    </configuration>
+                </plugin>
 
-        <plugin>
-          <groupId>org.sonatype.central</groupId>
-          <artifactId>central-publishing-maven-plugin</artifactId>
-          <version>${central-publishing-maven-plugin.version}</version>
-          <configuration>
-            <publishingServerId>central</publishingServerId>
-            <autoPublish>true</autoPublish>
-            <waitUntil>published</waitUntil>
-            <waitMaxTime>7200</waitMaxTime>
-          </configuration>
-        </plugin>
+            </plugins>
+        </pluginManagement>
 
-      </plugins>
-    </pluginManagement>
-
-    <plugins>
-
-      <plugin>
-        <groupId>com.mycila</groupId>
-        <artifactId>license-maven-plugin</artifactId>
-      </plugin>
-
-      <plugin>
-        <groupId>io.takari.maven.plugins</groupId>
-        <artifactId>takari-lifecycle-plugin</artifactId>
-        <extensions>true</extensions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.antlr</groupId>
-        <artifactId>antlr4-maven-plugin</artifactId>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <executions>
-          <execution>
-              <id>default</id>
-              <phase />
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-      </plugin>
-
-      <plugin>
-        <groupId>org.sonatype.central</groupId>
-        <artifactId>central-publishing-maven-plugin</artifactId>
-        <extensions>true</extensions>
-      </plugin>
-
-    </plugins>
-  </build>
-
-  <profiles>
-    <profile>
-      <id>java-11+</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>net.revelc.code.formatter</groupId>
-            <artifactId>formatter-maven-plugin</artifactId>
-            <configuration>
-              <configFile>eclipse-format.xml</configFile>
-              <skip>${format.skip}</skip>
-            </configuration>
-            <executions>
-              <execution>
-                <id>format-java</id>
-                <goals>
-                  <goal>format</goal>
-                </goals>
-                <phase>process-sources</phase>
-              </execution>
-            </executions>
-            <dependencies>
-              <dependency>
-                <groupId>org.ec4j.core</groupId>
-                <artifactId>ec4j-core-build</artifactId>
-                <version>${ec4j-core.version}</version>
-              </dependency>
-            </dependencies>
-          </plugin>
-           <plugin><!-- impsort-maven-plugin does not work on JDKs older than 11 -->
-            <groupId>net.revelc.code</groupId>
-            <artifactId>impsort-maven-plugin</artifactId>
-            <configuration>
-              <groups>java.,javax.</groups>
-              <skip>${format.skip}</skip>
-              <removeUnused>true</removeUnused>
-            </configuration>
-            <executions>
-              <execution>
-                <id>sort-imports</id>
-                <goals>
-                  <goal>sort</goal>
-                </goals>
-                <phase>process-sources</phase>
-              </execution>
-            </executions>
-          </plugin>
-       </plugins>
-      </build>
-      <activation>
-        <jdk>[11,)</jdk>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-    </profile>
-
-    <profile>
-      <id>release</id>
-
-      <build>
         <plugins>
 
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>sign-artifacts</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <phase />
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <extensions>true</extensions>
+            </plugin>
 
         </plugins>
-      </build>
+    </build>
 
-    </profile>
-  </profiles>
+    <profiles>
+        <profile>
+            <id>java-11+</id>
+            <activation>
+                <jdk>[11,)</jdk>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>net.revelc.code.formatter</groupId>
+                        <artifactId>formatter-maven-plugin</artifactId>
+                        <configuration>
+                            <configFile>eclipse-format.xml</configFile>
+                            <skip>${format.skip}</skip>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>format-java</id>
+                                <goals>
+                                    <goal>format</goal>
+                                </goals>
+                                <phase>process-sources</phase>
+                            </execution>
+                        </executions>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.ec4j.core</groupId>
+                                <artifactId>ec4j-core-build</artifactId>
+                                <version>${ec4j-core.version}</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                    <plugin><!-- impsort-maven-plugin does not work on JDKs
+                        older than 11 -->
+                        <groupId>net.revelc.code</groupId>
+                        <artifactId>impsort-maven-plugin</artifactId>
+                        <configuration>
+                            <groups>java.,javax.</groups>
+                            <skip>${format.skip}</skip>
+                            <removeUnused>true</removeUnused>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>sort-imports</id>
+                                <goals>
+                                    <goal>sort</goal>
+                                </goals>
+                                <phase>process-sources</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>release</id>
+
+            <build>
+                <plugins>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>${maven-source-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <additionalOptions>${javadoc.opts}</additionalOptions>
+                            <detectOfflineLinks>false</detectOfflineLinks>
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+
+        </profile>
+    </profiles>
 
 </project>
