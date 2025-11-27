@@ -89,7 +89,7 @@
         <slf4j.version>2.0.17</slf4j.version>
 
         <!-- Plugins and their dependencies -->
-        <asciidoctor-maven-plugin.version>2.2.5</asciidoctor-maven-plugin.version>
+        <asciidoctor-maven-plugin.version>3.2.0</asciidoctor-maven-plugin.version>
         <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
         <formatter-maven-plugin.version>2.29.0</formatter-maven-plugin.version>
         <license-maven-plugin.version>4.3</license-maven-plugin.version>
