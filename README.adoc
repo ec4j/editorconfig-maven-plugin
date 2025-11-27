@@ -7,8 +7,6 @@ endif::[]
 https://github.com/ec4j/editorconfig-maven-plugin/blob/master/LICENSE[image:https://img.shields.io/github/license/ec4j/editorconfig-maven-plugin.svg[License]]
 http://search.maven.org/#search%7Cga%7C1%7Corg.ec4j.maven[image:https://img.shields.io/maven-central/v/org.ec4j.maven/editorconfig-maven-plugin.svg[Maven
 Central]]
-http://travis-ci.org/ec4j/editorconfig-maven-plugin[image:https://img.shields.io/travis/ec4j/editorconfig-maven-plugin/master.svg?logo=travis&color=white&label=Travis+CI[Travis CI build status]]
-https://ci.appveyor.com/project/ppalaga/editorconfig-maven-plugin[image:https://img.shields.io/appveyor/ci/ppalaga/editorconfig-maven-plugin/master.svg?logo=appveyor&color=white&label=AppVeyor+Windows+CI[AppVeyor Windows CI build status]]
 
 `editorconfig-maven-plugin` is a Maven plugin for checking whether project files comply with format rules
 defined in `http://editorconfig.org/[.editorconfig]` files and eventually also for fixing the violations.
