@@ -23,7 +23,7 @@
 
     <groupId>org.ec4j.maven</groupId>
     <artifactId>editorconfig-maven-plugin-parent</artifactId>
-    <version>0.1.17-SNAPSHOT</version>
+    <version>0.1.17</version>
     <packaging>pom</packaging>
 
     <name>EditorConfig Maven Plugin Parent</name>
