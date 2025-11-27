@@ -151,7 +151,7 @@
                             <dependency>
                                 <groupId>org.asciidoctor</groupId>
                                 <artifactId>asciidoctor-converter-doxia-module</artifactId>
-                                <version>3.2.0</version>
+                                <version>${asciidoctor-converter-doxia.version}</version>
                             </dependency>
                         </dependencies>
                     </plugin>
@@ -172,7 +172,7 @@
                                         <move todir="${project.basedir}/../docs">
                                             <fileset dir="${project.basedir}/target/site">
                                                 <include name="**" />
-                                            <fileset>
+                                            </fileset>
                                         </move>
                                     </target>
                                 </configuration>

@@ -246,7 +246,7 @@ limitations under the License.</inlineHeader>
                                     <exclude>LICENSE</exclude>
                                     <exclude>mvnw</exclude>
                                     <exclude>mvnw.cmd</exclude>
-                                    <exclude>site/**</exclude>
+                                    <exclude>docs/**</exclude>
                                     <exclude>src/test/resources/**/*.txt</exclude>
                                     <exclude>src/test/resources/**/*.good</exclude>
                                     <exclude>src/test/resources/**/*.bad</exclude>
