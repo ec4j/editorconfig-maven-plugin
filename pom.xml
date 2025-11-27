@@ -70,7 +70,7 @@
     </distributionManagement>
 
     <modules>
-        <module>editorconfig-maven-plugin</module>
+        <module>plugin</module>
     </modules>
 
     <properties>
