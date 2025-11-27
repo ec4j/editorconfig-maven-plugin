@@ -167,12 +167,12 @@
                                 </goals>
                                 <configuration>
                                     <target>
-                                        <delete dir="${project.basedir}/../site" />
-                                        <move todir="${project.basedir}/..">
-                                            <fileset
-                                                dir="${project.basedir}/target">
-                                                <include name="site/**" />
-                                            </fileset>
+                                        <delete dir="${project.basedir}/../docs" />
+                                        <mkdir dir="${project.basedir}/../docs" />
+                                        <move todir="${project.basedir}/../docs">
+                                            <fileset dir="${project.basedir}/target/site">
+                                                <include name="**" />
+                                            <fileset>
                                         </move>
                                     </target>
                                 </configuration>

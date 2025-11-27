@@ -8,7 +8,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="Content-Language" content="" />
-    <title>editorconfig:check – EditorConfig Maven Plugin</title>
+    <title>editorconfig:format – EditorConfig Maven Plugin</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido-1.6.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -75,7 +75,7 @@
         <ul class="breadcrumb">
         <li id="publishDate">$i18n.getString( "site-renderer", $locale, "template.lastpublished" ): $dateValue<span class="divider">|</span>
 </li>
-          <li id="projectVersion">$i18n.getString( "site-renderer", $locale, "template.version" ): 0.1.16</li>
+          <li id="projectVersion">$i18n.getString( "site-renderer", $locale, "template.version" ): 0.1.17-SNAPSHOT</li>
         </ul>
       </div>
       <div class="row-fluid">
@@ -101,17 +101,16 @@
         </div>
         <div id="bodyColumn"  class="span10" >
 <section>
-<h1>editorconfig:check</h1><a id="editorconfig.3Acheck"></a>
+<h1>editorconfig:format</h1><a id="editorconfig.3Aformat"></a>
 <p><strong>Full name</strong>:</p>
-<p>org.ec4j.maven:editorconfig-maven-plugin:0.1.16:check</p>
+<p>org.ec4j.maven:editorconfig-maven-plugin:0.1.17-SNAPSHOT:format</p>
 <p><strong>Description</strong>:</p>
-<p>Checks whether files are formatted according to rules defined in <code>.editorconfig</code> files. If fomat violations are detected, either causes the build to fail (if <code>failOnFormatViolation</code><!-- no javadoc sites associated --> is <code>true</code>) or just produces a warning.</p>
+<p>Formats a set of files so that they comply with rules defined in <code>.editorconfig</code> files.</p>
 <p><strong>Attributes</strong>:</p>
 <ul>
 <li>Requires a Maven project to be executed.</li>
 <li>The goal is thread-safe and supports parallel builds.</li>
-<li>Since version: <code>0.0.1</code>.</li>
-<li>Binds by default to the <a class="externalLink" href="https://maven.apache.org/ref/current/maven-core/lifecycles.html">lifecycle phase</a>: <code>verify</code>.</li></ul><section>
+<li>Since version: <code>0.0.1</code>.</li></ul><section>
 <h2>Optional Parameters</h2><a id="Optional_Parameters"></a>
 <table class="table table-striped">
 <tr class="a">
@@ -124,6 +123,16 @@
 <td><code>boolean</code></td>
 <td><code>0.0.1</code></td>
 <td>If set to <code>true</code>, the class path will be scanned for implementations of <code>org.ec4j.lint.api.Linter</code><!-- no javadoc sites associated --> and all <code>org.ec4j.lint.api.Linter</code><!-- no javadoc sites associated -->s found will be added to <code>linters</code><!-- no javadoc sites associated --> with their default includes and excludes.<br /><strong>Default</strong>: <code>true</code><br /><strong>User Property</strong>: <code>editorconfig.addLintersFromClassPath</code></td></tr>
+<tr class="a">
+<td style="text-align: left;"><a href="#backup"><code>&lt;backup&gt;</code></a></td>
+<td><code>boolean</code></td>
+<td><code>0.0.1</code></td>
+<td>If <code>true</code>, a backup file will be created for every file that needs to be formatted just before the formatted version is stored. If <code>false</code>, no backup is done and the files are formatted in place. See also <code>backupSuffix</code><!-- no javadoc sites associated -->.<br /><strong>Default</strong>: <code>false</code><br /><strong>User Property</strong>: <code>editorconfig.backup</code></td></tr>
+<tr class="b">
+<td style="text-align: left;"><a href="#backupSuffix"><code>&lt;backupSuffix&gt;</code></a></td>
+<td><code>String</code></td>
+<td><code>0.0.1</code></td>
+<td>A suffix to append to a file name to create its backup. See also <code>backup</code><!-- no javadoc sites associated -->.<br /><strong>Default</strong>: <code>.bak</code><br /><strong>User Property</strong>: <code>editorconfig.backupSuffix</code></td></tr>
 <tr class="a">
 <td style="text-align: left;"><a href="#encoding"><code>&lt;encoding&gt;</code></a></td>
 <td><code>String</code></td>
@@ -150,26 +159,21 @@
 <td><code>0.1.0</code></td>
 <td>File containing exclude patterns to add to any existing exclude patterns. Empty lines and lines starting with # are ignored.<br /><strong>User Property</strong>: <code>editorconfig.excludesFile</code></td></tr>
 <tr class="b">
-<td style="text-align: left;"><a href="#failOnFormatViolation"><code>&lt;failOnFormatViolation&gt;</code></a></td>
-<td><code>boolean</code></td>
-<td><code>0.0.1</code></td>
-<td>Tells the mojo what to do in case formatting violations are found. if <code>true</code>, all violations will be reported on the console as ERRORs and the build will fail. if <code>false</code>, all violations will be reported on the console as WARNs and the build will proceed further.<br /><strong>Default</strong>: <code>true</code><br /><strong>User Property</strong>: <code>editorconfig.failOnFormatViolation</code></td></tr>
-<tr class="a">
 <td style="text-align: left;"><a href="#failOnNoMatchingProperties"><code>&lt;failOnNoMatchingProperties&gt;</code></a></td>
 <td><code>boolean</code></td>
 <td><code>0.0.1</code></td>
 <td>If <code>true</code> the plugin execution will fail with an error in case no single <code>.editorconfig</code> property matches any file of the current Maven project - this usually means that there is no <code>.editorconfig</code> file in the whole source tree. If <code>false</code>, only a warning is produced in such a situation.<br /><strong>Default</strong>: <code>true</code><br /><strong>User Property</strong>: <code>editorconfig.failOnNoMatchingProperties</code></td></tr>
-<tr class="b">
+<tr class="a">
 <td style="text-align: left;"><a href="#includes"><code>&lt;includes&gt;</code></a></td>
 <td><code>List&lt;String&gt;</code></td>
 <td><code>0.0.1</code></td>
 <td>File patterns to include into the set of files to process. The patterns are relative to the current project's <code>baseDir</code>.<br /><strong>Default</strong>: <code>**</code><br /><strong>User Property</strong>: <code>editorconfig.includes</code></td></tr>
-<tr class="a">
+<tr class="b">
 <td style="text-align: left;"><a href="#linters"><code>&lt;linters&gt;</code></a></td>
 <td><code>List&lt;LinterConfig&gt;</code></td>
 <td><code>0.0.1</code></td>
 <td>Set the includes and excludes for the individual <code>org.ec4j.lint.api.Linter</code><!-- no javadoc sites associated -->s</td></tr>
-<tr class="b">
+<tr class="a">
 <td style="text-align: left;"><a href="#skip"><code>&lt;skip&gt;</code></a></td>
 <td><code>boolean</code></td>
 <td><code>0.0.1</code></td>
@@ -182,7 +186,23 @@
 <li><strong>Since</strong>: <code>0.0.1</code></li>
 <li><strong>Required</strong>: <code>report.plugin.goal.no</code></li>
 <li><strong>User Property</strong>: <code>editorconfig.addLintersFromClassPath</code></li>
-<li><strong>Default</strong>: <code>true</code></li></ul><hr /></section><a id="encoding"><section>
+<li><strong>Default</strong>: <code>true</code></li></ul><hr /></section><a id="backup"><section>
+<h3>&lt;backup&gt;</h3><a id="a.3Cbackup.3E"></a></a>
+<div>If <code>true</code>, a backup file will be created for every file that needs to be formatted just before the formatted version is stored. If <code>false</code>, no backup is done and the files are formatted in place. See also <code>backupSuffix</code><!-- no javadoc sites associated -->.</div>
+<ul>
+<li><strong>Type</strong>: <code>boolean</code></li>
+<li><strong>Since</strong>: <code>0.0.1</code></li>
+<li><strong>Required</strong>: <code>report.plugin.goal.no</code></li>
+<li><strong>User Property</strong>: <code>editorconfig.backup</code></li>
+<li><strong>Default</strong>: <code>false</code></li></ul><hr /></section><a id="backupSuffix"><section>
+<h3>&lt;backupSuffix&gt;</h3><a id="a.3CbackupSuffix.3E"></a></a>
+<div>A suffix to append to a file name to create its backup. See also <code>backup</code><!-- no javadoc sites associated -->.</div>
+<ul>
+<li><strong>Type</strong>: <code>java.lang.String</code></li>
+<li><strong>Since</strong>: <code>0.0.1</code></li>
+<li><strong>Required</strong>: <code>report.plugin.goal.no</code></li>
+<li><strong>User Property</strong>: <code>editorconfig.backupSuffix</code></li>
+<li><strong>Default</strong>: <code>.bak</code></li></ul><hr /></section><a id="encoding"><section>
 <h3>&lt;encoding&gt;</h3><a id="a.3Cencoding.3E"></a></a>
 <div>The default encoding of files selected by <code>includes</code><!-- no javadoc sites associated --> and <code>excludes</code><!-- no javadoc sites associated -->. This value can be overriden by a <code>charset</code> property of an <code>.editorconfig</code> file.</div>
 <ul>
@@ -220,15 +240,7 @@
 <li><strong>Type</strong>: <code>java.io.File</code></li>
 <li><strong>Since</strong>: <code>0.1.0</code></li>
 <li><strong>Required</strong>: <code>report.plugin.goal.no</code></li>
-<li><strong>User Property</strong>: <code>editorconfig.excludesFile</code></li></ul><hr /></section><a id="failOnFormatViolation"><section>
-<h3>&lt;failOnFormatViolation&gt;</h3><a id="a.3CfailOnFormatViolation.3E"></a></a>
-<div>Tells the mojo what to do in case formatting violations are found. if <code>true</code>, all violations will be reported on the console as ERRORs and the build will fail. if <code>false</code>, all violations will be reported on the console as WARNs and the build will proceed further.</div>
-<ul>
-<li><strong>Type</strong>: <code>boolean</code></li>
-<li><strong>Since</strong>: <code>0.0.1</code></li>
-<li><strong>Required</strong>: <code>report.plugin.goal.no</code></li>
-<li><strong>User Property</strong>: <code>editorconfig.failOnFormatViolation</code></li>
-<li><strong>Default</strong>: <code>true</code></li></ul><hr /></section><a id="failOnNoMatchingProperties"><section>
+<li><strong>User Property</strong>: <code>editorconfig.excludesFile</code></li></ul><hr /></section><a id="failOnNoMatchingProperties"><section>
 <h3>&lt;failOnNoMatchingProperties&gt;</h3><a id="a.3CfailOnNoMatchingProperties.3E"></a></a>
 <div>If <code>true</code> the plugin execution will fail with an error in case no single <code>.editorconfig</code> property matches any file of the current Maven project - this usually means that there is no <code>.editorconfig</code> file in the whole source tree. If <code>false</code>, only a warning is produced in such a situation.</div>
 <ul>
