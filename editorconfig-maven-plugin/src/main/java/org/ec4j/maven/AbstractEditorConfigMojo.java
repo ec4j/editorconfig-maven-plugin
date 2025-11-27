@@ -24,6 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -59,7 +60,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractEditorConfigMojo extends AbstractMojo {
 
-    private static final Logger log = LoggerFactory.getLogger(AbstractEditorConfigMojo.class);
+    protected final Logger log;
 
     /**
      * If set to {@code true}, the class path will be scanned for implementations of {@link Linter} and all
@@ -68,7 +69,7 @@ public abstract class AbstractEditorConfigMojo extends AbstractMojo {
      * @since 0.0.1
      */
     @Parameter(property = "editorconfig.addLintersFromClassPath", defaultValue = "true")
-    protected boolean addLintersFromClassPath;
+    boolean addLintersFromClassPath = true;
 
     /**
      * The base directory of the current Maven project.
@@ -76,7 +77,7 @@ public abstract class AbstractEditorConfigMojo extends AbstractMojo {
      * @since 0.0.1
      */
     @Parameter(defaultValue = "${project.basedir}", required = true, readonly = true)
-    private File basedir;
+    File basedir;
 
     /** The result of {@code basedir.toPath()} */
     protected Path basedirPath;
@@ -91,7 +92,7 @@ public abstract class AbstractEditorConfigMojo extends AbstractMojo {
      * @since 0.0.1
      */
     @Parameter(property = "editorconfig.encoding", defaultValue = "${project.build.sourceEncoding}")
-    protected String encoding;
+    String encoding;
 
     /**
      * If {@code true} the default exclude patterns (that exclude binary files and other non-source code files, see
@@ -101,7 +102,7 @@ public abstract class AbstractEditorConfigMojo extends AbstractMojo {
      * @since 0.0.3
      */
     @Parameter(property = "editorconfig.excludeNonSourceFiles", defaultValue = "true")
-    protected boolean excludeNonSourceFiles;
+    boolean excludeNonSourceFiles = true;
 
     /**
      * File patterns to exclude from the set of files to process. The patterns are relative to the current project's
@@ -110,7 +111,7 @@ public abstract class AbstractEditorConfigMojo extends AbstractMojo {
      * @since 0.0.1
      */
     @Parameter(property = "editorconfig.excludes")
-    protected String[] excludes;
+    List<String> excludes = new ArrayList<>();
 
     /**
      * If {@code true} the Maven submodule directories of the current project will be prepended to the list of
@@ -119,7 +120,7 @@ public abstract class AbstractEditorConfigMojo extends AbstractMojo {
      * @since 0.0.3
      */
     @Parameter(property = "editorconfig.excludeSubmodules", defaultValue = "true")
-    protected boolean excludeSubmodules;
+    boolean excludeSubmodules = true;
 
     /**
      * If {@code true} the plugin execution will fail with an error in case no single {@code .editorconfig} property
@@ -129,7 +130,7 @@ public abstract class AbstractEditorConfigMojo extends AbstractMojo {
      * @since 0.0.1
      */
     @Parameter(property = "editorconfig.failOnNoMatchingProperties", defaultValue = "true")
-    protected boolean failOnNoMatchingProperties;
+    boolean failOnNoMatchingProperties = true;
 
     /**
      * File containing exclude patterns to add to any existing exclude patterns. Empty lines and lines starting with #
@@ -138,7 +139,7 @@ public abstract class AbstractEditorConfigMojo extends AbstractMojo {
      * @since 0.1.0
      */
     @Parameter(property = "editorconfig.excludesFile")
-    protected File excludesFile;
+    File excludesFile;
 
     /**
      * File patterns to include into the set of files to process. The patterns are relative to the current project's
@@ -147,7 +148,7 @@ public abstract class AbstractEditorConfigMojo extends AbstractMojo {
      * @since 0.0.1
      */
     @Parameter(property = "editorconfig.includes", defaultValue = "**")
-    protected String[] includes;
+    List<String> includes = Arrays.asList("**");
 
     /**
      * Set the includes and excludes for the individual {@link Linter}s
@@ -155,10 +156,10 @@ public abstract class AbstractEditorConfigMojo extends AbstractMojo {
      * @since 0.0.1
      */
     @Parameter
-    protected List<LinterConfig> linters = new ArrayList<>();
+    List<LinterConfig> linters = new ArrayList<>();
 
     @Component
-    public MavenProject project;
+    MavenProject project;
 
     /**
      * If {@code true} the execution of the Mojo will be skipped; otherwise the Mojo will be executed.
@@ -168,13 +169,20 @@ public abstract class AbstractEditorConfigMojo extends AbstractMojo {
     @Parameter(property = "editorconfig.skip", defaultValue = "false")
     private boolean skip;
 
+    List<String> modules = new ArrayList<>();
+
     public AbstractEditorConfigMojo() {
+        this(LoggerFactory.getLogger(AbstractEditorConfigMojo.class));
+    }
+
+    AbstractEditorConfigMojo(Logger log) {
         super();
+        this.log = log;
     }
 
     private LinterRegistry buildLinterRegistry() {
         final LinterRegistry.Builder linterRegistryBuilder = LinterRegistry.builder()
-                .log(new Slf4jLintLogger(LoggerFactory.getLogger(LinterRegistry.class)));
+                .log(new Slf4jLintLogger(log));
 
         if (addLintersFromClassPath) {
             linterRegistryBuilder.scan(getClass().getClassLoader());
@@ -217,6 +225,17 @@ public abstract class AbstractEditorConfigMojo extends AbstractMojo {
             this.charset = Charsets.forName(this.encoding);
         }
         this.basedirPath = basedir.toPath();
+
+        if (project != null) {
+            for (Object m : project.getModules()) {
+                modules.add((String) m);
+            }
+            for (Profile p : project.getModel().getProfiles()) {
+                for (Object m : p.getModules()) {
+                    modules.add((String) m);
+                }
+            }
+        }
 
         LinterRegistry linterRegistry = buildLinterRegistry();
         final String[] includedFiles = scanIncludedFiles();
@@ -305,26 +324,10 @@ public abstract class AbstractEditorConfigMojo extends AbstractMojo {
             }
         }
 
-        if (excludeSubmodules && project != null) {
+        if (excludeSubmodules) {
             {
-                @SuppressWarnings("unchecked")
-                final List<String> modules = project.getModules();
-                if (modules != null) {
-                    for (String module : modules) {
-                        excls.add(module + "/**");
-                    }
-                }
-            }
-
-            final List<Profile> profiles = project.getModel().getProfiles();
-            if (profiles != null) {
-                for (Profile profile : profiles) {
-                    final List<String> modules = profile.getModules();
-                    if (modules != null) {
-                        for (String module : modules) {
-                            excls.add(module + "/**");
-                        }
-                    }
+                for (String module : modules) {
+                    excls.add(module + "/**");
                 }
             }
 
@@ -335,8 +338,8 @@ public abstract class AbstractEditorConfigMojo extends AbstractMojo {
         return scanner.getIncludedFiles();
     }
 
-    static String[] appendSanitized(String[] input, Collection<String> result) {
-        if (input == null || input.length == 0) {
+    static String[] appendSanitized(List<String> input, Collection<String> result) {
+        if (input == null || input.size() == 0) {
             return result.toArray(new String[0]);
         }
 

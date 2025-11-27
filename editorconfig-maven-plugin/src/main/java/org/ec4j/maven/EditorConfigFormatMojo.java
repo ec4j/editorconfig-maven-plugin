@@ -21,7 +21,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.ec4j.lint.api.FormattingHandler;
 import org.ec4j.lint.api.ViolationHandler;
-import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 /**
  * Formats a set of files so that they comply with rules defined in {@code .editorconfig} files.
@@ -40,7 +40,7 @@ public class EditorConfigFormatMojo extends AbstractEditorConfigMojo {
      * @since 0.0.1
      */
     @Parameter(property = "editorconfig.backup", defaultValue = "false")
-    private boolean backup;
+    boolean backup;
 
     /**
      * A suffix to append to a file name to create its backup. See also {@link #backup}.
@@ -48,13 +48,21 @@ public class EditorConfigFormatMojo extends AbstractEditorConfigMojo {
      * @since 0.0.1
      */
     @Parameter(property = "editorconfig.backupSuffix", defaultValue = ".bak")
-    private String backupSuffix;
+    String backupSuffix = ".bak";
+
+    public EditorConfigFormatMojo() {
+        super();
+    }
+
+    EditorConfigFormatMojo(Logger log) {
+        super(log);
+    }
 
     /** {@inheritDoc} */
     @Override
     protected ViolationHandler createHandler() {
         return new FormattingHandler(backup, backupSuffix,
-                new Slf4jLintLogger(LoggerFactory.getLogger(FormattingHandler.class)));
+                new Slf4jLintLogger(log));
     }
 
 }

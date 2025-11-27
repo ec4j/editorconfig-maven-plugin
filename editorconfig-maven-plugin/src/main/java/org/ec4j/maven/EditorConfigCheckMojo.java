@@ -21,7 +21,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.ec4j.lint.api.ViolationCollector;
 import org.ec4j.lint.api.ViolationHandler;
-import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 /**
  * Checks whether files are formatted according to rules defined in {@code .editorconfig} files. If fomat violations are
@@ -42,12 +42,20 @@ public class EditorConfigCheckMojo extends AbstractEditorConfigMojo {
      * @since 0.0.1
      */
     @Parameter(property = "editorconfig.failOnFormatViolation", defaultValue = "true")
-    private boolean failOnFormatViolation;
+    boolean failOnFormatViolation = true;
+
+    public EditorConfigCheckMojo() {
+        super();
+    }
+
+    EditorConfigCheckMojo(Logger log) {
+        super(log);
+    }
 
     /** {@inheritDoc} */
     @Override
     protected ViolationHandler createHandler() {
         return new ViolationCollector(failOnFormatViolation, "mvn editorconfig:format",
-                new Slf4jLintLogger(LoggerFactory.getLogger(ViolationCollector.class)));
+                new Slf4jLintLogger(log));
     }
 }
