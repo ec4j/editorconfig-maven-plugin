@@ -71,12 +71,14 @@
 
     <modules>
         <module>plugin</module>
+        <module>test</module>
     </modules>
 
     <properties>
 
         <!-- Dependency versions in alphabectic order -->
         <assertj.version>3.27.6</assertj.version>
+        <commons-io.version>2.21.0</commons-io.version>
         <junit.version>6.0.1</junit.version>
         <maven.version>3.9.11</maven.version>
         <maven-project.version>3.0-alpha-2</maven-project.version>
@@ -137,6 +139,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.ec4j.linters</groupId>
