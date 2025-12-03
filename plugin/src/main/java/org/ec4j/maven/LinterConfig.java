@@ -33,6 +33,14 @@ public class LinterConfig {
     private String[] includes;
     private boolean useDefaultIncludesAndExcludes = true;
 
+    public LinterConfig() {
+    }
+
+    public LinterConfig(String id, boolean enabled) {
+        this.id = id;
+        this.enabled = enabled;
+    }
+
     public String getClassName() {
         return className.indexOf('.') < 0 ? TextLinter.class.getPackage().getName() + "." + className + "Linter"
                 : className;

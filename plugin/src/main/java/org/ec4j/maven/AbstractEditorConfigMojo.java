@@ -264,16 +264,18 @@ public abstract class AbstractEditorConfigMojo extends AbstractMojo {
                     }
                     final Resource resource = new Resource(absFile, file, useEncoding);
                     final List<Linter> filteredLinters = linterRegistry.filter(file);
-                    ViolationHandler.ReturnState state = ViolationHandler.ReturnState.RECHECK;
-                    while (state != ViolationHandler.ReturnState.FINISHED) {
-                        for (Linter linter : filteredLinters) {
-                            if (log.isTraceEnabled()) {
-                                log.trace("Processing file '{}' using linter {}", file, linter.getClass().getName());
+                    if (!filteredLinters.isEmpty()) {
+                        ViolationHandler.ReturnState state = ViolationHandler.ReturnState.RECHECK;
+                        while (state != ViolationHandler.ReturnState.FINISHED) {
+                            for (Linter linter : filteredLinters) {
+                                if (log.isTraceEnabled()) {
+                                    log.trace("Processing file '{}' using linter {}", file, linter.getClass().getName());
+                                }
+                                handler.startFile(resource);
+                                linter.process(resource, editorConfigProperties, handler);
                             }
-                            handler.startFile(resource);
-                            linter.process(resource, editorConfigProperties, handler);
+                            state = handler.endFile();
                         }
-                        state = handler.endFile();
                     }
                 }
             }
