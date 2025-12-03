@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.ec4j.maven</groupId>
         <artifactId>editorconfig-maven-plugin-parent</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>editorconfig-maven-plugin</artifactId>
