@@ -40,7 +40,7 @@ fi
 set -x
 
 ./mvnw -B -ntp versions:set -DnewVersion=$releaseVersion
-sed -i 's|<tag>\[^<\]*</tag>|<tag>'$releaseVersion'</tag>|' pom.xml
+sed -i 's|<tag>[^<]*</tag>|<tag>'$releaseVersion'</tag>|' pom.xml
 ./mvnw -B -ntp clean site -Psite
 git add -A
 git commit -m "Release $releaseVersion"
@@ -50,7 +50,7 @@ git push "${upstreamUrl}" $releaseVersion
 ./mvnw -B -ntp clean deploy -DskipTests -Prelease
 
 ./mvnw -B -ntp versions:set -DnewVersion=$nextVersion
-sed -i 's|<tag>\[^<\]*</tag>|<tag>head</tag>|' pom.xml
+sed -i 's|<tag>[^<]*</tag>|<tag>head</tag>|' pom.xml
 git add -A
 git commit -m "Prepare for next development iteration"
 
