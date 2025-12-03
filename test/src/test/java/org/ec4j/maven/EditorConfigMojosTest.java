@@ -92,6 +92,22 @@ public class EditorConfigMojosTest {
     }
 
     @Test
+    public void allLintersDisabled() throws Exception {
+
+        final Verifier<EditorConfigFormatMojo> mavenExec = new Verifier<>(
+                "defaults",
+                EditorConfigFormatMojo.class,
+                Arrays.asList("log.txt"));
+
+        mavenExec.mojo.linters = Arrays.asList(new LinterConfig("org.ec4j.linters.TextLinter", false),
+                new LinterConfig("org.ec4j.linters.XmlLinter", false));
+
+        mavenExec //
+                .execute() //
+                .assertErrorFreeLog();
+    }
+
+    @Test
     public void encoding() throws Exception {
         final Verifier<EditorConfigCheckMojo> mavenExec = new Verifier<EditorConfigCheckMojo>(
                 "encoding",
