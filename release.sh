@@ -41,6 +41,7 @@ set -x
 
 ./mvnw -B -ntp versions:set -DnewVersion=$releaseVersion
 sed -i 's|<tag>[^<]*</tag>|<tag>'$releaseVersion'</tag>|' pom.xml
+sed -i 's|<version>[^<]*</version>|<version>'$releaseVersion'</version>|' README.adoc
 ./mvnw -B -ntp clean site -Psite
 git add -A
 git commit -m "Release $releaseVersion"
