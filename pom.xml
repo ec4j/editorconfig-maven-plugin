@@ -77,7 +77,7 @@
     <properties>
 
         <!-- Dependency versions in alphabectic order -->
-        <assertj.version>3.27.6</assertj.version>
+        <assertj.version>3.27.7</assertj.version>
         <commons-io.version>2.21.0</commons-io.version>
         <junit.version>5.14.1</junit.version>
         <maven.version>3.9.12</maven.version>
