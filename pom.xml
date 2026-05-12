@@ -86,7 +86,7 @@
         <maven-shared-utils.version>3.4.2</maven-shared-utils.version>
         <ec4j-core.version>1.2.0</ec4j-core.version>
         <ec4j-linters.version>2.2.2</ec4j-linters.version>
-        <slf4j.version>2.0.17</slf4j.version>
+        <slf4j.version>2.0.18</slf4j.version>
 
         <!-- Plugins and their dependencies -->
         <asciidoctor-converter-doxia.version>3.2.0</asciidoctor-converter-doxia.version>
